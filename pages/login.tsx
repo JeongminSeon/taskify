@@ -5,6 +5,7 @@ import logoImage from "@/public/images/logos/logo-main.svg?url";
 import visibilityOff from "@/public/images/icons/icon_visibility_off.svg?url";
 import visibilityOn from "@/public/images/icons/icon_visibility.svg?url";
 import Input from "@/components/Input";
+import { isEmailValid, isPWValid } from "@/utils/validation";
 
 const Login = () => {
   const [isShowPW, setIsShwoPW] = useState(false);
@@ -45,11 +46,9 @@ const Login = () => {
     setIsShwoPW((prev) => !prev);
   };
 
-  const isEmailNotValid =
-    didEdit.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(enteredValues.email);
+  const isEmailNotValid = didEdit.email && !isEmailValid(enteredValues.email);
 
-  const isPWNotValid =
-    didEdit.password && !(enteredValues.password.length >= 8);
+  const isPWNotValid = didEdit.password && !isPWValid(enteredValues.password);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
