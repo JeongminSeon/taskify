@@ -53,13 +53,28 @@ const Login = () => {
   const emailFail = isEmailNotValid ? "border-red100 border-1" : "";
   const pwFail = isPWNotValid ? "border-red100 border-1" : "";
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log("제출");
+
+    setEnteredValues({
+      email: "",
+      password: "",
+    });
+
+    setDidEdit({
+      email: false,
+      password: false,
+    });
+  };
+
   return (
     <div className='w-full h-full mx-auto md:max-w-[520px] sm:max-w-[351px] flex flex-col gap-3 justify-center items-center'>
       <div className='flex flex-col items-center gap-1'>
         <Image src={logoImage} width={200} height={280} alt='logo_main' />
         <p className='text-xl'>오늘도 만나서 반가워요!</p>
       </div>
-      <form className='flex flex-col w-full gap-3'>
+      <form className='flex flex-col w-full gap-3' onSubmit={handleSubmit}>
         <label htmlFor='email'>이메일</label>
         <input
           className={`w-full border px-4 py-3 border-gray400 rounded-lg focus:outline-none focus:ring-0 focus:border-purple100 ${emailFail}`}
@@ -99,7 +114,10 @@ const Login = () => {
         {isPWNotValid && (
           <div className='text-sm text-red100'>8자 이상 입력해 주세요.</div>
         )}
-        <button className='bg-gray300 py-3 rounded-lg text-white text-lg mt-2'>
+        <button
+          className='bg-gray300 py-3 rounded-lg text-white text-lg mt-2'
+          type='submit'
+        >
           로그인
         </button>
       </form>
