@@ -1,9 +1,18 @@
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import logoImage from "@/public/images/logos/logo-main.svg?url";
-import visibility from "@/public/images/icons/icon_visibility_off.svg?url";
+import visibilityOff from "@/public/images/icons/icon_visibility_off.svg?url";
+import visibilityOn from "@/public/images/icons/icon_visibility.svg?url";
 
 const Login = () => {
+  const [isShowPW, setIsShwoPW] = useState(false);
+
+  const handleShowPW = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsShwoPW((prev) => !prev);
+  };
+
   return (
     <div className='w-full h-full mx-auto md:max-w-[520px] sm:max-w-[351px] flex flex-col gap-3 justify-center items-center'>
       <div className='flex flex-col items-center gap-1'>
@@ -23,14 +32,18 @@ const Login = () => {
           <input
             className='w-full border px-4 py-3 border-gray400 rounded-lg focus:outline-none focus : ring-0 focus:border-purple100'
             id='password'
-            type='password'
+            type={isShowPW ? "text" : "password"}
             placeholder='비밀번호를 입력해주세요'
           />
-          <Image
-            src={visibility}
-            alt='visiblity_off'
-            className='absolute right-3'
-          />
+          <button
+            className='absolute right-3 cursor-pointer '
+            onClick={handleShowPW}
+          >
+            <Image
+              src={isShowPW ? visibilityOn : visibilityOff}
+              alt='visiblity_off'
+            />
+          </button>
         </div>
         <button className='bg-gray300 py-3 rounded-lg text-white text-lg mt-2'>
           로그인
