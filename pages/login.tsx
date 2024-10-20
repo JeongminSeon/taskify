@@ -1,5 +1,5 @@
 import Image from "next/image";
-import logoImage from "@/public/images/logos/logo-main.svg";
+import logoImage from "@/public/images/logos/logo-main.svg?url";
 
 const Login = () => {
   return (
