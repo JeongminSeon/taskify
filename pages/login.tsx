@@ -4,6 +4,7 @@ import Link from "next/link";
 import logoImage from "@/public/images/logos/logo-main.svg?url";
 import visibilityOff from "@/public/images/icons/icon_visibility_off.svg?url";
 import visibilityOn from "@/public/images/icons/icon_visibility.svg?url";
+import Input from "@/components/Input";
 
 const Login = () => {
   const [isShowPW, setIsShwoPW] = useState(false);
@@ -22,6 +23,7 @@ const Login = () => {
     event: React.ChangeEvent<HTMLInputElement>,
     identifier: string
   ) => {
+    console.log("test");
     setEnteredValues((prevValues) => ({
       ...prevValues,
       [identifier]: event.target.value,
@@ -39,8 +41,7 @@ const Login = () => {
     }));
   };
 
-  const handleShowPW = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleShowPW = (event: React.MouseEvent<HTMLButtonElement>) => {
     setIsShwoPW((prev) => !prev);
   };
 
@@ -49,9 +50,6 @@ const Login = () => {
 
   const isPWNotValid =
     didEdit.password && !(enteredValues.password.length >= 8);
-
-  const emailFail = isEmailNotValid ? "border-red100 border-1" : "";
-  const pwFail = isPWNotValid ? "border-red100 border-1" : "";
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -75,45 +73,30 @@ const Login = () => {
         <p className='text-xl'>오늘도 만나서 반가워요!</p>
       </div>
       <form className='flex flex-col w-full gap-3' onSubmit={handleSubmit}>
-        <label htmlFor='email'>이메일</label>
-        <input
-          className={`w-full border px-4 py-3 border-gray400 rounded-lg focus:outline-none focus:ring-0 focus:border-purple100 ${emailFail}`}
+        <Input
           id='email'
           type='email'
           placeholder='이메일을 입력해 주세요.'
-          onChange={(event) => handleInputChange(event, "email")}
-          onBlur={() => handleBlurChange("email")}
+          label='이메일'
+          onChange={handleInputChange}
+          onBlur={handleBlurChange}
           value={enteredValues.email}
+          isPassword={false}
+          error={isEmailNotValid ? "이메일 형식으로 작성해 주세요." : ""}
         />
-        {isEmailNotValid && (
-          <div className='text-sm text-red100'>
-            이메일 형식으로 작성해 주세요.
-          </div>
-        )}
-        <label htmlFor='password'>비밀번호</label>
-        <div className='flex items-center relative'>
-          <input
-            className={`w-full border px-4 py-3 border-gray400 rounded-lg focus:outline-none focus:ring-0 focus:border-purple100 ${pwFail}`}
-            id='password'
-            type={isShowPW ? "text" : "password"}
-            placeholder='비밀번호를 입력해주세요'
-            onChange={(event) => handleInputChange(event, "password")}
-            onBlur={() => handleBlurChange("password")}
-            value={enteredValues.password}
-          />
-          <button
-            className='absolute right-3 cursor-pointer '
-            onClick={handleShowPW}
-          >
-            <Image
-              src={isShowPW ? visibilityOn : visibilityOff}
-              alt='visiblity_off'
-            />
-          </button>
-        </div>
-        {isPWNotValid && (
-          <div className='text-sm text-red100'>8자 이상 입력해 주세요.</div>
-        )}
+        <Input
+          id='password'
+          type={isShowPW ? "text" : "password"}
+          placeholder='비밀번호를 입력해 주세요.'
+          label='비밀번호'
+          onChange={handleInputChange}
+          onBlur={handleBlurChange}
+          value={enteredValues.password}
+          isPassword={true}
+          error={isPWNotValid ? "8자 이상 입력해 주세요." : ""}
+          Icon={isShowPW ? visibilityOn : visibilityOff}
+          onClick={handleShowPW}
+        />
         <button
           className='bg-gray300 py-3 rounded-lg text-white text-lg mt-2'
           type='submit'
