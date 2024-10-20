@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import axiosInstance from "@/pages/api/axiosInstance";
+import { setCookie } from "nookies";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -19,6 +20,10 @@ const LoginPage: React.FC = () => {
       const { accessToken } = response.data;
       localStorage.setItem("token", accessToken);
       console.log("로그인 성공, 토큰 저장됨:", accessToken);
+      setCookie(null, "token", accessToken, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/",
+      });
       router.push("/dashboards");
     } catch (error) {
       console.error("로그인 실패:", error);

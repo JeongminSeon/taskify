@@ -1,8 +1,8 @@
 import Axios from "axios";
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const axiosInstance = Axios.create({
-  baseURL: apiUrl,
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  timeout: 5000, // 5초
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
