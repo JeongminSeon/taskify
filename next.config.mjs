@@ -6,10 +6,6 @@ const nextConfig = {
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      "@": path.resolve(__dirname),
-    };
     return config;
   },
 };
