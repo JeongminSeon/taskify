@@ -19,7 +19,7 @@ const LoginPage: React.FC = () => {
       const { accessToken } = response.data;
       localStorage.setItem("token", accessToken);
       console.log("로그인 성공, 토큰 저장됨:", accessToken);
-      router.push("/board");
+      router.push("/dashboards");
     } catch (error) {
       console.error("로그인 실패:", error);
     }
