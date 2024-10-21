@@ -21,6 +21,7 @@ const config: Config = {
         gray600: "var(--gray600)",
         white100: "var(--white100)",
         purple100: "var(--purple100)",
+        red100: "var(--red100)",
       },
       screens: {
         sm: "375px",
