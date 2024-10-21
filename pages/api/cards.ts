@@ -2,7 +2,6 @@ import axiosInstance from "./axiosInstance";
 import { CardListResponse, CreateCardBody } from "@/types/cards";
 
 interface CardsParams {
-  teamId: string;
   columnId?: number;
   size?: number;
   cursorId?: number;

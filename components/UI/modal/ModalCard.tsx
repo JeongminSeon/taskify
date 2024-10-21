@@ -1,36 +1,15 @@
 import React, { useState } from "react";
 import Image from "next/image";
-
-interface Assignee {
-  profileImageUrl: string;
-  nickname: string;
-  id: number;
-}
-
-interface CardProps {
-  id: number;
-  title: string;
-  description: string;
-  tags: string[];
-  dueDate: string;
-  assignee: Assignee;
-  imageUrl: string;
-  teamId: string;
-  columnId: number;
-  createdAt: string;
-  updatedAt: string;
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { CardProps } from "@/types/cards";
 
 const ModalCard: React.FC<CardProps> = ({
   title,
-  description,
-  tags,
-  dueDate,
-  assignee,
-  imageUrl,
-  createdAt,
+  // description,
+  // tags,
+  // dueDate,
+  // assignee,
+  // imageUrl,
+  // createdAt,
   isOpen,
   onClose,
 }) => {
@@ -55,22 +34,14 @@ const ModalCard: React.FC<CardProps> = ({
               <div className="relative">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="text-gray-500 hover:text-gray-700 mr-2"
+                  className="flex  text-gray-500 hover:text-gray-700 mr-6"
                 >
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
+                  <Image
+                    src="/images/icons/icon_kebab.svg"
+                    width={4}
+                    height={16}
+                    alt="더보기"
+                  />
                 </button>
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
@@ -87,20 +58,12 @@ const ModalCard: React.FC<CardProps> = ({
                 className="text-gray-500 hover:text-gray-700"
                 onClick={onClose}
               >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                <Image
+                  src="/images/icons/icon_close.svg"
+                  width={16}
+                  height={16}
+                  alt="닫기"
+                />
               </button>
             </div>
           </div>
@@ -109,29 +72,41 @@ const ModalCard: React.FC<CardProps> = ({
             <div className="flex-grow pr-4">
               {/* 태그 섹션 */}
               <div className="flex flex-wrap items-center gap-2 p-4">
-                {tags.map((tag, index) => (
+                <span className="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">
+                  • To Do
+                </span>
+                <div className="h-6 w-px bg-gray-300 mx-2"></div>
+                {[
+                  { text: "프로젝트", color: "bg-orange-100 text-orange-800" },
+                  { text: "일반", color: "bg-green-100 text-green-800" },
+                  { text: "백엔드", color: "bg-pink-100 text-pink-800" },
+                  { text: "상", color: "bg-purple-100 text-purple-800" },
+                ].map((tag) => (
                   <span
-                    key={index}
-                    className="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full"
+                    key={tag.text}
+                    className={`px-3 py-1 ${tag.color} text-sm rounded-md`}
                   >
-                    {tag}
+                    {tag.text}
                   </span>
                 ))}
               </div>
               {/* 본문 */}
               <div className="p-4">
-                <p className="mb-4">{description}</p>
-                {imageUrl && (
-                  <div className="relative w-full h-64">
-                    <Image
-                      src={imageUrl}
-                      alt="Card image"
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded-lg"
-                    />
-                  </div>
-                )}
+                <p className="mb-4">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Vestibulum finibus nibh arcu, quis consequat ante cursus eget.
+                  Cras mattis, nulla non lacerat porttitor, diam justo laoreet
+                  eros, vel aliquet diam elit at leo.
+                </p>
+                <div className="relative w-full h-64">
+                  <Image
+                    src="https://via.placeholder.com/300"
+                    alt="Two women looking at a book"
+                    fill
+                    objectFit="cover"
+                    className="rounded-lg"
+                  />
+                </div>
               </div>
             </div>
             {/* 담당자 */}
@@ -141,26 +116,15 @@ const ModalCard: React.FC<CardProps> = ({
                   담당자
                 </h3>
                 <div className="flex items-center">
-                  <div className="w-8 h-8 rounded-full overflow-hidden">
-                    <Image
-                      src={assignee.profileImageUrl}
-                      alt={assignee.nickname}
-                      width={32}
-                      height={32}
-                    />
+                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
+                    B
                   </div>
-                  <span className="ml-2 text-sm">{assignee.nickname}</span>
+                  <span className="ml-2 text-sm">배유정</span>
                 </div>
                 <h3 className="text-sm font-semibold text-gray-500 mt-4 mb-2">
                   마감일
                 </h3>
-                <p className="text-sm">{new Date(dueDate).toLocaleString()}</p>
-                <h3 className="text-sm font-semibold text-gray-500 mt-4 mb-2">
-                  생성일
-                </h3>
-                <p className="text-sm">
-                  {new Date(createdAt).toLocaleString()}
-                </p>
+                <p className="text-sm">2022.12.30 19:00</p>
               </div>
             </div>
           </div>
@@ -180,7 +144,7 @@ const ModalCard: React.FC<CardProps> = ({
             <div className="space-y-4">
               <div className="flex items-start space-x-3">
                 <Image
-                  src="/path-to-profile-image.jpg"
+                  src="https://via.placeholder.com/30"
                   alt="Profile"
                   width={40}
                   height={40}

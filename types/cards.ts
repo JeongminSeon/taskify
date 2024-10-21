@@ -40,3 +40,27 @@ export interface CardListResponse {
   totalCount: number;
   cards: Card[];
 }
+
+// 유저 정보 타입
+export interface Assignee {
+  profileImageUrl: string;
+  nickname: string;
+  id: number;
+}
+
+// 카드 상세 props 타입
+export interface CardProps {
+  id: number;
+  title: string;
+  description: string;
+  tags: string[];
+  dueDate: string;
+  assignee: Assignee;
+  imageUrl: string;
+  teamId: string;
+  columnId: number;
+  createdAt: string;
+  updatedAt: string;
+  isOpen: boolean;
+  onClose: () => void;
+}
