@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { menuListBox } from "./style";
 
 interface DashboardLinkProps {
   id: number;
@@ -15,7 +16,7 @@ const DashBoardLink: React.FC<DashboardLinkProps> = ({
   createdByMe,
 }) => {
   return (
-    <Link href={`/dashboard/${id}`} className="menuListBox">
+    <Link href={`/dashboard/${id}`} className={`${menuListBox}`}>
       <span
         className="block w-2 h-2 rounded-full"
         style={{ backgroundColor: color }}

@@ -17,3 +17,7 @@ export const boardCardBtnBox =
 
 export const acceptBtn =
   "block w-1/2 md:max-w-[84px] h-8 rounded-lg border text-xs md:text-sm font-medium";
+
+export const tableHd = "flex-1 text-gray300";
+
+export const tableBox = "flex flex-1 gap-6 text-sm md:text-[16px]";

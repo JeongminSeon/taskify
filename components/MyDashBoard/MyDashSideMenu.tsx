@@ -43,6 +43,7 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ data }) => {
             width={20}
             height={20}
             alt="초대하기"
+            className="mx-auto md:mx-0"
           />
         </button>
         <ul className="flex flex-col gap-2">

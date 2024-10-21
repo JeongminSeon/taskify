@@ -4,11 +4,11 @@ import Image from "next/image";
 const MyDashHdr = () => {
   return (
     <div className="border-b border-gray400 bg-white">
-      <div className="headerWrap flex justify-between items-center w-full py-[13px] px-[18px] md:px-10 md:py-[15px]">
+      <div className="headerWrap flex justify-between items-center w-full p-[13px_8px_13px_18px] md:px-10 md:py-[15px]">
         <h2 className="pageTitle flex-1 text-x font-bold md:text-xl lg:text-[2rem]">
           내 대시보드
         </h2>
-        <ul className="flex gap-4">
+        <ul className="flex gap-[6px] md:gap-4">
           <li>
             <button type="button" className={`${hdMenuBtn}`}>
               <span className={`${hdMenuBtnIcon}`}>
