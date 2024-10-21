@@ -3,32 +3,35 @@ import Portal from "@/components/UI/modal/ModalPotal";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import DashboardDetail from "./[dashboardsId]";
-import { fetchDashboards, getDashboardDetail } from "@/pages/api/dashboards";
-import { Dashboard } from "@/types/dashboards";
+import { getDashboards, getDashboardDetail } from "@/pages/api/dashboardsApi";
+import {
+  Dashboard,
+  DashboardDetailResponse,
+  DashboardResponse,
+} from "@/types/dashboards";
 
 const DashboardsPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [dashboards, setDashboards] = useState<Dashboard[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [selectedDashboard, setSelectedDashboard] = useState<Dashboard | null>(
-    null
-  );
+  const [selectedDashboard, setSelectedDashboard] =
+    useState<DashboardDetailResponse | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    const loadDashboards = async () => {
+    const fetchDashboards = async () => {
       try {
-        const dashboardsData = await fetchDashboards(1, 10);
+        const dashboardsData: DashboardResponse = await getDashboards(1, 10);
         console.log("응답 데이터:", dashboardsData);
-        setDashboards(dashboardsData);
+        setDashboards(dashboardsData.dashboards);
         setError(null);
       } catch (error) {
         handleError(error, "대시보드 목록을 가져오는 중 오류가 발생했습니다.");
       }
     };
 
-    loadDashboards();
-  }, [router]);
+    fetchDashboards();
+  }, []);
 
   const openModal = async (dashboardId: number) => {
     console.log("대시보드 ID:", dashboardId);

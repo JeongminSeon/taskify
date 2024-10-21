@@ -1,20 +1,17 @@
-import { DashboardDetailResponse } from "@/types/dashboards";
-import axiosInstance from "./axiosInstance";
+import { DashboardResponse, DashboardDetailResponse } from "@/types/dashboards";
+import axiosInstance from "./axiosInstanceApi";
 
 // 대시보드 목록 가져오기
-export const fetchDashboards = async (page: number, size: number) => {
+export const getDashboards = async (page: number, size: number) => {
   try {
-    const response = await axiosInstance.get<DashboardDetailResponse>(
-      `/dashboards`,
-      {
-        params: {
-          navigationMethod: "pagination",
-          page,
-          size,
-        },
-      }
-    );
-    return response.data.dashboards;
+    const response = await axiosInstance.get<DashboardResponse>(`/dashboards`, {
+      params: {
+        navigationMethod: "pagination",
+        page,
+        size,
+      },
+    });
+    return response.data;
   } catch (error) {
     console.error("대시보드 목록을 가져오는 데 실패했습니다:", error);
     throw error;

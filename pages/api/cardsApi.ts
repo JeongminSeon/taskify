@@ -1,4 +1,4 @@
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "./axiosInstanceApi";
 import { CardListResponse, CreateCardBody } from "@/types/cards";
 
 interface CardsParams {

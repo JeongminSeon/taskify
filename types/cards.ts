@@ -10,8 +10,6 @@ export interface CreateCardBody {
   imageUrl: string;
 }
 
-// 카드 목록 조회
-
 // 담당자 정보 타입
 export interface Assignee {
   profileImageUrl: string;
@@ -57,7 +55,6 @@ export interface CardProps {
   dueDate: string;
   assignee: Assignee;
   imageUrl: string;
-  teamId: string;
   columnId: number;
   createdAt: string;
   updatedAt: string;

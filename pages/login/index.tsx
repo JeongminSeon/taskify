@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import axiosInstance from "@/pages/api/axiosInstance";
+import axiosInstance from "@/pages/api/axiosInstanceApi";
 import { setCookie } from "nookies";
 
 const LoginPage: React.FC = () => {

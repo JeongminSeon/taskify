@@ -2,6 +2,19 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { CardProps } from "@/types/cards";
 
+// 다른곳에서 props를 미리보는 주석
+/**
+ * @param title 카드 제목
+ * @param description 카드 설명
+ * @param tags 카드 태그
+ * @param dueDate 마감일
+ * @param assignee 담당자
+ * @param imageUrl 이미지 URL
+ * @param createdAt 생성일
+ * @param isOpen 모달 오픈 여부
+ * @param onClose 모달 닫기 함수
+ */
+
 const ModalCard: React.FC<CardProps> = ({
   title,
   // description,
