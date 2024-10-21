@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getCards, createCard } from "@/pages/api/cards";
+import { getCards } from "@/pages/api/cards";
 import { Card, CreateCardBody } from "@/types/cards";
 import ModalCard from "@/components/UI/modal/ModalCard";
 
@@ -27,6 +27,7 @@ const CardPage: React.FC = () => {
     try {
       const response = await getCards({ teamId: "9-1" });
       setCards(response.cards);
+      console.log("카드 목록 데이터:", cards);
     } catch (error) {
       console.error("카드 목록을 가져오는데 실패했습니다:", error);
     }

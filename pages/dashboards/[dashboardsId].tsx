@@ -115,9 +115,9 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({
                 </p>
                 <div className='relative w-full h-64'>
                   <Image
-                    src='https://via.placeholder.com/200'
+                    src='https://via.placeholder.com/300'
                     alt='Two women looking at a book'
-                    layout='fill'
+                    fill
                     objectFit='cover'
                     className='rounded-lg'
                   />
