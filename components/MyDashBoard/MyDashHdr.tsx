@@ -1,4 +1,4 @@
-import { hdMenuBtn, hdMenuBtnIcon } from "./style";
+import { hdMenuBtn, hdMenuBtnIcon } from "./MyDashStyle";
 import { UserResponse } from "@/types/users";
 import useGetUser from "@/hooks/useGetUser";
 import Image from "next/image";
@@ -18,7 +18,7 @@ const MyDashHdr = () => {
             <button type="button" className={`${hdMenuBtn}`}>
               <span className={`${hdMenuBtnIcon}`}>
                 <Image
-                  src={"/images/icons/icon_settings.svg"}
+                  src="/images/icons/icon_settings.svg"
                   width={15}
                   height={15}
                   alt="관리"
@@ -31,7 +31,7 @@ const MyDashHdr = () => {
             <button type="button" className={`${hdMenuBtn}`}>
               <span className={`${hdMenuBtnIcon}`}>
                 <Image
-                  src={"/images/icons/icon_add_box.svg"}
+                  src="/images/icons/icon_add_box.svg"
                   width={15}
                   height={15}
                   alt="초대하기"
@@ -59,7 +59,7 @@ const MyDashHdr = () => {
               />
             )}
           </span>
-          <p className="hidden md:block">{userData ? userData.nickname : ""}</p>
+          <p className="hidden md:block">{userData?.nickname || ""}</p>
         </div>
       </div>
     </div>

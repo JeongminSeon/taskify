@@ -1,5 +1,5 @@
 import { useGetDashboardList } from "@/hooks/dashboard/useGetDashboardList";
-import { boardCardBtn, boardCardBtnBox } from "./style";
+import { boardCardBtn, boardCardBtnBox } from "./MyDashStyle";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";

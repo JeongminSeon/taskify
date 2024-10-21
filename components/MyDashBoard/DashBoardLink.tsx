@@ -1,6 +1,6 @@
+import { menuListBox } from "./MyDashStyle";
 import Link from "next/link";
 import Image from "next/image";
-import { menuListBox } from "./style";
 
 interface DashboardLinkProps {
   id: number;
