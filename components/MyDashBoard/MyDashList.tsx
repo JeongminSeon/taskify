@@ -99,7 +99,7 @@ const MyDashList: React.FC<MyDashListProps> = ({
         ))}
       </div>
       {dashboards.length > 0 && (
-        <div className="flex items-center justify-end mt-4 ">
+        <div className="flex items-center justify-end gap-5 mt-4 ">
           <div>
             <span className="text-sm text-black300">
               {currentPage} 페이지 중 {totalPages}
@@ -109,22 +109,24 @@ const MyDashList: React.FC<MyDashListProps> = ({
             <button
               onClick={handlePreviousPage}
               disabled={currentPage === 1}
-              className="w-9 h-8 md:w-10 md:h-10"
+              className="relative w-9 h-9 md:w-10 md:h-10"
             >
               <Image
                 src={"/images/icons/pagination_left.svg"}
-                layout="fill"
-                alt="이전 "
+                fill
+                objectFit="cover"
+                alt="이전"
               />
             </button>
             <button
               onClick={handleNextPage}
               disabled={currentPage >= totalPages}
-              className="w-9 h-8 md:w-10 md:h-10"
+              className="relative w-9 h-9 md:w-10 md:h-10"
             >
               <Image
                 src={"/images/icons/pagination_right.svg"}
-                layout="fill"
+                fill
+                objectFit="cover"
                 alt="다음"
               />
             </button>

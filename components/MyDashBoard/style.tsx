@@ -14,3 +14,6 @@ export const boardCardBtn =
 
 export const boardCardBtnBox =
   "w-full h-[58px] md:h-[68px] lg:h-[70px] p-[20px_20px_14px] text-sm md:text-base font-semibold";
+
+export const acceptBtn =
+  "block w-1/2 md:max-w-[84px] h-8 rounded-lg border text-xs md:text-sm font-medium";

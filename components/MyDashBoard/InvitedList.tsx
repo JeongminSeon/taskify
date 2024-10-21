@@ -1,6 +1,8 @@
 import { useGetInvitedList } from "@/hooks/dashboard/useGetInvitedList";
 import { useEffect, useState } from "react";
 import { InviteList } from "@/types/invitedList";
+import { acceptBtn } from "./style";
+import Image from "next/image";
 import axiosInstance from "@/pages/api/axiosInstance";
 import UnInvited from "./UnInvited";
 
@@ -68,47 +70,66 @@ const InvitedList = () => {
           <UnInvited />
         ) : (
           <>
-            <div className="relative">
+            <div className="relative flex mt-4">
               <button
                 onClick={performSearch}
-                className="p-2 bg-blue-500 text-white rounded-md"
+                className="absolute left-4 top-1/2 transform -translate-y-1/2"
               >
-                검색
+                <Image
+                  src={"/images/icons/icon_search.svg"}
+                  width={18}
+                  height={18}
+                  alt="검색"
+                />
               </button>
               <input
                 type="text"
-                placeholder="검색어를 입력하세요"
+                placeholder="검색"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={handleKeyPress}
-                className="border p-2 rounded-md w-full mb-4"
+                className="border py-2 pl-12 rounded-md w-full"
               />
             </div>
             <div className="py-3 md:py-6">
-              <div className="md:flex mb-4">
-                <div className="flex-1 font-bold">이름</div>
-                <div className="flex-1 font-bold">초대자</div>
-                <div className="flex-1 font-bold">수락 여부</div>
+              <div className="hidden md:flex lg:px-20">
+                <div className="flex-1 text-gray300">이름</div>
+                <div className="flex-1 text-gray300">초대자</div>
+                <div className="flex-1 text-gray300">수락 여부</div>
               </div>
               {filteredInvitations.map((invite) => (
-                <div key={invite.id} className="py-2 border-b">
-                  <div className="flex-1">{invite.dashboard.title}</div>
-                  <div className="flex-1">{invite.inviter.nickname}</div>
-                  <div className="flex-1">
-                    {invite.inviteAccepted !== null
-                      ? invite.inviteAccepted
-                        ? "수락됨"
-                        : "거절됨"
-                      : "대기 중"}
+                <div
+                  key={invite.id}
+                  className="flex flex-col md:flex-row lg:items-center gap-1 md:gap-0 py-[14px] md:py-[22px] lg:px-20 border-b"
+                >
+                  <div className="flex flex-1 gap-6 text-sm md:text-[16px] ">
+                    <span className="w-12 md:hidden text-sm text-gray300">
+                      이름
+                    </span>
+                    {invite.dashboard.title}
                   </div>
-                  <button onClick={() => handleInviteResponse(invite.id, true)}>
-                    수락
-                  </button>
-                  <button
-                    onClick={() => handleInviteResponse(invite.id, false)}
-                  >
-                    거절
-                  </button>
+                  <div className="flex flex-1 gap-6 text-sm md:text-[16px] ">
+                    <span className="w-12 md:hidden text-sm text-gray300">
+                      초대자
+                    </span>
+                    {invite.inviter.nickname}
+                  </div>
+                  <div className="flex gap-[10px] flex-1 mt-[10px] md:mt-0">
+                    <button
+                      type="button"
+                      onClick={() => handleInviteResponse(invite.id, true)}
+                      className={`${acceptBtn} border-purple-100 bg-purple100 text-white100`}
+                    >
+                      수락
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleInviteResponse(invite.id, false)}
+                      className={`${acceptBtn} border-gray400 text-purple100`}
+                    >
+                      거절
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
