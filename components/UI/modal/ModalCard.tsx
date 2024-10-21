@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { CardProps } from "@/types/cards";
 
-// 다른곳에서 props를 미리보는 주석
+// 부모에서 해당 컴포넌트 사용시 컴포넌트 명을 호버하면 props를 미리 확인할 수 있음
 /**
  * @param title 카드 제목
  * @param description 카드 설명

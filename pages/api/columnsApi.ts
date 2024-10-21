@@ -1,7 +1,7 @@
 import { ColoumnsParams, ColumnsResponse } from "@/types/columns";
 import axiosInstance from "./axiosInstanceApi";
 
-// 카드 목록 조회위한 컬럼 목록 조회
+// 컬럼 목록 조회
 export const getColumns = async ({
   teamId,
   dashboardId,
