@@ -21,7 +21,7 @@ const CardPage: React.FC = () => {
 
   useEffect(() => {
     fetchCards();
-  }, []);
+  }, [file]);
 
   const fetchCards = async () => {
     try {
