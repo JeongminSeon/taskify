@@ -86,75 +86,75 @@ const CardPage: React.FC = () => {
   };
 
   return (
-    <div className='p-4'>
-      <h1 className='text-2xl font-bold mb-4'>카드 목록</h1>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">카드 목록</h1>
 
       {/* 카드 생성 폼 */}
-      <form onSubmit={handleSubmit} className='mb-8 p-4 bg-gray-100 rounded-lg'>
-        <h2 className='text-xl font-semibold mb-4'>새 카드 생성</h2>
-        <div className='mb-4'>
+      <form onSubmit={handleSubmit} className="mb-8 p-4 bg-gray-100 rounded-lg">
+        <h2 className="text-xl font-semibold mb-4">새 카드 생성</h2>
+        <div className="mb-4">
           <input
-            type='text'
-            name='title'
+            type="text"
+            name="title"
             value={newCard.title}
             onChange={handleInputChange}
-            placeholder='제목'
-            className='w-full p-2 border rounded'
+            placeholder="제목"
+            className="w-full p-2 border rounded"
             required
           />
         </div>
-        <div className='mb-4'>
+        <div className="mb-4">
           <textarea
-            name='description'
+            name="description"
             value={newCard.description}
             onChange={handleInputChange}
-            placeholder='설명'
-            className='w-full p-2 border rounded'
+            placeholder="설명"
+            className="w-full p-2 border rounded"
             required
           />
         </div>
-        <div className='mb-4'>
+        <div className="mb-4">
           <input
-            type='date'
-            name='dueDate'
+            type="date"
+            name="dueDate"
             value={newCard.dueDate}
             onChange={handleInputChange}
-            className='w-full p-2 border rounded'
+            className="w-full p-2 border rounded"
             required
           />
         </div>
-        <div className='mb-4'>
+        <div className="mb-4">
           <input
-            type='file'
+            type="file"
             onChange={handleFileChange}
-            className='w-full p-2 border rounded'
+            className="w-full p-2 border rounded"
           />
         </div>
         <button
-          type='submit'
-          className='bg-blue-500 text-white px-4 py-2 rounded'
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded"
         >
           카드 생성
         </button>
       </form>
 
       {/* 기존 카드 목록 */}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {cards.map((card) => (
           <div
             key={card.id}
-            className='border p-4 rounded-lg cursor-pointer hover:bg-gray-100'
+            className="border p-4 rounded-lg cursor-pointer hover:bg-gray-100"
             onClick={() => openModal(card)}
           >
-            <h2 className='text-xl font-semibold'>{card.title}</h2>
-            <p className='text-gray-600 mt-2'>
+            <h2 className="text-xl font-semibold">{card.title}</h2>
+            <p className="text-gray-600 mt-2">
               {card.description.substring(0, 100)}...
             </p>
-            <div className='flex mt-2'>
+            <div className="flex mt-2">
               {card.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className='bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mr-2'
+                  className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mr-2"
                 >
                   {tag}
                 </span>

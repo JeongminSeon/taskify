@@ -83,11 +83,11 @@ const TestPage: React.FC = () => {
   };
 
   return (
-    <div className='p-4'>
+    <div className="p-4">
       <div>
         <h2>대시보드 목록</h2>
         {error ? (
-          <p className='text-red-500'>{error}</p>
+          <p className="text-red-500">{error}</p>
         ) : (
           <ul>
             {dashboards.map((dashboard) => (

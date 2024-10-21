@@ -2,11 +2,11 @@ import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
-    <Html lang='ko'>
+    <Html lang="ko">
       <Head />
-      <body className='antialiased'>
+      <body className="antialiased">
         <Main />
-        <div id='modal-root' />
+        <div id="modal-root" />
         <NextScript />
       </body>
     </Html>
