@@ -1,5 +1,5 @@
 import { menuListBox } from "./style";
-import { DashboardResponse } from "@/types/dashboardsTypes";
+import { DashboardDetailResponse } from "@/types/dashboards";
 import Link from "next/link";
 import Image from "next/image";
 import AddBox from "@/public/images/icons/icon_add_box.svg";
@@ -7,7 +7,7 @@ import SmlLogo from "@/public/images/logos/logo-small.svg";
 import LgLogo from "@/public/images/logos/logo-large.svg";
 
 interface MyDashSideMenuProps {
-  data: DashboardResponse | null; // 데이터가 null일 수도 있으므로
+  data: DashboardDetailResponse | null; // 데이터가 null일 수도 있으므로
 }
 
 const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ data }) => {
@@ -33,9 +33,9 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ data }) => {
           </span>
           <AddBox className="mx-auto md:mx-0" />
         </button>
-        {data?.dashboards.map((dashboard) => (
-          <ul key={dashboard.id} className="flex flex-col gap-2">
-            <li className="md:px-[10px] lg:px-3">
+        <ul className="flex flex-col gap-2">
+          {data?.dashboards.map((dashboard) => (
+            <li key={dashboard.id} className="md:px-[10px] lg:px-3">
               <Link
                 href={`/dashboard/${dashboard.id}`}
                 className={`${menuListBox}`}
@@ -56,8 +56,8 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ data }) => {
                 )}
               </Link>
             </li>
-          </ul>
-        ))}
+          ))}
+        </ul>
       </div>
     </div>
   );

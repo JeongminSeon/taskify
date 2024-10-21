@@ -1,12 +1,12 @@
 import { useGetDashboardList } from "@/hooks/dashboard/useGetDashboardList";
 import { boardCardBtn, boardCardBtnBox } from "./style";
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import { DashboardDetailResponse } from "@/types/dashboards";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { DashboardResponse } from "@/types/dashboardsTypes";
+import Image from "next/image";
 
 interface MyDashListProps {
-  initialData: DashboardResponse | null; // 데이터가 null일 수 있으므로
+  initialData: DashboardDetailResponse | null; // 데이터가 null일 수 있으므로
   loading: boolean;
   error: string | null;
 }
@@ -17,7 +17,7 @@ const MyDashList: React.FC<MyDashListProps> = ({
   error,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [data, setData] = useState<DashboardResponse | null>(initialData);
+  const [data, setData] = useState<DashboardDetailResponse | null>(initialData);
 
   const {
     data: fetchedData,
@@ -106,14 +106,27 @@ const MyDashList: React.FC<MyDashListProps> = ({
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-              이전
+            <button
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
+              className="w-9 h-8 md:w-10 md:h-10"
+            >
+              <Image
+                src={"/images/icons/pagination_left.svg"}
+                layout="fill"
+                alt="이전 "
+              />
             </button>
             <button
               onClick={handleNextPage}
               disabled={currentPage >= totalPages}
+              className="w-9 h-8 md:w-10 md:h-10"
             >
-              다음
+              <Image
+                src={"/images/icons/pagination_right.svg"}
+                layout="fill"
+                alt="다음"
+              />
             </button>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { useGetInvitedList } from "@/hooks/dashboard/useGetInvitedList";
 import { useEffect, useState } from "react";
-import { InviteList } from "@/types/dashboardsTypes";
+import { InviteList } from "@/types/invitedList";
 import axiosInstance from "@/pages/api/axiosInstance";
 import UnInvited from "./UnInvited";
 

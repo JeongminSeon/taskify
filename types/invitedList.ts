@@ -1,19 +1,3 @@
-export interface Dashboard {
-  id: number;
-  title: string;
-  color: string;
-  createdAt: number;
-  updatedAt: number;
-  createdByMe: boolean;
-  userId: number;
-}
-
-export interface DashboardResponse {
-  dashboards: Dashboard[];
-  totalCount: number;
-  cursorId: number | null;
-}
-
 export interface InviteList {
   id: number;
   inviter: {

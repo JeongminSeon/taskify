@@ -1,4 +1,4 @@
-import { InviteListResponse, InviteList } from "@/types/dashboardsTypes";
+import { InviteListResponse, InviteList } from "@/types/invitedList";
 import { useCallback, useEffect, useState } from "react";
 import axiosInstance from "@/pages/api/axiosInstance";
 
