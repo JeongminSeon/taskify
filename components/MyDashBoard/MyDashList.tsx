@@ -57,48 +57,55 @@ const MyDashList: React.FC<MyDashListProps> = ({
   }
 
   return (
-    <div className="flex flex-col gap-2 md:flex-row md:flex-wrap md:gap-[10px] lg:gap-[13px]">
-      <div className={`justify-center ${boardCardBtn}`}>
-        <button type="button" className={`${boardCardBtnBox}`}>
-          <p className="inline-block pr-[34px] bg-[url('/images/icons/icon_add_card.svg')] bg-no-repeat bg-right">
-            새로운 대시보드
-          </p>
-        </button>
-      </div>
-      {data?.dashboards.map((dashboard) => (
-        <div key={dashboard.id} className={`${boardCardBtn}`}>
-          <Link
-            href={`/dashboard/${dashboard.id}`}
-            className={`flex items-center gap-3 ${boardCardBtnBox}`}
-            style={{ backgroundPosition: "right 15px center" }}
-          >
-            <span
-              className="block w-2 h-2 rounded-full"
-              style={{ backgroundColor: dashboard.color }}
-            ></span>
-            <p>{dashboard.title}</p>
-            {dashboard.createdByMe && (
-              <Image
-                src={"/images/icons/icon_crown.svg"}
-                width={20}
-                height={18}
-                className="md:h-[14px] md:w-[18px]"
-                alt="왕관"
-              />
-            )}
-            <Image
-              src={"/images/icons/icon_arrow_right.svg"}
-              width={18}
-              height={18}
-              className="ml-auto"
-              alt="화살표"
-            />
-          </Link>
+    <div>
+      <div className="flex flex-col gap-2 md:flex-row md:flex-wrap md:gap-[10px] lg:gap-[13px]">
+        <div className={`justify-center ${boardCardBtn}`}>
+          <button type="button" className={`${boardCardBtnBox}`}>
+            <p className="inline-block pr-[34px] bg-[url('/images/icons/icon_add_card.svg')] bg-no-repeat bg-right">
+              새로운 대시보드
+            </p>
+          </button>
         </div>
-      ))}
+        {data?.dashboards.map((dashboard) => (
+          <div key={dashboard.id} className={`${boardCardBtn}`}>
+            <Link
+              href={`/dashboard/${dashboard.id}`}
+              className={`flex items-center gap-3 ${boardCardBtnBox}`}
+              style={{ backgroundPosition: "right 15px center" }}
+            >
+              <span
+                className="block w-2 h-2 rounded-full"
+                style={{ backgroundColor: dashboard.color }}
+              ></span>
+              <p>{dashboard.title}</p>
+              {dashboard.createdByMe && (
+                <Image
+                  src={"/images/icons/icon_crown.svg"}
+                  width={20}
+                  height={18}
+                  className="md:h-[14px] md:w-[18px]"
+                  alt="왕관"
+                />
+              )}
+              <Image
+                src={"/images/icons/icon_arrow_right.svg"}
+                width={18}
+                height={18}
+                className="ml-auto"
+                alt="화살표"
+              />
+            </Link>
+          </div>
+        ))}
+      </div>
       {dashboards.length > 0 && (
-        <div className="flex flex-col items-center mt-4">
-          <div className="flex justify-between w-full mb-2">
+        <div className="flex items-center justify-end mt-4 ">
+          <div>
+            <span className="text-sm text-black300">
+              {currentPage} 페이지 중 {totalPages}
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
             <button onClick={handlePreviousPage} disabled={currentPage === 1}>
               이전
             </button>
@@ -108,12 +115,6 @@ const MyDashList: React.FC<MyDashListProps> = ({
             >
               다음
             </button>
-          </div>
-          <div>
-            {/* 현재 페이지와 전체 페이지 수 표시 */}
-            <span>
-              {currentPage} 페이지 중 {totalPages} 페이지
-            </span>
           </div>
         </div>
       )}

@@ -1,9 +1,9 @@
-import { InviteListResponse } from "@/types/dashboardsTypes";
+import { InviteListResponse, InviteList } from "@/types/dashboardsTypes";
 import { useCallback, useEffect, useState } from "react";
 import axiosInstance from "@/pages/api/axiosInstance";
 
 export const useGetInvitedList = (size: number = 10) => {
-  const [data, setData] = useState<InviteListResponse | null>(null);
+  const [invitations, setInvitations] = useState<InviteList[]>([]); // 초대 목록 상태
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -13,18 +13,19 @@ export const useGetInvitedList = (size: number = 10) => {
       const response = await axiosInstance.get<InviteListResponse>(
         `invitations?size=${size}`
       );
-      setData(response.data);
+      setInvitations(response.data.invitations);
     } catch (err) {
       const errorMessage = (err as Error).message;
       setError(errorMessage);
     } finally {
       setLoading(false);
     }
-  }, [size]);
+  }, [size]); // invitations를 의존성에 추가
 
+  // 컴포넌트가 처음 마운트될 때 데이터 로드
   useEffect(() => {
     getDashboard();
-  }, [getDashboard]);
+  }, [getDashboard]); // 여기서 getDashboard만 의존성으로 사용
 
-  return { data, loading, error };
+  return { data: invitations, loading, error };
 };

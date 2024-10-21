@@ -10,7 +10,7 @@ export const hdMenuBtnIcon = "hidden md:block";
 
 /* --- MyDashList.tsx --- */
 export const boardCardBtn =
-  "flex items-center gap-3 md:gap-4 w-full md:w-[50%] lg:w-[33.33%] lg:max-w-[332px] border border-gray400 bg-white100 rounded-lg";
+  "flex items-center gap-3 md:gap-4 w-full md:w-[49%] lg:w-[32.3%] lg:max-w-[332px] border border-gray400 bg-white100 rounded-lg";
 
 export const boardCardBtnBox =
   "w-full h-[58px] md:h-[68px] lg:h-[70px] p-[20px_20px_14px] text-sm md:text-base font-semibold";

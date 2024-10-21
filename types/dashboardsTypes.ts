@@ -39,4 +39,6 @@ export interface InviteList {
 export interface InviteListResponse {
   invitations: InviteList[];
   cursorId: number;
+  nextCursor?: number; // 다음 페이지의 커서 ID (선택적)
+  totalInvitations?: number; // 전체 초대 수 (선택적)
 }
