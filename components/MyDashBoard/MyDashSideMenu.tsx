@@ -1,19 +1,17 @@
-import { DashboardDetailResponse } from "@/types/dashboards";
+import { useGetDashboardList } from "@/hooks/dashboard/useGetDashboardList";
 import Link from "next/link";
 import Image from "next/image";
 import DashBoardLink from "./DashBoardLink";
 
-interface MyDashSideMenuProps {
-  data: DashboardDetailResponse | null; // 데이터가 null일 수도 있으므로
-}
+const MyDashSideMenu: React.FC = () => {
+  const { data } = useGetDashboardList("pagination", 0, 1, 10);
 
-const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ data }) => {
   return (
     <div className="sticky top-0 h-screen py-5 px-[14px] border-r border-gray400 bg-white lg:px-2 ">
       <h1 className="md:hidden">
         <Link href="/">
           <Image
-            src={"/images/logos/logo-small.svg"}
+            src="/images/logos/logo-small.svg"
             width={23}
             height={27}
             alt="로고"
@@ -23,14 +21,14 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ data }) => {
       <h1 className="hidden md:block">
         <Link href="/">
           <Image
-            src={"/images/logos/logo-large.svg"}
+            src="/images/logos/logo-large.svg"
             width={109}
             height={33}
             alt="로고"
           />
         </Link>
       </h1>
-      <div className="mt-[38px] color text-gray200 text-xs">
+      <div className="mt-[38px] text-gray200 text-xs">
         <button
           type="button"
           className="flex justify-between items-center w-full py-4"
@@ -39,7 +37,7 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ data }) => {
             Dash Boards
           </span>
           <Image
-            src={"/images/icons/icon_add_box.svg"}
+            src="/images/icons/icon_add_box.svg"
             width={20}
             height={20}
             alt="초대하기"

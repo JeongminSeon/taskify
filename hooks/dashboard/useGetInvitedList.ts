@@ -7,7 +7,7 @@ export const useGetInvitedList = (size: number = 10) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const getDashboard = useCallback(async () => {
+  const getInvitedboard = useCallback(async () => {
     try {
       setLoading(true);
       const response = await axiosInstance.get<InviteListResponse>(
@@ -24,8 +24,8 @@ export const useGetInvitedList = (size: number = 10) => {
 
   // 컴포넌트가 처음 마운트될 때 데이터 로드
   useEffect(() => {
-    getDashboard();
-  }, [getDashboard]); // 여기서 getDashboard만 의존성으로 사용
+    getInvitedboard();
+  }, [getInvitedboard]); // 여기서 getDashboard만 의존성으로 사용
 
   return { data: invitations, loading, error };
 };

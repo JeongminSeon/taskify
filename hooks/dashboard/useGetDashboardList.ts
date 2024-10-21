@@ -7,7 +7,6 @@ export const useGetDashboardList = (
   cursorId: number,
   page?: number,
   size?: number
-  //lazy: boolean
 ) => {
   const [data, setData] = useState<DashboardDetailResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -18,7 +17,6 @@ export const useGetDashboardList = (
       const response = await axiosInstance.get<DashboardDetailResponse>(
         `/dashboards?navigationMethod=${method}&cursorId=${cursorId}&page=${page}&size=${size}`
       );
-      console.log("Response:", response);
       setData(response.data);
     } catch (err) {
       const errorMessage = (err as Error).message;

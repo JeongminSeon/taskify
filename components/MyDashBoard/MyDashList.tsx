@@ -1,36 +1,31 @@
 import { useGetDashboardList } from "@/hooks/dashboard/useGetDashboardList";
 import { boardCardBtn, boardCardBtnBox } from "./style";
-import { DashboardDetailResponse } from "@/types/dashboards";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 
-interface MyDashListProps {
-  initialData: DashboardDetailResponse | null; // 데이터가 null일 수 있으므로
-  loading: boolean;
-  error: string | null;
-}
-
-const MyDashList: React.FC<MyDashListProps> = ({
-  initialData,
-  loading,
-  error,
-}) => {
+const MyDashList: React.FC = () => {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
-  const [data, setData] = useState<DashboardDetailResponse | null>(initialData);
-
-  const {
-    data: fetchedData,
-    loading: fetching,
-    error: fetchingError,
-  } = useGetDashboardList("pagination", 0, currentPage, 5);
+  const { data, loading, error } = useGetDashboardList("pagination", 0, 1, 5);
 
   useEffect(() => {
-    // 데이터 업데이트
-    if (fetchedData) {
-      setData(fetchedData);
+    const accessToken = localStorage.getItem("token");
+    if (!accessToken) {
+      router.push("/404"); // accessToken이 없으면 404 페이지로 이동
     }
-  }, [fetchedData]);
+  }, [router]);
+
+  const totalCount = data?.totalCount || 0;
+  const totalPages = Math.ceil(totalCount / 5);
+  const dashboards = data?.dashboards || [];
+
+  useEffect(() => {
+    if (data && currentPage > totalPages) {
+      setCurrentPage(totalPages); // 현재 페이지가 총 페이지 수를 초과할 경우 조정
+    }
+  }, [data, currentPage, totalPages]);
 
   const handleNextPage = () => {
     setCurrentPage((prev) => prev + 1);
@@ -40,20 +35,11 @@ const MyDashList: React.FC<MyDashListProps> = ({
     setCurrentPage((prev) => Math.max(prev - 1, 1)); // 1페이지 이하로는 내리지 않음
   };
 
-  // 전체 페이지 수 계산 (예: totalCount가 API 응답에 포함된 경우)
-  const totalCount = data?.totalCount || 0;
-  const totalPages = Math.ceil(totalCount / 5); // 필요에 따라 수정
-
-  // dashboards가 undefined일 수 있으므로 안전하게 접근
-  const dashboards = data?.dashboards || [];
-
-  // 필요에 따라 수정
-  if (loading || fetching) {
+  if (loading) {
     return <div>Loading...</div>;
   }
-
-  if (error || fetchingError) {
-    return <div>Error: {error || fetchingError}</div>;
+  if (error) {
+    return <div>Error: {error}</div>;
   }
 
   return (
@@ -77,7 +63,7 @@ const MyDashList: React.FC<MyDashListProps> = ({
                 className="block w-2 h-2 rounded-full"
                 style={{ backgroundColor: dashboard.color }}
               ></span>
-              <p>{dashboard.title}</p>
+              <p className="truncate">{dashboard.title}</p>
               {dashboard.createdByMe && (
                 <Image
                   src={"/images/icons/icon_crown.svg"}
