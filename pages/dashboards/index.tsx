@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Portal from "@/components/UI/modal/ModalPotal";
-import axiosInstance from "@/pages/api/axiosInstance";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import DashboardDetail from "./[dashboardsId]";
-import { getDashboardDetail } from "@/pages/api/dashboards";
-import { Dashboard, DashboardDetailResponse } from "@/types/dashboards";
+import { fetchDashboards, getDashboardDetail } from "@/pages/api/dashboards";
+import { Dashboard } from "@/types/dashboards";
 
 const TestPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -15,31 +14,21 @@ const TestPage: React.FC = () => {
     null
   );
   const router = useRouter();
-  const teamId = "9-1";
 
   useEffect(() => {
-    const fetchDashboards = async () => {
+    const loadDashboards = async () => {
       try {
-        const response = await axiosInstance.get<DashboardDetailResponse>(
-          `/${teamId}/dashboards`,
-          {
-            params: {
-              navigationMethod: "pagination",
-              page: 1,
-              size: 10,
-            },
-          }
-        );
-        console.log("응답 데이터:", response.data);
-        setDashboards(response.data.dashboards);
+        const dashboardsData = await fetchDashboards(1, 10);
+        console.log("응답 데이터:", dashboardsData);
+        setDashboards(dashboardsData);
         setError(null);
       } catch (error) {
         handleError(error, "대시보드 목록을 가져오는 중 오류가 발생했습니다.");
       }
     };
 
-    fetchDashboards();
-  }, [router, teamId]);
+    loadDashboards();
+  }, [router]);
 
   const openModal = async (dashboardId: number) => {
     console.log("대시보드 ID:", dashboardId);
