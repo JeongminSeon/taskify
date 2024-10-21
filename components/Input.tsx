@@ -36,7 +36,7 @@ const Input = ({
   return (
     <>
       <label htmlFor={id}>{label}</label>
-      <div className='flex items-center relative'>
+      <div className="flex items-center relative">
         <input
           className={`w-full border px-4 py-3 border-gray400 rounded-lg focus:outline-none focus:ring-0 focus:border-purple100 ${isFail}`}
           id={id}
@@ -47,15 +47,15 @@ const Input = ({
         />
         {isPassword && Icon && (
           <button
-            type='button'
-            className='absolute right-3 cursor-pointer '
+            type="button"
+            className="absolute right-3 cursor-pointer "
             onClick={handleShowPW}
           >
-            <Image src={Icon} alt='visiblity_icon' width={24} height={24} />
+            <Image src={Icon} alt="visiblity_icon" width={24} height={24} />
           </button>
         )}
       </div>
-      {error && <div className='text-sm text-red100'>{error}</div>}
+      {error && <div className="text-sm text-red100">{error}</div>}
     </>
   );
 };
