@@ -6,63 +6,47 @@ import visibilityOff from "@/public/images/icons/icon_visibility_off.svg?url";
 import visibilityOn from "@/public/images/icons/icon_visibility.svg?url";
 import Input from "@/components/Input";
 import { isEmailValid, isPWValid } from "@/utils/validation";
+import useInput from "@/hooks/useInput";
 
 const Login = () => {
   const [isShowPW, setIsShwoPW] = useState(false);
 
-  const [enteredValues, setEnteredValues] = useState({
-    email: "",
-    password: "",
+  const {
+    enteredValue: emailValue,
+    setEnteredValue: setEmailEnteredValue,
+    handleInputChange: handleEmailInputChange,
+    handleBlurChange: handleEmailBlurChange,
+    setDidEdit: setEmailDidEdit,
+    error: isEmailNotValid,
+  } = useInput<string>({
+    defaultValue: "",
+    hasError: (value) => isEmailValid(value),
   });
 
-  const [didEdit, setDidEdit] = useState({
-    email: false,
-    password: false,
+  const {
+    enteredValue: passwordValue,
+    setEnteredValue: setPWEnteredValue,
+    handleInputChange: handlePWInputChange,
+    handleBlurChange: handlePWBlurChange,
+    setDidEdit: setPWDidEdit,
+    error: isPWNotValid,
+  } = useInput<string>({
+    defaultValue: "",
+    hasError: (value) => isPWValid(value),
   });
-
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    identifier: string
-  ) => {
-    console.log("test");
-    setEnteredValues((prevValues) => ({
-      ...prevValues,
-      [identifier]: event.target.value,
-    }));
-    setDidEdit((prevEdit) => ({
-      ...prevEdit,
-      [identifier]: false,
-    }));
-  };
-
-  const handleBlurChange = (identifier: string) => {
-    setDidEdit((prevEdit) => ({
-      ...prevEdit,
-      [identifier]: true,
-    }));
-  };
 
   const handleShowPW = (event: React.MouseEvent<HTMLButtonElement>) => {
     setIsShwoPW((prev) => !prev);
   };
 
-  const isEmailNotValid = didEdit.email && !isEmailValid(enteredValues.email);
-
-  const isPWNotValid = didEdit.password && !isPWValid(enteredValues.password);
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("제출");
 
-    setEnteredValues({
-      email: "",
-      password: "",
-    });
-
-    setDidEdit({
-      email: false,
-      password: false,
-    });
+    setEmailEnteredValue("");
+    setPWEnteredValue("");
+    setEmailDidEdit(false);
+    setPWDidEdit(false);
   };
 
   return (
@@ -77,9 +61,9 @@ const Login = () => {
           type='email'
           placeholder='이메일을 입력해 주세요.'
           label='이메일'
-          onChange={handleInputChange}
-          onBlur={handleBlurChange}
-          value={enteredValues.email}
+          onChange={(event) => handleEmailInputChange(event)}
+          onBlur={handleEmailBlurChange}
+          value={emailValue}
           isPassword={false}
           error={isEmailNotValid ? "이메일 형식으로 작성해 주세요." : ""}
         />
@@ -88,9 +72,9 @@ const Login = () => {
           type={isShowPW ? "text" : "password"}
           placeholder='비밀번호를 입력해 주세요.'
           label='비밀번호'
-          onChange={handleInputChange}
-          onBlur={handleBlurChange}
-          value={enteredValues.password}
+          onChange={(event) => handlePWInputChange(event)}
+          onBlur={handlePWBlurChange}
+          value={passwordValue}
           isPassword={true}
           error={isPWNotValid ? "8자 이상 입력해 주세요." : ""}
           Icon={isShowPW ? visibilityOn : visibilityOff}
