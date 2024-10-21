@@ -25,7 +25,7 @@ const CardPage: React.FC = () => {
 
   const fetchCards = async () => {
     try {
-      const response = await getCards({ teamId: "9-1" });
+      const response = await getCards();
       setCards(response.cards);
       console.log("카드 목록 데이터:", cards);
     } catch (error) {

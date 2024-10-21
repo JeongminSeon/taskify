@@ -6,7 +6,7 @@ import DashboardDetail from "./[dashboardsId]";
 import { fetchDashboards, getDashboardDetail } from "@/pages/api/dashboards";
 import { Dashboard } from "@/types/dashboards";
 
-const TestPage: React.FC = () => {
+const DashboardsPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [dashboards, setDashboards] = useState<Dashboard[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -100,4 +100,4 @@ const TestPage: React.FC = () => {
   );
 };
 
-export default TestPage;
+export default DashboardsPage;

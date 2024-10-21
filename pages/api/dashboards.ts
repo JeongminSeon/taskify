@@ -1,13 +1,11 @@
 import { DashboardDetailResponse } from "@/types/dashboards";
 import axiosInstance from "./axiosInstance";
 
-const teamId = "9-1";
-
 // 대시보드 목록 가져오기
 export const fetchDashboards = async (page: number, size: number) => {
   try {
     const response = await axiosInstance.get<DashboardDetailResponse>(
-      `/${teamId}/dashboards`,
+      `/dashboards`,
       {
         params: {
           navigationMethod: "pagination",
@@ -29,7 +27,7 @@ export const getDashboardDetail = async (
 ): Promise<DashboardDetailResponse> => {
   try {
     const response = await axiosInstance.get<DashboardDetailResponse>(
-      `/${teamId}/dashboards/${dashboardId}`
+      `/dashboards/${dashboardId}`
     );
     return response.data;
   } catch (error) {
