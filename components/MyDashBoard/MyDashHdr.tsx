@@ -1,6 +1,5 @@
 import React from "react";
-import AddBox from "@/public/images/icons/icon_add_box.svg";
-import Setting from "@/public/images/icons/icon_settings.svg";
+import Image from "next/image";
 import { hdMenuBtn, hdMenuBtnIcon } from "./style";
 
 const MyDashHdr = () => {
@@ -14,7 +13,12 @@ const MyDashHdr = () => {
           <li>
             <button type="button" className={`${hdMenuBtn}`}>
               <span className={`${hdMenuBtnIcon}`}>
-                <Setting />
+                <Image
+                  src={"/images/icons/icon_settings.svg"}
+                  width={15}
+                  height={15}
+                  alt="관리"
+                />
               </span>
               관리
             </button>
@@ -22,7 +26,12 @@ const MyDashHdr = () => {
           <li>
             <button type="button" className={`${hdMenuBtn}`}>
               <span className={`${hdMenuBtnIcon}`}>
-                <AddBox />
+                <Image
+                  src={"/images/icons/icon_add_box.svg"}
+                  width={15}
+                  height={15}
+                  alt="초대하기"
+                />
               </span>
               초대하기
             </button>
