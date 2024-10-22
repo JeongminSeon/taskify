@@ -1,6 +1,6 @@
 import { UserResponse } from "@/types/users";
 import { useEffect, useState } from "react";
-import axiosInstance from "@/pages/api/axiosInstance";
+import axiosInstance from "@/pages/api/axiosInstanceApi";
 
 export const useGetUser = () => {
   const [data, setData] = useState<UserResponse | null>(null);
