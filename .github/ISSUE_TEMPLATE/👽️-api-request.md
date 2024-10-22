@@ -1,3 +1,11 @@
+---
+name: "👽 API Request"
+about: "Request an API implementation or modification"
+title: "[API] "
+labels: api, enhancement
+assignees: ''
+---
+
 ## 🚀 Description
 <!-- 간략한 API 설명 -->
 새로운 API 엔드포인트 또는 수정된 API에 대한 설명을 작성해 주세요.
