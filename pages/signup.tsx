@@ -6,6 +6,7 @@ import Input from "@/components/Auth/Input";
 import { isEmailValid, isEntered, isPWValid, isSame } from "@/utils/validation";
 import useInput from "@/hooks/useInput";
 import Logo from "@/components/Auth/Logo";
+import { createUser } from "./api/authApi";
 
 const SignUp = () => {
   const [isShowPW, setIsShwoPW] = useState<{ [key: string]: boolean }>({
@@ -76,14 +77,29 @@ const SignUp = () => {
   const isChecked =
     isFilled && !isError && checked ? "bg-purple100" : "bg-gray300";
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Input Reset
-    resetEmailInput();
-    resetNameInput();
-    resetPasswordInput();
-    resetPWCheckInput();
+    const formData = {
+      email: emailValue,
+      nickname: nameValue,
+      password: passwordValue,
+    };
+    try {
+      const response = await createUser(formData);
+      console.log(response);
+      // Input Reset
+      resetEmailInput();
+      resetNameInput();
+      resetPasswordInput();
+      resetPWCheckInput();
+    } catch (error: any) {
+      if (error.status === 409) {
+        alert(error.message);
+      } else {
+        console.error(error.message);
+      }
+    }
   };
 
   return (

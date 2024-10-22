@@ -7,6 +7,7 @@ interface formData {
   password: string;
 }
 
+// 에러 핸들링
 const onError = (status: number, message: string) => {
   const error = { status, message };
   throw error;
