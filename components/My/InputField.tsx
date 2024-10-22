@@ -1,15 +1,4 @@
-interface InputFieldProps {
-  label: string;
-  name: string;
-  placeholder?: string;
-  type?: string;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  readOnly?: boolean;
-  error?: boolean;
-  errorMessage?: string;
-  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void; // 추가
-}
+import { InputFieldProps } from "@/types/my";
 
 const InputField: React.FC<InputFieldProps> = ({
   label,

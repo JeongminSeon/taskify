@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import axiosInstance from "@/pages/api/axiosInstance";
-import { DashboardDetailResponse } from "@/types/dashboards";
+import axiosInstance from "@/pages/api/axiosInstanceApi";
+import { DashboardResponse } from "@/types/dashboards";
 
 export const useGetDashboardList = (
   method: "pagination" | "infiniteScroll",
@@ -8,13 +8,13 @@ export const useGetDashboardList = (
   page?: number,
   size?: number
 ) => {
-  const [data, setData] = useState<DashboardDetailResponse | null>(null);
+  const [data, setData] = useState<DashboardResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const getDashboard = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await axiosInstance.get<DashboardDetailResponse>(
+      const response = await axiosInstance.get<DashboardResponse>(
         `/dashboards?navigationMethod=${method}&cursorId=${cursorId}&page=${page}&size=${size}`
       );
       setData(response.data);
