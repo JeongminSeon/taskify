@@ -1,37 +1,29 @@
 import React, { useState, useEffect } from "react";
 import Portal from "@/components/UI/modal/ModalPotal";
-import axiosInstance from "@/pages/api/axiosInstance";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import DashboardDetail from "./[dashboardsId]";
-import { getDashboardDetail } from "@/pages/api/dashboards";
-import { Dashboard, DashboardDetailResponse } from "@/types/dashboards";
+import { getDashboards, getDashboardDetail } from "@/pages/api/dashboardsApi";
+import {
+  Dashboard,
+  DashboardDetailResponse,
+  DashboardResponse,
+} from "@/types/dashboards";
 
-const TestPage: React.FC = () => {
+const DashboardsPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [dashboards, setDashboards] = useState<Dashboard[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [selectedDashboard, setSelectedDashboard] = useState<Dashboard | null>(
-    null
-  );
+  const [selectedDashboard, setSelectedDashboard] =
+    useState<DashboardDetailResponse | null>(null);
   const router = useRouter();
-  const teamId = "9-1";
 
   useEffect(() => {
     const fetchDashboards = async () => {
       try {
-        const response = await axiosInstance.get<DashboardDetailResponse>(
-          `/${teamId}/dashboards`,
-          {
-            params: {
-              navigationMethod: "pagination",
-              page: 1,
-              size: 10,
-            },
-          }
-        );
-        console.log("응답 데이터:", response.data);
-        setDashboards(response.data.dashboards);
+        const dashboardsData: DashboardResponse = await getDashboards(1, 10);
+        console.log("응답 데이터:", dashboardsData);
+        setDashboards(dashboardsData.dashboards);
         setError(null);
       } catch (error) {
         handleError(error, "대시보드 목록을 가져오는 중 오류가 발생했습니다.");
@@ -39,7 +31,7 @@ const TestPage: React.FC = () => {
     };
 
     fetchDashboards();
-  }, [router, teamId]);
+  }, []);
 
   const openModal = async (dashboardId: number) => {
     console.log("대시보드 ID:", dashboardId);
@@ -111,4 +103,4 @@ const TestPage: React.FC = () => {
   );
 };
 
-export default TestPage;
+export default DashboardsPage;

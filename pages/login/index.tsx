@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import axiosInstance from "@/pages/api/axiosInstance";
+import axiosInstance from "@/pages/api/axiosInstanceApi";
 import { setCookie } from "nookies";
 import {setCooie}
 
@@ -12,7 +12,7 @@ const LoginPage: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post("/9-1/auth/login", {
+      const response = await axiosInstance.post("/auth/login", {
         email,
         password,
       });
@@ -34,20 +34,20 @@ const LoginPage: React.FC = () => {
   return (
     <form onSubmit={handleLogin}>
       <input
-        type='email'
+        type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder='이메일'
+        placeholder="이메일"
         required
       />
       <input
-        type='password'
+        type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        placeholder='비밀번호'
+        placeholder="비밀번호"
         required
       />
-      <button type='submit'>로그인</button>
+      <button type="submit">로그인</button>
     </form>
   );
 };
