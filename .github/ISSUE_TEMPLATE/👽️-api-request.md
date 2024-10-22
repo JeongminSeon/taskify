@@ -43,7 +43,7 @@ assignees: ''
     "name": "Example"
   },
   "message": "Request successful."
-}```
+}
 
 
 ### Additional Context
