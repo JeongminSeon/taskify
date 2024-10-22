@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { styles } from "./style";
+import { styles } from "./styles";
 
 interface OneInputModalProps {
   isOpen: boolean;
