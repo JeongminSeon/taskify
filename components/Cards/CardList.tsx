@@ -65,9 +65,18 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
                       alt="캘린더"
                     />
                   </span>
-                  {new Date(card.dueDate).toLocaleString()}
+                  {new Date(card.dueDate)
+                    .toLocaleDateString("ko-KR", {
+                      year: "numeric",
+                      month: "numeric",
+                      day: "numeric",
+                    })
+                    .replace(/\.$/, "")}{" "}
+                  {/* 맨 뒤의 점(.) 제거 */}
                 </p>
-                <p>{card.assignee.nickname}</p>
+                <p className="overflow-hidden relative w-[34px] h-[34px] rounded-full bg-slate-500">
+                  {card.assignee.nickname}
+                </p>
               </div>
             </div>
           </div>
