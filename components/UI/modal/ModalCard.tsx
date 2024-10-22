@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { CardProps } from "@/types/cards";
+import Dropdown from "../dropdown/Dropdown";
 
 // 부모에서 해당 컴포넌트 사용시 컴포넌트 명을 호버하면 props를 미리 확인할 수 있음
 /**
@@ -27,6 +28,10 @@ const ModalCard: React.FC<CardProps> = ({
   onClose,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownItems = [
+    { label: "수정하기", onClick: () => console.log("수정하기 클릭") },
+    { label: "삭제하기", onClick: () => console.log("삭제하기 클릭") },
+  ];
 
   if (!isOpen) return null;
 
@@ -47,7 +52,7 @@ const ModalCard: React.FC<CardProps> = ({
               <div className="relative">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex  text-gray-500 hover:text-gray-700 mr-6"
+                  className="flex text-gray-500 hover:text-gray-700 mr-6"
                 >
                   <Image
                     src="/images/icons/icon_kebab.svg"
@@ -56,16 +61,7 @@ const ModalCard: React.FC<CardProps> = ({
                     alt="더보기"
                   />
                 </button>
-                {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
-                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      수정하기
-                    </button>
-                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      삭제하기
-                    </button>
-                  </div>
-                )}
+                <Dropdown isOpen={isDropdownOpen} items={dropdownItems} />
               </div>
               <button
                 className="text-gray-500 hover:text-gray-700"

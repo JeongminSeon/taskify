@@ -8,6 +8,7 @@ interface DashboardDetailProps {
   onClose: () => void;
 }
 
+// 민지님이 구현 예정
 const DashboardDetail: React.FC<DashboardDetailProps> = ({
   dashboard,
   isOpen,
