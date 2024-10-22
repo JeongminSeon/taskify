@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Portal from "@/components/UI/Modal/ModalPotal";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import DashboardDetail from "./[dashboardsId]";
 import { getDashboards, getDashboardDetail } from "@/pages/api/dashboardsApi";
 import {
   Dashboard,
@@ -10,6 +9,7 @@ import {
   DashboardResponse,
 } from "@/types/dashboards";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
+import OneInputModal from "@/components/UI/Modal/InputModal/OneInputModal";
 
 const DashboardsPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -57,6 +57,11 @@ const DashboardsPage: React.FC = () => {
     setSelectedDashboard(null);
   };
 
+  const handleConfirm = async (inputValue: string) => {
+    console.log("입력값:", inputValue);
+    setIsModalOpen(false);
+  };
+
   const handleError = (error: unknown, defaultMessage: string) => {
     console.error(defaultMessage, error);
     if (error instanceof AxiosError) {
@@ -95,10 +100,15 @@ const DashboardsPage: React.FC = () => {
           )}
         </div>
         <Portal>
-          <DashboardDetail
+          <OneInputModal
             isOpen={isModalOpen}
-            onClose={closeModal}
-            dashboard={selectedDashboard}
+            modalTitle="새 칼럼 생성"
+            inputLabel="이름"
+            inputPlaceholder="컬럼 이름을 입력해주세요"
+            onCancle={closeModal}
+            cancleButtonText="취소"
+            onConfirm={handleConfirm}
+            confirmButtonText="생성"
           />
         </Portal>
       </div>
