@@ -67,15 +67,22 @@ const SignUp = () => {
     hasError: (password, confirmPassword) => isSame(password, confirmPassword),
   });
 
-  const isFilled =
+  const allFieldsFilled =
     isEntered(emailValue) &&
     isEntered(nameValue) &&
     isEntered(passwordValue) &&
     isEntered(passwordCheckValue);
-  const isError =
+
+  const hasErrors =
     isEmailNotValid || isNameNotValid || isPWNotValid || isPWCheckNotValid;
-  const isChecked =
-    isFilled && !isError && checked ? "bg-purple100" : "bg-gray300";
+
+  const isSubmitEnabled = allFieldsFilled && !hasErrors && checked;
+
+  const buttonColor = isSubmitEnabled
+    ? "bg-purple100 text-white"
+    : "bg-gray300";
+
+  const isDisabled = !isSubmitEnabled;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -165,8 +172,9 @@ const SignUp = () => {
           <label htmlFor='term'>이용약관에 동의합니다.</label>
         </div>
         <button
-          className={`${isChecked} py-3 rounded-lg text-white text-lg mt-2`}
+          className={`${buttonColor} py-3 rounded-lg text-white text-lg mt-2`}
           type='submit'
+          disabled={isDisabled}
         >
           가입하기
         </button>
