@@ -23,7 +23,11 @@ const useInput = <T,>({
     setDidEdit(true);
   };
 
-  console.log(enteredValue);
+  const reset = () => {
+    setEnteredValue(defaultValue);
+    setDidEdit(false);
+  };
+
   const error = hasError
     ? didEdit && !hasError(enteredValue, additioanlValue)
     : false;
@@ -35,6 +39,7 @@ const useInput = <T,>({
     handleBlurChange,
     setDidEdit,
     error,
+    reset,
   };
 };
 

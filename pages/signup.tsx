@@ -22,6 +22,7 @@ const SignUp = () => {
     handleBlurChange: handleEmailBlurChange,
     setDidEdit: setEmailDidEdit,
     error: isEmailNotValid,
+    reset: resetEmailInput,
   } = useInput<string>({
     defaultValue: "",
     hasError: (value) => isEmailValid(value),
@@ -34,6 +35,7 @@ const SignUp = () => {
     handleBlurChange: handleNameBlurChange,
     setDidEdit: setNameDidEdit,
     error: isNameNotValid,
+    reset: resetNameInput,
   } = useInput<string>({
     defaultValue: "",
     hasError: (value) => isEntered(value),
@@ -46,6 +48,7 @@ const SignUp = () => {
     handleBlurChange: handlePWBlurChange,
     setDidEdit: setPWDidEdit,
     error: isPWNotValid,
+    reset: resetPasswordInput,
   } = useInput<string>({
     defaultValue: "",
     hasError: (value) => isPWValid(value),
@@ -58,6 +61,7 @@ const SignUp = () => {
     handleBlurChange: handlePWCheckBlurChange,
     setDidEdit: setPWCheckDidEdit,
     error: isPWCheckNotValid,
+    reset: resetPWCheckInput,
   } = useInput<string>({
     defaultValue: "",
     additioanlValue: passwordValue,
@@ -74,23 +78,14 @@ const SignUp = () => {
   const isChecked =
     isFilled && !isError && checked ? "bg-purple100" : "bg-gray300";
 
-  console.log(isError);
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("제출");
 
-    // value reset
-    setEmailEnteredValue("");
-    setNameEnteredValue("");
-    setPWEnteredValue("");
-    setPWCheckEnteredValue("");
-
-    // didEdit reset
-    setEmailDidEdit(false);
-    setNameDidEdit(false);
-    setPWDidEdit(false);
-    setPWCheckDidEdit(false);
+    // Input Reset
+    resetEmailInput();
+    resetNameInput();
+    resetPasswordInput();
+    resetPWCheckInput();
   };
 
   return (
