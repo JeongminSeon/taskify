@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Portal from "@/components/UI/modal/ModalPotal";
+import Portal from "@/components/UI/Modal/ModalPotal";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import DashboardDetail from "./[dashboardsId]";

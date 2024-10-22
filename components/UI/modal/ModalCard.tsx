@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { CardProps } from "@/types/cards";
-import Dropdown from "../dropdown/Dropdown";
+import Dropdown from "../Dropdown/Dropdown";
 
 // 부모에서 해당 컴포넌트 사용시 컴포넌트 명을 호버하면 props를 미리 확인할 수 있음
 /**
