@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 interface InputProps<T> {
   defaultValue: T;
-  hasError: (enteredValues: T) => boolean;
+  hasError?: (enteredValues: T) => boolean;
 }
 
 const useInput = <T,>({ defaultValue, hasError }: InputProps<T>) => {
@@ -18,7 +18,7 @@ const useInput = <T,>({ defaultValue, hasError }: InputProps<T>) => {
     setDidEdit(true);
   };
 
-  const error = didEdit && !hasError(enteredValue);
+  const error = hasError ? didEdit && !hasError(enteredValue) : false;
 
   return {
     enteredValue,
