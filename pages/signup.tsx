@@ -23,10 +23,8 @@ const SignUp = () => {
 
   const {
     enteredValue: emailValue,
-    setEnteredValue: setEmailEnteredValue,
     handleInputChange: handleEmailInputChange,
     handleBlurChange: handleEmailBlurChange,
-    setDidEdit: setEmailDidEdit,
     error: isEmailNotValid,
     reset: resetEmailInput,
   } = useInput<string>({
@@ -36,10 +34,8 @@ const SignUp = () => {
 
   const {
     enteredValue: nameValue,
-    setEnteredValue: setNameEnteredValue,
     handleInputChange: handleNameInputChange,
     handleBlurChange: handleNameBlurChange,
-    setDidEdit: setNameDidEdit,
     error: isNameNotValid,
     reset: resetNameInput,
   } = useInput<string>({
@@ -49,10 +45,8 @@ const SignUp = () => {
 
   const {
     enteredValue: passwordValue,
-    setEnteredValue: setPWEnteredValue,
     handleInputChange: handlePWInputChange,
     handleBlurChange: handlePWBlurChange,
-    setDidEdit: setPWDidEdit,
     error: isPWNotValid,
     reset: resetPasswordInput,
   } = useInput<string>({
@@ -62,10 +56,8 @@ const SignUp = () => {
 
   const {
     enteredValue: passwordCheckValue,
-    setEnteredValue: setPWCheckEnteredValue,
     handleInputChange: handlePWCheckInputChange,
     handleBlurChange: handlePWCheckBlurChange,
-    setDidEdit: setPWCheckDidEdit,
     error: isPWCheckNotValid,
     reset: resetPWCheckInput,
   } = useInput<string>({

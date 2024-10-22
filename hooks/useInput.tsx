@@ -34,10 +34,8 @@ const useInput = <T,>({
 
   return {
     enteredValue,
-    setEnteredValue,
     handleInputChange,
     handleBlurChange,
-    setDidEdit,
     error,
     reset,
   };
