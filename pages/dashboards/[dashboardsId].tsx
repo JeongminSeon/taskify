@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { getColumns } from "../api/columnsApi";
 import { ColoumnsParams, Columns, ColumnsResponse } from "@/types/columns";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
+import Image from "next/image";
+import CardList from "@/components/Cards/CardList";
 
 const DashboardDetail: React.FC = () => {
   const router = useRouter();
@@ -41,17 +43,37 @@ const DashboardDetail: React.FC = () => {
 
   return (
     <DashBoardLayout>
-      <div className="columns flex flex-col py-4 px-3">
+      <div className="columns flex flex-col lg:flex-row">
         {columns.map((item) => (
-          <div key={item.id} className="columnList">
-            <h2 className="">
-              {item.title}
-              <span>설정</span>
+          <div
+            key={item.id}
+            className="columnList flex-1 h-screen py-4 px-3 md:p-5 border-r border-[gray600]"
+          >
+            <h2 className="flex items-center gap-2 text-black100 font-bold">
+              <span className="block w-2 h-2 rounded-full bg-purple100"></span>
+              <p className="flex-1">{item.title}</p>
+              <span>
+                <Image
+                  src="/images/icons/icon_settings.svg"
+                  width={22}
+                  height={22}
+                  alt="설정"
+                />
+              </span>
             </h2>
-            <button>+</button>
-            <ul>
-              <li className="columncard"></li>
-            </ul>
+            <button
+              type="button"
+              className="block w-full h-8 md:h-10 mt-6 border border-gray400 rounded-md bg-white100"
+            >
+              <Image
+                src="/images/icons/icon_add_column.svg"
+                width={16}
+                height={16}
+                alt="할 일 추가"
+                className="mx-auto"
+              />
+            </button>
+            <CardList columnId={item.id} />
           </div>
         ))}
       </div>
