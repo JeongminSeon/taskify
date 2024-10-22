@@ -4,7 +4,7 @@ import { DashboardDetailResponse } from "@/types/dashboards";
 
 export const useGetDashboardList = (
   method: "pagination" | "infiniteScroll",
-  cursorId: number,
+  cursorId?: number,
   page?: number,
   size?: number
 ) => {

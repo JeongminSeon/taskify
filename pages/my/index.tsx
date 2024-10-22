@@ -10,7 +10,7 @@ const MyPage = () => {
   };
   return (
     <DashBoardLayout>
-      <div className="mt-5 ml-5 min-h-screen">
+      <div className="mt-5 ml-5 md:mb-[136px] sm:mb-[61px] min-h-screen">
         <button
           onClick={returnButton}
           className="text-[16px] font-[500] mb-[29px]"
