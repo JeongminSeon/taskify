@@ -4,7 +4,7 @@ import Link from "next/link";
 import logoImage from "@/public/images/logos/logo-main.svg?url";
 import visibilityOff from "@/public/images/icons/icon_visibility_off.svg?url";
 import visibilityOn from "@/public/images/icons/icon_visibility.svg?url";
-import Input from "@/components/Input";
+import Input from "@/components/Auth/Input";
 import { isEmailValid, isPWValid } from "@/utils/validation";
 import useInput from "@/hooks/useInput";
 

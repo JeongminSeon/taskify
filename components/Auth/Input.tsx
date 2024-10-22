@@ -13,7 +13,7 @@ interface InputProps {
     identifier: string
   ) => void;
   onBlur: (identifier: string) => void;
-  error: string;
+  error?: string;
   isPassword: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   isShowPW?: boolean;

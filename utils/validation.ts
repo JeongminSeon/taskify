@@ -5,3 +5,7 @@ export const isEmailValid = (enteredEmail: string) => {
 export const isPWValid = (enteredPW: string) => {
   return enteredPW.length >= 8;
 };
+
+export const isSame = (str1: string, str2: string) => {
+  return str1 === str2;
+};
