@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import axiosInstance from "@/pages/api/axiosInstanceApi";
 import { setCookie } from "nookies";
+import {setCooie}
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
