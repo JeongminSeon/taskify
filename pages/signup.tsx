@@ -8,11 +8,17 @@ import useInput from "@/hooks/useInput";
 import Logo from "@/components/Auth/Logo";
 
 const SignUp = () => {
-  const [isShowPW, setIsShwoPW] = useState(false);
+  const [isShowPW, setIsShwoPW] = useState<{ [key: string]: boolean }>({
+    password: false,
+    confirmPassword: false,
+  });
   const [checked, setChecked] = useState(false);
 
-  const handleShowPW = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setIsShwoPW((prev) => !prev);
+  const handleShowPW = (identifier: string) => {
+    setIsShwoPW((prevState) => ({
+      ...prevState,
+      [identifier]: !prevState[identifier],
+    }));
   };
 
   const {
@@ -116,7 +122,7 @@ const SignUp = () => {
         />
         <Input
           id='password'
-          type={isShowPW ? "text" : "password"}
+          type={isShowPW.password ? "text" : "password"}
           placeholder='비밀번호를 입력해 주세요.'
           label='비밀번호'
           onChange={(event) => handlePWInputChange(event)}
@@ -124,12 +130,12 @@ const SignUp = () => {
           value={passwordValue}
           isPassword={true}
           error={isPWNotValid ? "8자 이상 입력해 주세요." : ""}
-          Icon={isShowPW ? visibilityOn : visibilityOff}
-          onClick={handleShowPW}
+          Icon={isShowPW.password ? visibilityOn : visibilityOff}
+          onClick={() => handleShowPW("password")}
         />
         <Input
           id='pwcheck'
-          type={isShowPW ? "text" : "password"}
+          type={isShowPW.confirmPassword ? "text" : "password"}
           placeholder='비밀번호를 한번 더 입력해 주세요.'
           label='비밀번호'
           onChange={(event) => handlePWCheckInputChange(event)}
@@ -137,8 +143,8 @@ const SignUp = () => {
           value={passwordCheckValue}
           isPassword={true}
           error={isPWCheckNotValid ? "비밀번호가 일치하지 않습니다." : ""}
-          Icon={isShowPW ? visibilityOn : visibilityOff}
-          onClick={handleShowPW}
+          Icon={isShowPW.confirmPassword ? visibilityOn : visibilityOff}
+          onClick={() => handleShowPW("confirmPassword")}
         />
         <div className='flex items-center gap-2'>
           <input
