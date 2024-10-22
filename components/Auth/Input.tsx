@@ -43,6 +43,7 @@ const Input = ({
           onChange={(event) => handleInputChange(event, id)}
           onBlur={() => handleBlurChange(id)}
           required
+          value={value}
           {...props}
         />
         {isPassword && Icon && (

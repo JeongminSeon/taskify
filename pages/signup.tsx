@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import visibilityOff from "@/public/images/icons/icon_visibility_off.svg?url";
 import visibilityOn from "@/public/images/icons/icon_visibility.svg?url";
 import Input from "@/components/Auth/Input";
-import { isEmailValid, isPWValid, isSame } from "@/utils/validation";
+import { isEmailValid, isEntered, isPWValid, isSame } from "@/utils/validation";
 import useInput from "@/hooks/useInput";
 import Logo from "@/components/Auth/Logo";
 
 const SignUp = () => {
   const [isShowPW, setIsShwoPW] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   const handleShowPW = (event: React.MouseEvent<HTMLButtonElement>) => {
     setIsShwoPW((prev) => !prev);
@@ -33,9 +33,10 @@ const SignUp = () => {
     handleInputChange: handleNameInputChange,
     handleBlurChange: handleNameBlurChange,
     setDidEdit: setNameDidEdit,
-    error: isEmNotValid,
+    error: isNameNotValid,
   } = useInput<string>({
     defaultValue: "",
+    hasError: (value) => isEntered(value),
   });
 
   const {
@@ -59,8 +60,21 @@ const SignUp = () => {
     error: isPWCheckNotValid,
   } = useInput<string>({
     defaultValue: "",
-    hasError: (str1, str2) => isSame(str1, str2),
+    additioanlValue: passwordValue,
+    hasError: (password, confirmPassword) => isSame(password, confirmPassword),
   });
+
+  const isFilled =
+    isEntered(emailValue) &&
+    isEntered(nameValue) &&
+    isEntered(passwordValue) &&
+    isEntered(passwordCheckValue);
+  const isError =
+    isEmailNotValid || isNameNotValid || isPWNotValid || isPWCheckNotValid;
+  const isChecked =
+    isFilled && !isError && checked ? "bg-purple100" : "bg-gray300";
+
+  console.log(isError);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -103,6 +117,7 @@ const SignUp = () => {
           onBlur={handleNameBlurChange}
           value={nameValue}
           isPassword={false}
+          error={isNameNotValid ? "닉네임을 입력해주세요." : ""}
         />
         <Input
           id='password'
@@ -130,21 +145,31 @@ const SignUp = () => {
           Icon={isShowPW ? visibilityOn : visibilityOff}
           onClick={handleShowPW}
         />
+        <div className='flex items-center gap-2'>
+          <input
+            id='term'
+            type='checkbox'
+            className='w-5 h-5'
+            checked={checked}
+            onChange={() => setChecked((prev) => !prev)}
+          />
+          <label htmlFor='term'>이용약관에 동의합니다.</label>
+        </div>
         <button
-          className='bg-gray300 py-3 rounded-lg text-white text-lg mt-2'
+          className={`${isChecked} py-3 rounded-lg text-white text-lg mt-2`}
           type='submit'
         >
-          로그인
+          가입하기
         </button>
       </form>
       <div>
         <p>
-          회원이 아니신가요?
+          이미 회원 이신가요?
           <Link
-            href='/signup'
+            href='/login'
             className='ml-2 text-purple100 underline underline-offset-4'
           >
-            회원가입하기
+            로그인하기
           </Link>
         </p>
       </div>

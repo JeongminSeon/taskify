@@ -41,7 +41,6 @@ const Login = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("제출");
 
     setEmailEnteredValue("");
     setPWEnteredValue("");

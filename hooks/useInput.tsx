@@ -2,10 +2,15 @@ import React, { useState } from "react";
 
 interface InputProps<T> {
   defaultValue: T;
-  hasError?: (value: T, ...args: any[]) => boolean;
+  additioanlValue?: string;
+  hasError: (value: T, ...args: any[]) => boolean;
 }
 
-const useInput = <T,>({ defaultValue, hasError }: InputProps<T>) => {
+const useInput = <T,>({
+  defaultValue,
+  hasError,
+  additioanlValue,
+}: InputProps<T>) => {
   const [enteredValue, setEnteredValue] = useState<T>(defaultValue);
   const [didEdit, setDidEdit] = useState(false);
 
@@ -18,7 +23,10 @@ const useInput = <T,>({ defaultValue, hasError }: InputProps<T>) => {
     setDidEdit(true);
   };
 
-  const error = hasError ? didEdit && !hasError(enteredValue) : false;
+  console.log(enteredValue);
+  const error = hasError
+    ? didEdit && !hasError(enteredValue, additioanlValue)
+    : false;
 
   return {
     enteredValue,

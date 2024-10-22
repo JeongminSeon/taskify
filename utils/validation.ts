@@ -9,3 +9,7 @@ export const isPWValid = (enteredPW: string) => {
 export const isSame = (str1: string, str2: string) => {
   return str1 === str2;
 };
+
+export const isEntered = (value: string) => {
+  return value.length !== 0;
+};
