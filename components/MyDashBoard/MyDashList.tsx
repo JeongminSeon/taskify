@@ -55,7 +55,7 @@ const MyDashList: React.FC = () => {
         {data?.dashboards.map((dashboard) => (
           <div key={dashboard.id} className={`${boardCardBtn}`}>
             <Link
-              href={`/dashboard/${dashboard.id}`}
+              href={`/dashboards/${dashboard.id}`}
               className={`flex items-center gap-3 ${boardCardBtnBox}`}
               style={{ backgroundPosition: "right 15px center" }}
             >
