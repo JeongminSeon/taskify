@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 interface InputProps<T> {
   defaultValue: T;
-  hasError?: (enteredValues: T) => boolean;
+  hasError?: (value: T, ...args: any[]) => boolean;
 }
 
 const useInput = <T,>({ defaultValue, hasError }: InputProps<T>) => {
