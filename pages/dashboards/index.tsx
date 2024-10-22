@@ -9,6 +9,7 @@ import {
   DashboardDetailResponse,
   DashboardResponse,
 } from "@/types/dashboards";
+import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 
 const DashboardsPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -75,31 +76,33 @@ const DashboardsPage: React.FC = () => {
   };
 
   return (
-    <div className="p-4">
-      <div>
-        <h2>대시보드 목록</h2>
-        {error ? (
-          <p className="text-red-500">{error}</p>
-        ) : (
-          <ul>
-            {dashboards.map((dashboard) => (
-              <li key={dashboard.id}>
-                <button onClick={() => openModal(dashboard.id)}>
-                  🩶 {dashboard.title}
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+    <DashBoardLayout>
+      <div className="p-4">
+        <div>
+          <h2>대시보드 목록</h2>
+          {error ? (
+            <p className="text-red-500">{error}</p>
+          ) : (
+            <ul>
+              {dashboards.map((dashboard) => (
+                <li key={dashboard.id}>
+                  <button onClick={() => openModal(dashboard.id)}>
+                    🩶 {dashboard.title}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <Portal>
+          <DashboardDetail
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            dashboard={selectedDashboard}
+          />
+        </Portal>
       </div>
-      <Portal>
-        <DashboardDetail
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          dashboard={selectedDashboard}
-        />
-      </Portal>
-    </div>
+    </DashBoardLayout>
   );
 };
 

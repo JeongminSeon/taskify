@@ -16,7 +16,7 @@ const DashBoardLink: React.FC<DashboardLinkProps> = ({
   createdByMe,
 }) => {
   return (
-    <Link href={`/dashboard/${id}`} className={`${menuListBox}`}>
+    <Link href={`/dashboards/${id}`} className={`${menuListBox}`}>
       <span
         className="block flex-none w-2 h-2 rounded-full"
         style={{ backgroundColor: color }}
