@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { CardProps } from "@/types/cards";
+import { styles } from "./styles";
+import Dropdown from "../../dropdown/Dropdown";
 
 // 부모에서 해당 컴포넌트 사용시 컴포넌트 명을 호버하면 props를 미리 확인할 수 있음
 /**
@@ -27,27 +29,28 @@ const ModalCard: React.FC<CardProps> = ({
   onClose,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownItems = [
+    { label: "수정하기", onClick: () => console.log("수정하기 클릭") },
+    { label: "삭제하기", onClick: () => console.log("삭제하기 클릭") },
+  ];
 
   if (!isOpen) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-      onClick={onClose}
-    >
+    <div className={styles.modalOverlay} onClick={onClose}>
       <div
-        className="w-[730px] h-[763px] bg-white shadow-lg rounded-xl overflow-hidden"
+        className={styles.modalContainer}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="h-full overflow-y-auto pt-6 pl-4 pr-5">
+        <div className={styles.modalContent}>
           {/* 헤더 */}
-          <div className="bg-white p-4 flex justify-between items-center ">
+          <div className={styles.modalHeader}>
             <h1 className="text-xl font-bold">{title}</h1>
             <div className="flex items-center">
               <div className="relative">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex  text-gray-500 hover:text-gray-700 mr-6"
+                  className={styles.kebabButton}
                 >
                   <Image
                     src="/images/icons/icon_kebab.svg"
@@ -56,21 +59,9 @@ const ModalCard: React.FC<CardProps> = ({
                     alt="더보기"
                   />
                 </button>
-                {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
-                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      수정하기
-                    </button>
-                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      삭제하기
-                    </button>
-                  </div>
-                )}
+                <Dropdown isOpen={isDropdownOpen} items={dropdownItems} />
               </div>
-              <button
-                className="text-gray-500 hover:text-gray-700"
-                onClick={onClose}
-              >
+              <button className={styles.closeButton} onClick={onClose}>
                 <Image
                   src="/images/icons/icon_close.svg"
                   width={16}
@@ -84,11 +75,13 @@ const ModalCard: React.FC<CardProps> = ({
           <div className="flex">
             <div className="flex-grow pr-4">
               {/* 태그 섹션 */}
-              <div className="flex flex-wrap items-center gap-2 p-4">
-                <span className="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm rounded-full">
+              <div className={styles.tagContainer}>
+                <span
+                  className={`${styles.tagBase} bg-indigo-100 text-indigo-800`}
+                >
                   • To Do
                 </span>
-                <div className="h-6 w-px bg-gray-300 mx-2"></div>
+                <div className={styles.tagDivider}></div>
                 {[
                   { text: "프로젝트", color: "bg-orange-100 text-orange-800" },
                   { text: "일반", color: "bg-green-100 text-green-800" },
@@ -97,7 +90,7 @@ const ModalCard: React.FC<CardProps> = ({
                 ].map((tag) => (
                   <span
                     key={tag.text}
-                    className={`px-3 py-1 ${tag.color} text-sm rounded-md`}
+                    className={`${styles.tagBase} ${tag.color}`}
                   >
                     {tag.text}
                   </span>
@@ -111,7 +104,7 @@ const ModalCard: React.FC<CardProps> = ({
                   Cras mattis, nulla non lacerat porttitor, diam justo laoreet
                   eros, vel aliquet diam elit at leo.
                 </p>
-                <div className="relative w-full h-64">
+                <div className={styles.imageContainer}>
                   <Image
                     src="https://via.placeholder.com/300"
                     alt="Two women looking at a book"
@@ -123,39 +116,31 @@ const ModalCard: React.FC<CardProps> = ({
               </div>
             </div>
             {/* 담당자 */}
-            <div className="w-[200px] flex-shrink-0 p-4">
-              <div className="p-4 rounded-lg border border-[#D9D9D9]">
-                <h3 className="text-sm font-semibold text-gray-500 mb-2">
-                  담당자
-                </h3>
+            <div className={styles.sidebarContainer}>
+              <div className={styles.sidebarBox}>
+                <h3 className={styles.sidebarTitle}>담당자</h3>
                 <div className="flex items-center">
-                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
-                    B
-                  </div>
+                  <div className={styles.assigneeAvatar}>B</div>
                   <span className="ml-2 text-sm">배유정</span>
                 </div>
-                <h3 className="text-sm font-semibold text-gray-500 mt-4 mb-2">
-                  마감일
-                </h3>
+                <h3 className={`${styles.sidebarTitle} mt-4`}>마감일</h3>
                 <p className="text-sm">2022.12.30 19:00</p>
               </div>
             </div>
           </div>
 
           {/* 댓글 섹션 */}
-          <div className="p-4 ">
-            <h2 className="text-lg font-semibold mb-2">댓글</h2>
+          <div className="p-4">
+            <h2 className={styles.commentTitle}>댓글</h2>
             <div className="mb-6 relative">
               <textarea
                 placeholder="댓글 작성하기"
-                className="w-full p-2 pr-20 border rounded-lg h-24 resize-none"
+                className={styles.commentInput}
               />
-              <button className="absolute right-3 bottom-5 text-blue-500 px-7 py-1 rounded-md border border-gray-300 hover:bg-gray-100">
-                입력
-              </button>
+              <button className={styles.commentSubmitButton}>입력</button>
             </div>
             <div className="space-y-4">
-              <div className="flex items-start space-x-3">
+              <div className={styles.commentItem}>
                 <Image
                   src="https://via.placeholder.com/30"
                   alt="Profile"
@@ -172,12 +157,8 @@ const ModalCard: React.FC<CardProps> = ({
                   </div>
                   <p className="mt-1">오늘까지 CCC 개발 완료 수 있을까요?</p>
                   <div className="mt-2">
-                    <button className="text-sm text-gray-500 mr-2 underline">
-                      수정
-                    </button>
-                    <button className="text-sm text-gray-500 underline">
-                      삭제
-                    </button>
+                    <button className={styles.commentActionButton}>수정</button>
+                    <button className={styles.commentActionButton}>삭제</button>
                   </div>
                 </div>
               </div>

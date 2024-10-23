@@ -10,6 +10,6 @@ export const isSame = (str1: string, str2: string) => {
   return str1 === str2;
 };
 
-export const isEntered = (value: string) => {
+export const isEmpty = (value: string) => {
   return value.length !== 0;
 };

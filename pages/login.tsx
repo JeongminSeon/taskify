@@ -33,7 +33,7 @@ const Login = () => {
     hasError: (value) => isPWValid(value),
   });
 
-  const handleShowPW = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleShowPW = () => {
     setIsShwoPW((prev) => !prev);
   };
 

@@ -1,4 +1,4 @@
-import ModalCard from "@/components/UI/modal/ModalCard";
+import ModalCard from "@/components/UI/modal/CardModal/CardDetailModal";
 import Portal from "@/components/UI/modal/ModalPotal";
 import { Columns, ColumnsResponse } from "@/types/columns";
 import { useEffect, useState } from "react";

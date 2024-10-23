@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { InviteList } from "@/types/invitedList";
 import { tableHd, tableBox, acceptBtn } from "./MyDashStyle";
 import Image from "next/image";
-import axiosInstance from "@/pages/api/axiosInstance";
+import axiosInstance from "@/pages/api/axiosInstanceApi";
 import UnInvited from "./UnInvited";
 
 const InvitedList = () => {
