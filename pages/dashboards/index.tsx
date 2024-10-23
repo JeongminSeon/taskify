@@ -96,8 +96,8 @@ const DashboardDetail: React.FC = () => {
             modalTitle="새 칼럼 생성"
             inputLabel="이름"
             inputPlaceholder="컬럼 이름을 입력해주세요"
-            onCancle={closeModal}
-            cancleButtonText="취소"
+            onCancel={closeModal}
+            cancelButtonText="취소"
             onConfirm={() => handleModalConfirm(handleConfirm)}
             confirmButtonText="생성"
             inputValue={""}

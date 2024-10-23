@@ -7,8 +7,8 @@ interface OneInputModalProps {
   modalTitle: string;
   inputLabel: string;
   inputPlaceholder: string;
-  onCancle: () => void;
-  cancleButtonText?: string;
+  onCancel: () => void;
+  cancelButtonText?: string;
   onConfirm: (value: string) => void;
   confirmButtonText?: string;
   inputValue: string;
@@ -20,8 +20,8 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
   modalTitle,
   inputLabel,
   inputPlaceholder,
-  onCancle,
-  cancleButtonText,
+  onCancel,
+  cancelButtonText,
   onConfirm,
   confirmButtonText,
   inputValue,
@@ -40,7 +40,7 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>{modalTitle}</h2>
           <button
-            onClick={onCancle}
+            onClick={onCancel}
             className={styles.closeButton}
             aria-label="닫기"
           >
@@ -69,10 +69,10 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
           <div className="flex gap-2">
             <button
               type="button"
-              onClick={onCancle}
+              onClick={onCancel}
               className={styles.cancelButton}
             >
-              {cancleButtonText}
+              {cancelButtonText}
             </button>
             <button type="submit" className={styles.confirmButton}>
               {confirmButtonText}
