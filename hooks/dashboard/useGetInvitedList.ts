@@ -8,6 +8,11 @@ export const useGetInvitedList = (size: number = 10) => {
   const [error, setError] = useState<string | null>(null);
 
   const getInvitedboard = useCallback(async () => {
+    const accessToken = localStorage.getItem("token");
+    if (!accessToken) {
+      setLoading(false); // 토큰이 없으면 로딩 상태를 false로 설정
+      return; // API 호출을 하지 않고 종료
+    }
     try {
       setLoading(true);
       const response = await axiosInstance.get<InviteListResponse>(

@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 
 interface PaginationProps {
+  className?: string;
   currentPage: number;
   totalPages: number;
   onNextPage: () => void;
@@ -17,7 +18,7 @@ const Pagination: React.FC<PaginationProps> = ({
   onPreviousPage,
 }) => {
   return (
-    <div className="flex items-center justify-end gap-5 mt-4">
+    <div className="flex items-center justify-end gap-5">
       <div>
         <span className="text-sm text-black300">
           {currentPage} 페이지 중 {totalPages}

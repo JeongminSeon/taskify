@@ -9,7 +9,13 @@ export const useGetUser = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
+      const accessToken = localStorage.getItem("token");
+      if (!accessToken) {
+        setLoading(false); // 토큰이 없으면 로딩 상태를 false로 설정
+        return; // API 호출을 하지 않고 종료
+      }
       try {
+        setLoading(true);
         const res = await axiosInstance.get<UserResponse>("/users/me");
         setData(res.data);
       } catch (err) {

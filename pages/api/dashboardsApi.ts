@@ -1,4 +1,8 @@
-import { DashboardResponse, DashboardDetailResponse } from "@/types/dashboards";
+import {
+  DashboardResponse,
+  DashboardDetailResponse,
+  InvitationsResponse,
+} from "@/types/dashboards";
 import axiosInstance from "./axiosInstanceApi";
 
 // 대시보드 목록 가져오기
@@ -52,6 +56,30 @@ export const updateDashboard = async (
     return response.data;
   } catch (error) {
     console.error("Failed to update dashboard:", error);
+    throw error;
+  }
+};
+
+// 대시보드 초대 목록 불러오기 함수
+export const getInvitations = async (
+  dashboardId: number,
+  page: number,
+  size: number
+): Promise<InvitationsResponse> => {
+  try {
+    const response = await axiosInstance.get<InvitationsResponse>(
+      `/dashboards/12012/invitations`,
+      {
+        params: {
+          page,
+          size,
+        },
+      }
+    );
+    console.log("Response data:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("초대 목록을 가져오는 데 실패했습니다:", error);
     throw error;
   }
 };

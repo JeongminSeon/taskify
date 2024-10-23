@@ -32,8 +32,7 @@ const DashboardEdit = () => {
     const fetchDashboardDetail = async () => {
       if (dashboardId) {
         try {
-          const detail = await getDashboardDetail(dashboardId); // 대시보드 세부정보 가져오기
-          console.log(detail);
+          const detail = await getDashboardDetail(dashboardId);
           setDashboardDetail(detail);
           setTitle(detail.title);
           setOriginalTitle(detail.title);
@@ -77,37 +76,39 @@ const DashboardEdit = () => {
         <Link href="">뒤로가기</Link>
         <div className="flex flex-col gap-4">
           <EditBoxUI title={originalTitle}>
-            <InputField
-              label="대시보드 이름"
-              name="dashName"
-              type="text"
-              placeholder="새 비밀번호 입력"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <div className="flex gap-2">
-              {colorChips.map((chip) => (
-                <ColorChip
-                  key={chip.id}
-                  color={chip.color}
-                  onClick={() => handleColorChange(chip.color)} // 클릭 시 색상 변경
-                  isSelected={color === chip.color} // 선택된 색상 확인
-                />
-              ))}
+            <div className="px-4 md:px-7">
+              <InputField
+                label="대시보드 이름"
+                name="dashName"
+                type="text"
+                placeholder="새 비밀번호 입력"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <div className="flex gap-2">
+                {colorChips.map((chip) => (
+                  <ColorChip
+                    key={chip.id}
+                    color={chip.color}
+                    onClick={() => handleColorChange(chip.color)} // 클릭 시 색상 변경
+                    isSelected={color === chip.color} // 선택된 색상 확인
+                  />
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={handleUpdate}
+                className="w-full h-[54px] mt-10 sm:mt-[38px] rounded-lg bg-purple100 text-white100 text-sm font-semibold"
+              >
+                변경
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={handleUpdate}
-              className="w-full h-[54px] mt-10 sm:mt-[38px] rounded-lg bg-purple100 text-white100 text-sm font-semibold"
-            >
-              변경
-            </button>
           </EditBoxUI>
           <EditBoxUI title="구성원">
-            <MemberList />
+            <MemberList dashboardId={dashboardId} />
           </EditBoxUI>
           <EditBoxUI title="초대 내역">
-            <InviteeList />
+            <InviteeList dashboardId={dashboardId} />
           </EditBoxUI>
         </div>
       </div>

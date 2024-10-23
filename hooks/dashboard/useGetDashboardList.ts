@@ -1,34 +1,37 @@
-import { useCallback, useEffect, useState } from "react";
-import axiosInstance from "@/pages/api/axiosInstanceApi";
-import { DashboardResponse } from "@/types/dashboards";
+import { useEffect, useState } from "react";
+import { getDashboards } from "@/pages/api/dashboardsApi"; // API 가져오기
+import { DashboardResponse } from "@/types/dashboards"; // 필요한 타입 가져오기
 
-export const useGetDashboardList = (
-  method: "pagination" | "infiniteScroll",
-  cursorId?: number,
-  page?: number,
-  size?: number
-) => {
+export const useGetDashboards = (page: number, size: number) => {
   const [data, setData] = useState<DashboardResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const getDashboard = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await axiosInstance.get<DashboardResponse>(
-        `/dashboards?navigationMethod=${method}&cursorId=${cursorId}&page=${page}&size=${size}`
-      );
-      setData(response.data);
-    } catch (err) {
-      const errorMessage = (err as Error).message;
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  }, [method, cursorId, page, size]);
 
   useEffect(() => {
-    getDashboard();
-  }, [getDashboard]);
+    const fetchDashboards = async () => {
+      const accessToken = localStorage.getItem("token");
+      if (!accessToken) {
+        setLoading(false);
+        setError("Access token is missing");
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const response = await getDashboards(page, size); // API 호출
+        setData(response); // 데이터 저장
+      } catch (err) {
+        console.error("Error fetching dashboards:", err);
+        setError("Failed to fetch dashboards");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboards();
+  }, [page, size]); // 페이지나 크기가 변경될 때마다 재호출
 
   return { data, loading, error };
 };
+
+export default useGetDashboards;

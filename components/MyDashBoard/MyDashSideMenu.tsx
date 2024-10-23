@@ -1,13 +1,11 @@
-import { useGetDashboardList } from "@/hooks/dashboard/useGetDashboardList";
 import Link from "next/link";
 import Image from "next/image";
-import DashBoardLink from "./DashBoardLink";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 const MyDashSideMenu: React.FC = () => {
-  const { data } = useGetDashboardList("pagination", 0, 1, 10);
-
+  const { dashboards } = useDashboardContext();
   return (
-    <div className="sticky top-0 h-screen py-5 px-[14px] border-r border-gray400 bg-white lg:px-2 ">
+    <div className="sticky top-0 h-screen py-5 px-[14px] border-r border-gray400 bg-white lg:px-2">
       <h1 className="md:hidden">
         <Link href="/">
           <Image
@@ -45,14 +43,17 @@ const MyDashSideMenu: React.FC = () => {
           />
         </button>
         <ul className="flex flex-col gap-2">
-          {data?.dashboards.map((dashboard) => (
+          {dashboards?.dashboards.map((dashboard) => (
             <li key={dashboard.id} className="md:px-[10px] lg:px-3">
-              <DashBoardLink
-                id={dashboard.id}
-                title={dashboard.title}
-                color={dashboard.color}
-                createdByMe={dashboard.createdByMe}
-              />
+              <Link href={`/dashboards/${dashboard.id}`}>
+                <div className="flex items-center gap-3 p-2 border rounded">
+                  <span
+                    className="block w-2 h-2 rounded-full"
+                    style={{ backgroundColor: dashboard.color }}
+                  ></span>
+                  <span className="truncate">{dashboard.title}</span>
+                </div>
+              </Link>
             </li>
           ))}
         </ul>

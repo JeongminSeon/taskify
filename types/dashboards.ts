@@ -23,3 +23,31 @@ export type DashboardResponse = {
   dashboards: Dashboard[];
   totalCount: number;
 };
+
+interface Inviter {
+  id: number;
+  email: string;
+  nickname: string;
+}
+
+interface Invitee {
+  id: number;
+  email: string;
+  nickname: string;
+}
+
+export interface Invitation {
+  id: number;
+  inviter: Inviter;
+  teamId: string;
+  dashboard: Dashboard;
+  invitee: Invitee;
+  inviteAccepted: boolean | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface InvitationsResponse {
+  invitations: Invitation[];
+  totalCount: number;
+}
