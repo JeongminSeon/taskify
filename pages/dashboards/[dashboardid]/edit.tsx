@@ -8,6 +8,7 @@ import InputField from "@/components/My/InputField";
 import ColorChip from "@/components/UI/colorchip/ColorChip";
 import MemberList from "@/components/DashBoardEdit/MemberList";
 import EditBoxUI from "@/components/DashBoardEdit/EditBox";
+import InviteeList from "@/components/DashBoardEdit/InviteeList";
 
 const DashboardEdit = () => {
   const router = useRouter();
@@ -72,7 +73,7 @@ const DashboardEdit = () => {
 
   return (
     <DashBoardLayout>
-      <div className="py-4 px-3 md:p-5">
+      <div className="max-w-[640px] py-4 px-3 md:p-5">
         <Link href="">뒤로가기</Link>
         <div className="flex flex-col gap-4">
           <EditBoxUI title={originalTitle}>
@@ -94,25 +95,20 @@ const DashboardEdit = () => {
                 />
               ))}
             </div>
-            <button type="button" onClick={handleUpdate}>
+            <button
+              type="button"
+              onClick={handleUpdate}
+              className="w-full h-[54px] mt-10 sm:mt-[38px] rounded-lg bg-purple100 text-white100 text-sm font-semibold"
+            >
               변경
             </button>
           </EditBoxUI>
           <EditBoxUI title="구성원">
             <MemberList />
           </EditBoxUI>
-          <EditBoxUI title="초대 내역">test</EditBoxUI>
-          <h1>Edit Dashboard</h1>
-          <div>
-            <label>
-              Title:
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </label>
-          </div>
+          <EditBoxUI title="초대 내역">
+            <InviteeList />
+          </EditBoxUI>
         </div>
       </div>
     </DashBoardLayout>

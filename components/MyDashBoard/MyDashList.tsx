@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
+import Pagination from "../UI/pagination/Pagination";
 
 const MyDashList: React.FC = () => {
   const router = useRouter();
@@ -85,39 +86,12 @@ const MyDashList: React.FC = () => {
         ))}
       </div>
       {dashboards.length > 0 && (
-        <div className="flex items-center justify-end gap-5 mt-4 ">
-          <div>
-            <span className="text-sm text-black300">
-              {currentPage} 페이지 중 {totalPages}
-            </span>
-          </div>
-          <div className="flex items-center justify-between">
-            <button
-              onClick={handlePreviousPage}
-              disabled={currentPage === 1}
-              className="relative w-9 h-9 md:w-10 md:h-10"
-            >
-              <Image
-                src={"/images/icons/pagination_left.svg"}
-                fill
-                objectFit="cover"
-                alt="이전"
-              />
-            </button>
-            <button
-              onClick={handleNextPage}
-              disabled={currentPage >= totalPages}
-              className="relative w-9 h-9 md:w-10 md:h-10"
-            >
-              <Image
-                src={"/images/icons/pagination_right.svg"}
-                fill
-                objectFit="cover"
-                alt="다음"
-              />
-            </button>
-          </div>
-        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onNextPage={handleNextPage}
+          onPreviousPage={handlePreviousPage}
+        />
       )}
     </div>
   );
