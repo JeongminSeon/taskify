@@ -1,68 +1,117 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputField from "./InputField";
 import MyButton from "./MyButton";
+import ModalAlert from "../UI/modal/ModalAlert";
+import useModalAlert from "@/hooks/useModalAlert";
 
 const MyPassWord: React.FC = () => {
-  const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
-  const [passwordMatchError, setPasswordMatchError] = useState(false);
+  const { isOpen, openModal, closeModal } = useModalAlert();
+  const [password, setPassword] = useState<string>("");
+  const [newPassword, setNewPassword] = useState<string>("");
+  const [newPasswordConfirm, setNewPasswordConfirm] = useState<string>("");
+  const [passwordLenError, setPasswordLenError] = useState<boolean>(false);
+  const [passwordMatchError, setPasswordMatchError] = useState<boolean>(false);
 
   const handlePasswordChange = () => {
     if (password !== "currentPassword") {
       // 실제로는 서버에서 비밀번호 확인
-      alert("현재 비밀번호가 틀립니다");
+      openModal(); // 모달 열기
     } else {
       console.log("비밀번호 변경 완료");
     }
   };
 
   const handleBlur = () => {
-    if (newPassword !== newPasswordConfirm) {
-      setPasswordMatchError(true);
+    if (newPassword.length < 8) {
+      setPasswordLenError(true);
     } else {
-      setPasswordMatchError(false);
+      setPasswordLenError(false);
     }
   };
 
+  // 디바운스 설정을 위한 변수
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (newPasswordConfirm.length > 0) {
+        // 새 비밀번호 확인의 길이가 0이 아닐 때만 검사
+        if (newPassword !== newPasswordConfirm) {
+          setPasswordMatchError(true);
+        } else {
+          setPasswordMatchError(false);
+        }
+      } else {
+        setPasswordMatchError(false); // 길이가 0일 때는 에러를 제거
+      }
+    }, 300); // 300ms 후에 비교
+
+    // 컴포넌트 언마운트 시 타이머 클리어
+    return () => clearTimeout(timer);
+  }, [newPassword, newPasswordConfirm]);
+
   const isButtonDisabled =
-    !password || !newPassword || !newPasswordConfirm || passwordMatchError;
+    !password ||
+    !newPassword ||
+    !newPasswordConfirm ||
+    passwordMatchError ||
+    passwordLenError;
 
   return (
     <div className="lg:w-[672px] md:w-[548px] sm:w-[284px] md:p-6 sm:p-4 rounded-2xl bg-white100">
-      <h2 className="md:text-[24px] sm:text-[18px] font-bold">비밀번호 변경</h2>
-      <InputField
-        label="현재 비밀번호"
-        name="password"
-        type="password"
-        placeholder="비밀번호 입력"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <InputField
-        label="새 비밀번호"
-        name="newPassword"
-        type="password"
-        placeholder="새 비밀번호 입력"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-        onBlur={handleBlur}
-      />
-      <InputField
-        label="새 비밀번호 확인"
-        name="newPasswordConfirm"
-        type="password"
-        placeholder="새 비밀번호 입력"
-        value={newPasswordConfirm}
-        onChange={(e) => setNewPasswordConfirm(e.target.value)}
-        onBlur={handleBlur}
-      />
-      {passwordMatchError && (
-        <p className="text-red-500">비밀번호가 일치하지 않습니다.</p>
-      )}
+      <h2 className="md:text-[24px] sm:text-[18px] md:mb-6 sm:mb-10 font-bold">
+        비밀번호 변경
+      </h2>
+      <div className="flex flex-col gap-4">
+        <InputField
+          label="현재 비밀번호"
+          name="password"
+          type="password"
+          placeholder="비밀번호 입력"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <div>
+          <InputField
+            label="새 비밀번호"
+            name="newPassword"
+            type="password"
+            placeholder="새 비밀번호 입력"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            onBlur={handleBlur}
+            error={passwordLenError}
+          />
+          {passwordLenError && (
+            <p className="text-red-500 mt-2">비밀번호는 8자 이상입니다.</p>
+          )}
+        </div>
+
+        <div>
+          <InputField
+            label="새 비밀번호 확인"
+            name="newPasswordConfirm"
+            type="password"
+            placeholder="새 비밀번호 입력"
+            value={newPasswordConfirm}
+            onChange={(e) => setNewPasswordConfirm(e.target.value)}
+            error={passwordMatchError}
+          />
+          {passwordMatchError && (
+            <p className="text-red-500 mt-2">비밀번호가 일치하지 않습니다.</p>
+          )}
+        </div>
+      </div>
+
       <MyButton onClick={handlePasswordChange} disabled={isButtonDisabled}>
         변경
       </MyButton>
+
+      {isOpen && (
+        <ModalAlert
+          isOpen={isOpen}
+          onClose={closeModal}
+          text="현재 비밀번호가 틀립니다."
+        />
+      )}
     </div>
   );
 };
