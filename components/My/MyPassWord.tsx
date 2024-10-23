@@ -3,6 +3,7 @@ import InputField from "./InputField";
 import MyButton from "./MyButton";
 import ModalAlert from "../UI/modal/ModalAlert";
 import useModalAlert from "@/hooks/useModalAlert";
+import { isPWValid, isSame, isEntered } from "@/utils/validation";
 
 const MyPassWord: React.FC = () => {
   const { isOpen, openModal, closeModal } = useModalAlert();
@@ -22,23 +23,14 @@ const MyPassWord: React.FC = () => {
   };
 
   const handleBlur = () => {
-    if (newPassword.length < 8) {
-      setPasswordLenError(true);
-    } else {
-      setPasswordLenError(false);
-    }
+    setPasswordLenError(!isPWValid(newPassword));
   };
 
   // 디바운스 설정을 위한 변수
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (newPasswordConfirm.length > 0) {
-        // 새 비밀번호 확인의 길이가 0이 아닐 때만 검사
-        if (newPassword !== newPasswordConfirm) {
-          setPasswordMatchError(true);
-        } else {
-          setPasswordMatchError(false);
-        }
+      if (isEntered(newPasswordConfirm)) {
+        setPasswordMatchError(!isSame(newPassword, newPasswordConfirm));
       } else {
         setPasswordMatchError(false); // 길이가 0일 때는 에러를 제거
       }
@@ -49,9 +41,9 @@ const MyPassWord: React.FC = () => {
   }, [newPassword, newPasswordConfirm]);
 
   const isButtonDisabled =
-    !password ||
-    !newPassword ||
-    !newPasswordConfirm ||
+    !isEntered(password) ||
+    !isEntered(newPassword) ||
+    !isEntered(newPasswordConfirm) ||
     passwordMatchError ||
     passwordLenError;
 
