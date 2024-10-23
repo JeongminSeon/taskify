@@ -1,5 +1,5 @@
-import axiosInstance from "./axiosInstanceApi";
-import { AxiosError } from "axios";
+import axiosInstance from './axiosInstanceApi';
+import { AxiosError } from 'axios';
 
 interface formData {
   email: string;
@@ -20,7 +20,7 @@ const onError = (status: number, message: string) => {
 
 export const createUser = async (formData: formData) => {
   try {
-    const response = await axiosInstance.post("/users", formData);
+    const response = await axiosInstance.post('/users', formData);
     return response.data;
   } catch (error) {
     //error가 AxiosError인 경우 처리
@@ -30,10 +30,10 @@ export const createUser = async (formData: formData) => {
 
       switch (status) {
         case 400:
-          onError(status, "이메일 형식으로 작성해주세요.");
+          onError(status, '이메일 형식으로 작성해주세요.');
           break;
         case 409:
-          onError(status, "이미 사용중인 이메일입니다.");
+          onError(status, '이미 사용중인 이메일입니다.');
           break;
         default:
           onError(status, message);
@@ -45,7 +45,7 @@ export const createUser = async (formData: formData) => {
 
 export const login = async (loginData: loginData) => {
   try {
-    const response = await axiosInstance.post("/auth/login");
+    const response = await axiosInstance.post('/auth/login');
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -54,10 +54,10 @@ export const login = async (loginData: loginData) => {
 
       switch (status) {
         case 400:
-          onError(status, "이메일 형식으로 작성해주세요.");
+          onError(status, '이메일 형식으로 작성해주세요.');
           break;
         case 404:
-          onError(status, "존재하지 않는 유저입니다.");
+          onError(status, '존재하지 않는 유저입니다.');
           break;
         default:
           onError(status, message);
