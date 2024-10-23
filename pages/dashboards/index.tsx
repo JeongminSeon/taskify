@@ -67,10 +67,10 @@ const TestPage: React.FC = () => {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div className='p-4'>
+    <div className="p-4">
       <button
         onClick={openModal}
-        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         모달 열기
       </button>
@@ -80,7 +80,7 @@ const TestPage: React.FC = () => {
       <div>
         <h2>대시보드 목록</h2>
         {error ? (
-          <p className='text-red-500'>{error}</p>
+          <p className="text-red-500">{error}</p>
         ) : (
           <ul>
             {dashboards.map((dashboard) => (

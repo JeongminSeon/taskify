@@ -23,12 +23,17 @@
   --gray600: #fafafa;
   --white100: #fff;
   --purple100: #5534da;
+  --red100: #d6173a;
 }
 
 body {
   color: var(--black300);
   background-color: var(--white100);
   font-family: "Pretendard-Regular", Arial, Helvetica, sans-serif;
+}
+
+#__next {
+  height: 100vh;
 }
 
 * {
