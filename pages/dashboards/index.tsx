@@ -100,6 +100,8 @@ const DashboardDetail: React.FC = () => {
             cancleButtonText="취소"
             onConfirm={() => handleModalConfirm(handleConfirm)}
             confirmButtonText="생성"
+            inputValue={""}
+            onInputChange={() => {}}
           />
         </Portal>
       </div>

@@ -7,6 +7,7 @@ import Column from "@/components/DashBoard/Column";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import Portal from "@/components/UI/Modal/ModalPotal";
 import OneInputModal from "@/components/UI/Modal/InputModal/OneInputModal";
+import { useOneInputModal } from "@/hooks/modal/useOneInputModal";
 
 const DashboardDetail: React.FC = () => {
   const teamId: string = "9-1";
@@ -15,38 +16,18 @@ const DashboardDetail: React.FC = () => {
   const [columns, setColumns] = useState<Columns[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const handleAddColumn = () => {
-    setIsModalOpen(true);
-  };
+  const {
+    isModalOpen,
+    inputValue,
+    openModal: handleAddColumn,
+    closeModal,
+    handleInputChange,
+    handleConfirm: handleModalConfirm,
+  } = useOneInputModal();
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleConfirm = async (inputValue: string) => {
-    alert("새로운 칼럼이 생성되었습니다.");
-    setIsModalOpen(false);
-    const newColumn = await createColumn({
-      teamId,
-      title: inputValue,
-      dashboardId: Number(dashboardsId),
-    });
-
-    if (newColumn) {
-      setColumns((prev) => [
-        ...prev,
-        { ...newColumn, teamId, dashboardId: Number(dashboardsId) },
-      ]);
-    }
-    // 샐행 후 컬럼 목록을 다시 불러오는 코드 작성
-    fetchColumns();
-  };
-
-  // 컬럼 목록 조회
   const fetchColumns = useCallback(async () => {
-    const dashboardId = Number(dashboardsId); // dashboardsId 숫자로 변환
+    const dashboardId = Number(dashboardsId);
     const params: ColoumnsParams = { teamId, dashboardId };
 
     try {
@@ -58,13 +39,33 @@ const DashboardDetail: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [teamId, dashboardsId]); // 의존성 배열에 teamId와 dashboardsId 포함
+  }, [teamId, dashboardsId]);
+
+  const handleConfirm = useCallback(
+    (inputValue: string) => {
+      alert("새로운 칼럼이 생성되었습니다.");
+      createColumn({
+        teamId,
+        title: inputValue,
+        dashboardId: Number(dashboardsId),
+      }).then((newColumn) => {
+        if (newColumn) {
+          setColumns((prev) => [
+            ...prev,
+            { ...newColumn, teamId, dashboardId: Number(dashboardsId) },
+          ]);
+        }
+        fetchColumns();
+      });
+    },
+    [teamId, dashboardsId, fetchColumns]
+  );
 
   useEffect(() => {
     if (dashboardsId) {
       fetchColumns();
     }
-  }, [dashboardsId, fetchColumns]); // fetchColumns를 의존성으로 추가
+  }, [dashboardsId, fetchColumns]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
@@ -99,8 +100,10 @@ const DashboardDetail: React.FC = () => {
             inputPlaceholder="컬럼 이름을 입력해주세요"
             onCancle={closeModal}
             cancleButtonText="취소"
-            onConfirm={handleConfirm}
+            onConfirm={() => handleModalConfirm(handleConfirm)}
             confirmButtonText="생성"
+            inputValue={inputValue}
+            onInputChange={handleInputChange}
           />
         </Portal>
       </div>
