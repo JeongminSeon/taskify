@@ -9,8 +9,11 @@ import { isEmailValid, isPWValid } from '@/utils/validation';
 import useInput from '@/hooks/useInput';
 import { AxiosError } from 'axios';
 import { getLogin } from './api/authApi';
+import { setAccessToken } from '@/utils/api/cookie';
+import { useRouter } from 'next/router';
 
 const Login = () => {
+  const router = useRouter();
   const [isShowPW, setIsShowPw] = useState(false);
 
   const {
@@ -49,9 +52,9 @@ const Login = () => {
 
     try {
       const response = await getLogin(formData);
-      console.log(response);
-      resetEmailInput();
-      resetPasswordInput();
+      const { accessToken } = response;
+      setAccessToken(accessToken);
+      router.push('/mydashboard');
       return;
     } catch (error) {
       if (error instanceof AxiosError) {
