@@ -5,22 +5,10 @@ import { ColoumnsParams, Columns, ColumnsResponse } from "@/types/columns";
 import Image from "next/image";
 import Column from "@/components/DashBoard/Column";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
-import { Dashboard } from "@/types/dashboards";
 
-interface DashboardDetailProps {
-  dashboard: Dashboard | null;
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-const DashboardDetail: React.FC<DashboardDetailProps> = ({
-  dashboard,
-  isOpen,
-  onClose,
-}) => {
+const DashboardDetail: React.FC = () => {
   const router = useRouter();
   const { dashboardsId } = router.query;
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [columns, setColumns] = useState<Columns[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -50,7 +38,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({
   if (error) return <div>{error}</div>;
   if (columns.length === 0) return <div>No columns available.</div>;
 
-  if (!isOpen || !dashboard) return null;
   return (
     <DashBoardLayout>
       <div className="columns flex flex-col lg:flex-row">
