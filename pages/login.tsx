@@ -9,7 +9,7 @@ import { isEmailValid, isPWValid } from '@/utils/validation';
 import useInput from '@/hooks/useInput';
 
 const Login = () => {
-  const [isShowPW, setIsShwoPW] = useState(false);
+  const [isShowPW, setIsShowPw] = useState(false);
 
   const {
     enteredValue: emailValue,
@@ -34,7 +34,7 @@ const Login = () => {
   });
 
   const handleShowPW = () => {
-    setIsShwoPW((prev) => !prev);
+    setIsShowPw((prev) => !prev);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

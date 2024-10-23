@@ -10,14 +10,14 @@ import { createUser } from './api/authApi';
 import { AxiosError } from 'axios';
 
 const SignUp = () => {
-  const [isShowPW, setIsShwoPW] = useState<{ [key: string]: boolean }>({
+  const [isShowPW, setIsShowPw] = useState<{ [key: string]: boolean }>({
     password: false,
     confirmPassword: false,
   });
   const [checked, setChecked] = useState(false);
 
   const handleShowPW = (identifier: string) => {
-    setIsShwoPW((prevState) => ({
+    setIsShowPw((prevState) => ({
       ...prevState,
       [identifier]: !prevState[identifier],
     }));
