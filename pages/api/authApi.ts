@@ -43,9 +43,9 @@ export const createUser = async (formData: formData) => {
   }
 };
 
-export const login = async (loginData: loginData) => {
+export const getLogin = async (loginData: loginData) => {
   try {
-    const response = await axiosInstance.post('/auth/login');
+    const response = await axiosInstance.post('/auth/login', loginData);
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -54,7 +54,7 @@ export const login = async (loginData: loginData) => {
 
       switch (status) {
         case 400:
-          onError(status, '이메일 형식으로 작성해주세요.');
+          onError(status, '비밀번호가 일치하지 않습니다.');
           break;
         case 404:
           onError(status, '존재하지 않는 유저입니다.');

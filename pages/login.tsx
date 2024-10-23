@@ -7,6 +7,8 @@ import visibilityOn from '@/public/images/icons/icon_visibility.svg?url';
 import Input from '@/components/Auth/Input';
 import { isEmailValid, isPWValid } from '@/utils/validation';
 import useInput from '@/hooks/useInput';
+import { AxiosError } from 'axios';
+import { getLogin } from './api/authApi';
 
 const Login = () => {
   const [isShowPW, setIsShowPw] = useState(false);
@@ -37,11 +39,36 @@ const Login = () => {
     setIsShowPw((prev) => !prev);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    resetEmailInput();
-    resetPasswordInput();
+    const formData = {
+      email: emailValue,
+      password: passwordValue,
+    };
+
+    try {
+      const response = await getLogin(formData);
+      console.log(response);
+      resetEmailInput();
+      resetPasswordInput();
+      return;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const message = error.message;
+        const status = error.status;
+
+        if (status === 400) {
+          alert(message);
+        } else if (status === 404) {
+          alert(message);
+        } else {
+          console.error(message);
+        }
+      } else {
+        console.error('예기치 못한 에러가 발생했습니다.', error);
+      }
+    }
   };
 
   return (
