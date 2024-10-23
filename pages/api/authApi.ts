@@ -7,6 +7,11 @@ interface formData {
   password: string;
 }
 
+interface loginData {
+  email: string;
+  password: string;
+}
+
 // 에러 핸들링
 const onError = (status: number, message: string) => {
   const error = { status, message };
@@ -38,4 +43,26 @@ export const createUser = async (formData: formData) => {
   }
 };
 
-export const login = async () => {};
+export const login = async (loginData: loginData) => {
+  try {
+    const response = await axiosInstance.post("/auth/login");
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      const message = error.message;
+      const status = error.response?.status ?? 500; // status가 undefined면 500으로 설정
+
+      switch (status) {
+        case 400:
+          onError(status, "이메일 형식으로 작성해주세요.");
+          break;
+        case 404:
+          onError(status, "존재하지 않는 유저입니다.");
+          break;
+        default:
+          onError(status, message);
+          break;
+      }
+    }
+  }
+};
