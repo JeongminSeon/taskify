@@ -1,103 +1,94 @@
-import React, { useState, useEffect } from "react";
-import Portal from "@/components/UI/Modal/ModalPotal";
-import { AxiosError } from "axios";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getDashboards, getDashboardDetail } from "@/pages/api/dashboardsApi";
-import {
-  Dashboard,
-  DashboardDetailResponse,
-  DashboardResponse,
-} from "@/types/dashboards";
+import { createColumn, getColumns } from "../api/columnsApi";
+import { ColoumnsParams, Columns, ColumnsResponse } from "@/types/columns";
+import Image from "next/image";
+import Column from "@/components/DashBoard/Column";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
+import Portal from "@/components/UI/Modal/ModalPotal";
 import OneInputModal from "@/components/UI/Modal/InputModal/OneInputModal";
+import { useOneInputModal } from "@/hooks/modal/useOneInputModal";
 
-const DashboardsPage: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [dashboards, setDashboards] = useState<Dashboard[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedDashboard, setSelectedDashboard] =
-    useState<DashboardDetailResponse | null>(null);
+const DashboardDetail: React.FC = () => {
+  const teamId: string = "9-1";
   const router = useRouter();
+  const { dashboardsId } = router.query;
+  const [columns, setColumns] = useState<Columns[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchDashboards = async () => {
-      try {
-        const dashboardsData: DashboardResponse = await getDashboards(1, 10);
-        console.log("응답 데이터:", dashboardsData);
-        setDashboards(dashboardsData.dashboards);
-        setError(null);
-      } catch (error) {
-        handleError(error, "대시보드 목록을 가져오는 중 오류가 발생했습니다.");
-      }
-    };
+  const {
+    isModalOpen,
+    openModal: handleAddColumn,
+    closeModal,
+    handleConfirm: handleModalConfirm,
+  } = useOneInputModal();
 
-    fetchDashboards();
-  }, []);
-
-  const openModal = async (dashboardId: number) => {
-    console.log("대시보드 ID:", dashboardId);
+  const fetchColumns = useCallback(async () => {
+    const dashboardId = Number(dashboardsId);
+    const params: ColoumnsParams = { teamId, dashboardId };
 
     try {
-      const dashboardDetail = await getDashboardDetail(dashboardId);
-      console.log("대시보드 상세 정보:", dashboardDetail);
-
-      if (dashboardDetail) {
-        setSelectedDashboard(dashboardDetail);
-        setIsModalOpen(true);
-      } else {
-        throw new Error("대시보드 상세 정보가 없습니다.");
-      }
-    } catch (error) {
-      handleError(error, "대시보드 상세 정보를 가져오는 데 실패했습니다.");
+      const columnsData: ColumnsResponse = await getColumns(params);
+      setColumns(columnsData.data);
+    } catch (err) {
+      console.error("Error fetching columns:", err);
+      setError("Failed to fetch columns. Please try again later.");
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [teamId, dashboardsId]);
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedDashboard(null);
-  };
+  const handleConfirm = useCallback(
+    (inputValue: string) => {
+      alert("새로운 칼럼이 생성되었습니다.");
+      createColumn({
+        teamId,
+        title: inputValue,
+        dashboardId: Number(dashboardsId),
+      }).then((newColumn) => {
+        if (newColumn) {
+          setColumns((prev) => [
+            ...prev,
+            { ...newColumn, teamId, dashboardId: Number(dashboardsId) },
+          ]);
+        }
+        fetchColumns();
+      });
+    },
+    [teamId, dashboardsId, fetchColumns]
+  );
 
-  const handleConfirm = async (inputValue: string) => {
-    console.log("입력값:", inputValue);
-    setIsModalOpen(false);
-  };
-
-  const handleError = (error: unknown, defaultMessage: string) => {
-    console.error(defaultMessage, error);
-    if (error instanceof AxiosError) {
-      console.error("상태 코드:", error.response?.status);
-      console.error("응답 데이터:", error.response?.data);
-      if (error.response?.status === 401) {
-        setError("인증 오류: 로그인이 필요합니다.");
-        router.push("/login");
-      } else if (error.response?.status === 400) {
-        setError(`잘못된 요청: ${error.response.data.message}`);
-      } else {
-        setError(defaultMessage);
-      }
-    } else {
-      setError(defaultMessage);
+  useEffect(() => {
+    if (dashboardsId) {
+      fetchColumns();
     }
-  };
+  }, [dashboardsId, fetchColumns]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+  if (columns.length === 0) return <div>No columns available.</div>;
 
   return (
     <DashBoardLayout>
-      <div className="p-4">
-        <div>
-          <h2>대시보드 목록</h2>
-          {error ? (
-            <p className="text-red-500">{error}</p>
-          ) : (
-            <ul>
-              {dashboards.map((dashboard) => (
-                <li key={dashboard.id}>
-                  <button onClick={() => openModal(dashboard.id)}>
-                    🩶 {dashboard.title}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
+      <div className="columns flex flex-col lg:flex-row">
+        {columns.map((item) => (
+          <Column key={item.id} id={item.id} title={item.title} />
+        ))}
+        <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 border-r border-[gray600]">
+          <button
+            type="button"
+            className="flex justify-center items-center gap-3 w-full sm:h-[66px] h-[70px] lg:mt-12 border border-gray400 rounded-md bg-white100 text-black300 font-bold"
+            onClick={handleAddColumn}
+          >
+            새로운 컬럼 추가하기
+            <Image
+              src="/images/icons/icon_add_column.svg"
+              width={16}
+              height={16}
+              alt="할 일 추가"
+            />
+          </button>
         </div>
         <Portal>
           <OneInputModal
@@ -107,7 +98,7 @@ const DashboardsPage: React.FC = () => {
             inputPlaceholder="컬럼 이름을 입력해주세요"
             onCancle={closeModal}
             cancleButtonText="취소"
-            onConfirm={handleConfirm}
+            onConfirm={() => handleModalConfirm(handleConfirm)}
             confirmButtonText="생성"
           />
         </Portal>
@@ -116,4 +107,4 @@ const DashboardsPage: React.FC = () => {
   );
 };
 
-export default DashboardsPage;
+export default DashboardDetail;

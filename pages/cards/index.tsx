@@ -1,9 +1,7 @@
-import ModalCard from "@/components/UI/Modal/CardModal/CardDetailModal";
 import Portal from "@/components/UI/Modal/ModalPotal";
 import { Columns, ColumnsResponse } from "@/types/columns";
 import { useEffect, useState } from "react";
 import { getColumns } from "../api/columnsApi";
-import Portal from "@/components/UI/Modal/ModalPotal";
 import CardDetailModal from "@/components/UI/Modal/CardModal/CardDetailModal";
 
 const CardsPage = () => {
