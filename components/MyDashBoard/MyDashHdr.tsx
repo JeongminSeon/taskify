@@ -21,7 +21,7 @@ const MyDashHdr = () => {
         <ul className="flex gap-[6px] md:gap-4">
           <li>
             <Link
-              href={`/dashboard/${dashboardid}/edit`}
+              href={`/dashboards/${dashboardid}/edit`}
               className={`${hdMenuBtn}`}
             >
               <span className={`${hdMenuBtnIcon}`}>

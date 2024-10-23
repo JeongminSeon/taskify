@@ -32,3 +32,26 @@ export const getDashboardDetail = async (
     throw error;
   }
 };
+
+// 대시보드 업데이트
+export const updateDashboard = async (
+  dashboardId: number,
+  title: string,
+  color: string
+): Promise<DashboardDetailResponse> => {
+  const requestBody = {
+    title,
+    color,
+  };
+
+  try {
+    const response = await axiosInstance.put<DashboardDetailResponse>(
+      `/dashboards/${dashboardId}`,
+      requestBody
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Failed to update dashboard:", error);
+    throw error;
+  }
+};
