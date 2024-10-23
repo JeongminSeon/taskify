@@ -1,11 +1,16 @@
 import { hdMenuBtn, hdMenuBtnIcon } from "./MyDashStyle";
 import { UserResponse } from "@/types/users";
+import { useRouter } from "next/router";
 import useGetUser from "@/hooks/useGetUser";
 import Image from "next/image";
+import Link from "next/link";
 
 const MyDashHdr = () => {
   const { data } = useGetUser();
   const userData = data as UserResponse;
+
+  const router = useRouter();
+  const { dashboardid } = router.query;
 
   return (
     <div className="border-b border-gray400 bg-white">
@@ -15,7 +20,10 @@ const MyDashHdr = () => {
         </h2>
         <ul className="flex gap-[6px] md:gap-4">
           <li>
-            <button type="button" className={`${hdMenuBtn}`}>
+            <Link
+              href={`/dashboard/${dashboardid}/edit`}
+              className={`${hdMenuBtn}`}
+            >
               <span className={`${hdMenuBtnIcon}`}>
                 <Image
                   src="/images/icons/icon_settings.svg"
@@ -25,7 +33,7 @@ const MyDashHdr = () => {
                 />
               </span>
               관리
-            </button>
+            </Link>
           </li>
           <li>
             <button type="button" className={`${hdMenuBtn}`}>

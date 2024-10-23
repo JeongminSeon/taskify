@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getColumns } from "../api/columnsApi";
 import { ColoumnsParams, Columns, ColumnsResponse } from "@/types/columns";
+import { getColumns } from "@/pages/api/columnsApi";
 import Image from "next/image";
 import Column from "@/components/DashBoard/Column";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 
 const DashboardDetail: React.FC = () => {
   const router = useRouter();
-  const { dashboardsId } = router.query;
+  const { dashboardid } = router.query;
   const [columns, setColumns] = useState<Columns[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchColumns = async () => {
-      const dashboardId = Number(dashboardsId); // dashboardsId 숫자로 변환
+      const dashboardId = Number(dashboardid); // dashboardsId 숫자로 변환
       const params: ColoumnsParams = { teamId: "9-1", dashboardId };
 
       try {
@@ -29,10 +29,10 @@ const DashboardDetail: React.FC = () => {
       }
     };
 
-    if (dashboardsId) {
+    if (dashboardid) {
       fetchColumns();
     }
-  }, [dashboardsId]);
+  }, [dashboardid]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
