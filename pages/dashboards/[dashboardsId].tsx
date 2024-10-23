@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { createColumn, getColumns } from "../api/columnsApi";
 import { ColoumnsParams, Columns, ColumnsResponse } from "@/types/columns";
@@ -45,7 +45,7 @@ const DashboardDetail: React.FC = () => {
   };
 
   // 컬럼 목록 조회
-  const fetchColumns = async () => {
+  const fetchColumns = useCallback(async () => {
     const dashboardId = Number(dashboardsId); // dashboardsId 숫자로 변환
     const params: ColoumnsParams = { teamId, dashboardId };
 
@@ -58,13 +58,13 @@ const DashboardDetail: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [teamId, dashboardsId]); // 의존성 배열에 teamId와 dashboardsId 포함
 
   useEffect(() => {
     if (dashboardsId) {
       fetchColumns();
     }
-  }, [dashboardsId]);
+  }, [dashboardsId, fetchColumns]); // fetchColumns를 의존성으로 추가
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
