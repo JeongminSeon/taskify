@@ -42,6 +42,7 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
 
   const handleConfirm = (e: React.FormEvent) => {
     e.preventDefault();
+
     onConfirm(inputValue);
     setInputValue(""); // 입력값 초기화
   };

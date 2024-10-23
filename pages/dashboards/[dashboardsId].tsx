@@ -26,7 +26,7 @@ const DashboardDetail: React.FC = () => {
   };
 
   const handleConfirm = async (inputValue: string) => {
-    alert(inputValue);
+    alert("새로운 칼럼이 생성되었습니다.");
     setIsModalOpen(false);
     const newColumn = await createColumn({
       teamId,
