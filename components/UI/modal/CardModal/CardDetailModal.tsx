@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { CardProps } from "@/types/cards";
-import Dropdown from "../../Dropdown/Dropdown";
 import { styles } from "./styles";
+import Dropdown from "../../dropdown/Dropdown";
 
 // 부모에서 해당 컴포넌트 사용시 컴포넌트 명을 호버하면 props를 미리 확인할 수 있음
 /**
@@ -17,7 +17,7 @@ import { styles } from "./styles";
  * @param onClose 모달 닫기 함수
  */
 
-const ModalCard: React.FC<CardProps> = ({
+const CardDetailModal: React.FC<CardProps> = ({
   title,
   // description,
   // tags,
@@ -170,4 +170,4 @@ const ModalCard: React.FC<CardProps> = ({
   );
 };
 
-export default ModalCard;
+export default CardDetailModal;

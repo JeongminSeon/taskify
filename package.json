@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/js-cookie": "^3.0.6",
     "axios": "^1.7.7",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
+    "js-cookie": "^3.0.5",
     "next": "14.2.15",
     "nookies": "^2.5.2",
     "react": "^18",

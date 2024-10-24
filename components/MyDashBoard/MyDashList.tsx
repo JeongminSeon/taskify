@@ -2,6 +2,7 @@ import { useGetDashboardList } from "@/hooks/dashboard/useGetDashboardList";
 import { boardCardBtn, boardCardBtnBox } from "./MyDashStyle";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -11,7 +12,7 @@ const MyDashList: React.FC = () => {
   const { data, loading, error } = useGetDashboardList("pagination", 0, 1, 5);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("token");
+    const accessToken = Cookies.get("accessToken");
     if (!accessToken) {
       router.push("/404"); // accessToken이 없으면 404 페이지로 이동
     }
