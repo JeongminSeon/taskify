@@ -45,9 +45,9 @@ const MyDashList: React.FC = () => {
 
   return (
     <div>
-      <div className='flex flex-col gap-2 md:flex-row md:flex-wrap md:gap-[10px] lg:gap-[13px]'>
+      <div className="flex flex-col gap-2 md:flex-row md:flex-wrap md:gap-[10px] lg:gap-[13px]">
         <div className={`justify-center ${boardCardBtn}`}>
-          <button type='button' className={`${boardCardBtnBox}`}>
+          <button type="button" className={`${boardCardBtnBox}`}>
             <p className="inline-block pr-[34px] bg-[url('/images/icons/icon_add_card.svg')] bg-no-repeat bg-right">
               새로운 대시보드
             </p>
@@ -61,60 +61,60 @@ const MyDashList: React.FC = () => {
               style={{ backgroundPosition: "right 15px center" }}
             >
               <span
-                className='block w-2 h-2 rounded-full'
+                className="block w-2 h-2 rounded-full"
                 style={{ backgroundColor: dashboard.color }}
               ></span>
-              <p className='truncate'>{dashboard.title}</p>
+              <p className="truncate">{dashboard.title}</p>
               {dashboard.createdByMe && (
                 <Image
                   src={"/images/icons/icon_crown.svg"}
                   width={20}
                   height={18}
-                  className='md:h-[14px] md:w-[18px]'
-                  alt='왕관'
+                  className="md:h-[14px] md:w-[18px]"
+                  alt="왕관"
                 />
               )}
               <Image
                 src={"/images/icons/icon_arrow_right.svg"}
                 width={18}
                 height={18}
-                className='ml-auto'
-                alt='화살표'
+                className="ml-auto"
+                alt="화살표"
               />
             </Link>
           </div>
         ))}
       </div>
       {dashboards.length > 0 && (
-        <div className='flex items-center justify-end gap-5 mt-4 '>
+        <div className="flex items-center justify-end gap-5 mt-4 ">
           <div>
-            <span className='text-sm text-black300'>
+            <span className="text-sm text-black300">
               {currentPage} 페이지 중 {totalPages}
             </span>
           </div>
-          <div className='flex items-center justify-between'>
+          <div className="flex items-center justify-between">
             <button
               onClick={handlePreviousPage}
               disabled={currentPage === 1}
-              className='relative w-9 h-9 md:w-10 md:h-10'
+              className="relative w-9 h-9 md:w-10 md:h-10"
             >
               <Image
                 src={"/images/icons/pagination_left.svg"}
                 fill
-                objectFit='cover'
-                alt='이전'
+                objectFit="cover"
+                alt="이전"
               />
             </button>
             <button
               onClick={handleNextPage}
               disabled={currentPage >= totalPages}
-              className='relative w-9 h-9 md:w-10 md:h-10'
+              className="relative w-9 h-9 md:w-10 md:h-10"
             >
               <Image
                 src={"/images/icons/pagination_right.svg"}
                 fill
-                objectFit='cover'
-                alt='다음'
+                objectFit="cover"
+                alt="다음"
               />
             </button>
           </div>

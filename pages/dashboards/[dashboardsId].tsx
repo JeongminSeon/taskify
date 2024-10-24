@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getColumns } from "../api/columnsApi";
+import { getColumns } from "../../utils/api/columnsApi";
 import { ColoumnsParams, Columns, ColumnsResponse } from "@/types/columns";
 import Image from "next/image";
 import Column from "@/components/DashBoard/Column";

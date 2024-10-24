@@ -2,7 +2,7 @@ import ModalCard from "@/components/UI/modal/CardModal/CardDetailModal";
 import Portal from "@/components/UI/modal/ModalPotal";
 import { Columns, ColumnsResponse } from "@/types/columns";
 import { useEffect, useState } from "react";
-import { getColumns } from "../api/columnsApi";
+import { getColumns } from "../../utils/api/columnsApi";
 
 const CardsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
