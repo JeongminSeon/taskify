@@ -37,13 +37,20 @@ export interface MemberProps {
 
 export interface TodoFormProps {
   title: string;
-  content: string;
-  datetime: Date | null;
+  description: string;
+  dueDate: Date | null;
   tags: {
     color: string;
     text: string;
     id: number;
   }[];
-  image: File | null;
-  manager: string;
+  imageUrl: File[] | null;
+}
+
+export interface TodoModalProps {
+  columnId: number;
+  members: MemberProps[];
+  isOpen?: boolean;
+  onClose: () => void;
+  data?: TodoFormProps;
 }

@@ -46,6 +46,7 @@ const Column: React.FC<ColumnProps> = ({ id, title, members }) => {
       <CardList columnId={id} />
       {isOpen && (
         <CreateTodoModal
+          columnId={id}
           members={members}
           isOpen={isOpen}
           onClose={closeModal}

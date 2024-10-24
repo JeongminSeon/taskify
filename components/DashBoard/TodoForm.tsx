@@ -7,69 +7,64 @@ import {
   labelStyle,
   textAreaStyle,
 } from "./styles";
-import { MemberProps, TodoFormProps } from "@/types/dashboards";
+import { TodoFormProps, TodoModalProps } from "@/types/dashboards";
 import TodoButton from "./TodoButton";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
 import TodoTagList from "./TodoTagList";
+import { format } from "date-fns";
+import { getRandomColor, INITIAL_VALUES } from "@/utils/TodoForm";
+import useImagePreview from "@/hooks/dashboard/useImagePreview";
+import { createCardImage } from "@/utils/api/columnsApi";
+import { createCard } from "@/utils/api/cardsApi";
+import { CreateCardBody } from "@/types/cards";
 
-const INITIAL_VALUES = {
-  title: "",
-  content: "",
-  datetime: null,
-  tags: [],
-  image: null,
-  manager: "",
-};
-
-const getRandomColor = () => {
-  const letters = "0123456789ABCDEF";
-  let color = "#";
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
+const ASSIGNEEUSER_ID = 4689;
+const DASHBOARD_ID = 12060;
 
 const TodoForm = ({
+  columnId,
   members,
   onClose,
   data = INITIAL_VALUES,
-}: {
-  members: MemberProps[];
-  onClose: () => void;
-  data?: TodoFormProps;
-}) => {
+}: TodoModalProps) => {
   const [formData, setFormData] = useState<TodoFormProps>(data);
   const [tag, setTag] = useState<string>("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [preview, setPreview] = useState<string | null>(null);
   const idRef = useRef<number>(0);
+
+  const preview = useImagePreview(
+    formData.imageUrl ? formData.imageUrl[0] : null
+  );
 
   useEffect(() => {
     const isFormComplete =
       formData.title &&
-      formData.content &&
-      formData.datetime &&
+      formData.description &&
+      formData.dueDate &&
       formData.tags.length > 0 &&
-      formData.manager &&
-      formData.image !== null;
+      formData.imageUrl !== null;
     setIsButtonDisabled(!isFormComplete);
   }, [formData]);
 
-  // 이미지 미리보기 설정
-  useEffect(() => {
-    if (!formData.image) return;
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
 
-    const nextPreview = URL.createObjectURL(formData.image);
-    setPreview(nextPreview);
+    if (file) {
+      setFormData((prevData) => ({
+        ...prevData,
+        imageUrl: [file],
+      }));
 
-    return () => {
-      setPreview(null);
-      URL.revokeObjectURL(nextPreview);
-    };
-  }, [formData.image]);
+      try {
+        const response = await createCardImage({ columnId, image: file });
+        console.log("이미지 생성 성공:", response);
+      } catch (error) {
+        console.error("이미지 생성 실패:", error);
+      }
+    }
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -86,18 +81,8 @@ const TodoForm = ({
   const handleDateChange = (date: Date | null) => {
     setFormData((prevData) => ({
       ...prevData,
-      datetime: date || new Date(),
+      dueDate: date || new Date(),
     }));
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFormData((prevData) => ({
-        ...prevData,
-        image: file,
-      }));
-    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -124,13 +109,54 @@ const TodoForm = ({
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
-    setFormData(INITIAL_VALUES);
-    onClose();
-  };
 
+    let file: File | null = null;
+    if (formData.imageUrl && formData.imageUrl[0]) {
+      file = formData.imageUrl[0];
+    }
+
+    // 서버로 보내기 전에 formData 유효성 검사
+    if (
+      !formData.title ||
+      !formData.description ||
+      !formData.dueDate ||
+      !formData.tags.length ||
+      !file
+    ) {
+      console.error(
+        "유효성 검사 오류: 모든 필드가 올바르게 입력되었는지 확인하세요."
+      );
+      return;
+    }
+
+    try {
+      const updatedImage = await createCardImage({
+        columnId,
+        image: file,
+      });
+
+      const outputData: CreateCardBody = {
+        assigneeUserId: ASSIGNEEUSER_ID,
+        dashboardId: DASHBOARD_ID,
+        columnId: columnId,
+        title: formData.title,
+        description: formData.description,
+        dueDate: formData.dueDate
+          ? format(formData.dueDate, "yyyy-MM-dd HH:mm")
+          : "",
+        tags: formData.tags.map((tag) => tag.text),
+        imageUrl: updatedImage.imageUrl,
+      };
+
+      await createCard(outputData);
+      setFormData(INITIAL_VALUES);
+      onClose();
+    } catch (error) {
+      console.error("제출 중 오류가 발생했습니다:", error);
+    }
+  };
   return (
     <form className="flex flex-col w-full text-[16px]" onSubmit={handleSubmit}>
       <div className={`${boxStyle}`}>
@@ -138,11 +164,10 @@ const TodoForm = ({
         <select
           className={`${inputStyle}`}
           name="manager"
-          value={formData.manager}
+          value={ASSIGNEEUSER_ID}
           onChange={handleInputChange}
         >
-          <option value="temp1">임시1</option>
-          <option value="temp2">임시2</option>
+          <option value="temp1">문균</option>
           {members &&
             members.map((item) => (
               <option key={item.id} value={item.nickname}>
@@ -168,15 +193,15 @@ const TodoForm = ({
       </div>
 
       <div className={`${boxStyle}`}>
-        <label className={`${labelStyle}`} htmlFor="content">
+        <label className={`${labelStyle}`} htmlFor="description">
           설명 <span className="text-purple100">*</span>
         </label>
         <textarea
           className={`${textAreaStyle}`}
-          name="content"
-          id="content"
+          name="description"
+          id="description"
           placeholder="설명을 입력해 주세요."
-          value={formData.content}
+          value={formData.description}
           onChange={handleInputChange}
         />
       </div>
@@ -191,10 +216,10 @@ const TodoForm = ({
             height="22"
           />
           <DatePicker
-            selected={formData.datetime}
+            selected={formData.dueDate}
             onChange={handleDateChange}
             showTimeSelect
-            dateFormat="yyyy. MM. dd HH:mm"
+            dateFormat="yyyy-MM-dd HH:mm"
             placeholderText="날짜를 입력해 주세요"
             locale={ko}
             className="outline-none md:w-[460px] sm:w-[240px]"
@@ -237,7 +262,7 @@ const TodoForm = ({
             <Image
               src={preview}
               alt="미리보기"
-              className={`rounded-[6px] object-cover${imageStyle}`}
+              className={`rounded-[6px] object-cover ${imageStyle}`}
               width="76"
               height="76"
             />
