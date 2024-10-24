@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getDashboards } from "@/pages/api/dashboardsApi";
 import { DashboardResponse } from "@/types/dashboards";
+import { useRouter } from "next/router";
 
 interface DashboardContextType {
   dashboards: DashboardResponse | null;
@@ -15,6 +16,7 @@ const DashboardContext = createContext<DashboardContextType | undefined>(
 export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const router = useRouter();
   const [dashboards, setDashboards] = useState<DashboardResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,6 +27,7 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({
       if (!accessToken) {
         setError("로그인 필요");
         setLoading(false);
+        router.push("/login");
         return;
       }
 
@@ -40,7 +43,7 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     fetchDashboards();
-  }, []);
+  }, [router]);
 
   return (
     <DashboardContext.Provider value={{ dashboards, loading, error }}>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getDashboards } from "@/pages/api/dashboardsApi"; // API 가져오기
-import { DashboardResponse } from "@/types/dashboards"; // 필요한 타입 가져오기
+import { getDashboards } from "@/pages/api/dashboardsApi";
+import { DashboardResponse } from "@/types/dashboards";
 
 export const useGetDashboards = (page: number, size: number) => {
   const [data, setData] = useState<DashboardResponse | null>(null);
@@ -18,7 +18,7 @@ export const useGetDashboards = (page: number, size: number) => {
 
       try {
         setLoading(true);
-        const response = await getDashboards(page, size); // API 호출
+        const response = await getDashboards(page, size);
         setData(response); // 데이터 저장
       } catch (err) {
         console.error("Error fetching dashboards:", err);

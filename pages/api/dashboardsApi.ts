@@ -68,7 +68,7 @@ export const getInvitations = async (
 ): Promise<InvitationsResponse> => {
   try {
     const response = await axiosInstance.get<InvitationsResponse>(
-      `/dashboards/12012/invitations`,
+      `/dashboards/${dashboardId}/invitations`,
       {
         params: {
           page,
