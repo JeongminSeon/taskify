@@ -17,7 +17,7 @@ import Dropdown from "../../dropdown/Dropdown";
  * @param onClose 모달 닫기 함수
  */
 
-const ModalCard: React.FC<CardProps> = ({
+const CardDetailModal: React.FC<CardProps> = ({
   title,
   // description,
   // tags,
@@ -170,4 +170,4 @@ const ModalCard: React.FC<CardProps> = ({
   );
 };
 
-export default ModalCard;
+export default CardDetailModal;

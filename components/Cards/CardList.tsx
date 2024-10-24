@@ -49,7 +49,7 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
                 {card.tags.map((tag, index) => (
                   <span
                     key={index}
-                    className="tag py-1 px-[6px] rounded bg-[#F9EEE3] text-xs "
+                    className="tag py-1 px-[6px] rounded bg-[#F9EEE3] text-xs"
                   >
                     {tag}
                   </span>
@@ -71,7 +71,7 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
                       month: "numeric",
                       day: "numeric",
                     })
-                    .replace(/\.$/, "")}{" "}
+                    .replace(/\.$/, "")}
                   {/* 맨 뒤의 점(.) 제거 */}
                 </p>
                 <p className="overflow-hidden relative w-[34px] h-[34px] rounded-full bg-slate-500">

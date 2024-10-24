@@ -10,10 +10,10 @@ const InputField: React.FC<InputFieldProps> = ({
   readOnly = false,
   error = false,
   errorMessage,
-  onBlur, // 추가
+  onBlur,
 }) => {
   return (
-    <div className="mb-4">
+    <div>
       <label
         htmlFor={name}
         className="block w-full md:text-[16px] sm:text-[14px]"
@@ -22,14 +22,14 @@ const InputField: React.FC<InputFieldProps> = ({
       </label>
       <input
         className={`w-full text-[16px] font-[400] h-[50px] px-4 py-3 mt-2 rounded-lg border 
-          ${error ? "border-red-500" : "border-gray400"} 
+          outline-0 ${error ? "border-red-500" : "border-gray400"} 
           placeholder:text-gray300`}
         name={name}
         type={type}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        onBlur={onBlur} // 추가
+        onBlur={onBlur}
         readOnly={readOnly}
       />
       {error && errorMessage && (

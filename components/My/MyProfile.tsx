@@ -2,10 +2,13 @@ import Image from "next/image";
 import InputField from "./InputField";
 import MyButton from "./MyButton";
 import { useState } from "react";
+import useModalAlert from "@/hooks/useModalAlert";
+import ModalAlert from "../UI/modal/ModalAlert";
 
 const MyProfile: React.FC = () => {
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState<string>("");
   const [profileImage, setProfileImage] = useState<File | null>(null);
+  const { isOpen, openModal, closeModal } = useModalAlert();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -14,7 +17,7 @@ const MyProfile: React.FC = () => {
   };
 
   const handleSave = () => {
-    // 닉네임이나 이미지를 서버로 보내는 로직 추가
+    openModal();
     console.log("닉네임:", nickname, "이미지:", profileImage);
   };
 
@@ -42,23 +45,32 @@ const MyProfile: React.FC = () => {
           />
         </div>
         <div className="md:w-[400px] sm:w-[252px]">
-          <InputField
-            label="이메일"
-            name="email"
-            type="email"
-            placeholder="1212@naver.com"
-            readOnly
-          />
-          <InputField
-            label="닉네임"
-            name="nickname"
-            type="text"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-          />
+          <div className="flex flex-col gap-4">
+            <InputField
+              label="이메일"
+              name="email"
+              type="email"
+              placeholder="1212@naver.com"
+              readOnly
+            />
+            <InputField
+              label="닉네임"
+              name="nickname"
+              type="text"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+            />
+          </div>
           <MyButton onClick={handleSave}>저장</MyButton>
         </div>
       </div>
+      {isOpen && (
+        <ModalAlert
+          isOpen={isOpen}
+          onClose={closeModal}
+          text="변경 완료되었습니다."
+        />
+      )}
     </div>
   );
 };

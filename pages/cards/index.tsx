@@ -1,8 +1,8 @@
-import ModalCard from "@/components/UI/modal/CardModal/CardDetailModal";
-import Portal from "@/components/UI/modal/ModalPotal";
+import Portal from "@/components/UI/Modal/ModalPotal";
 import { Columns, ColumnsResponse } from "@/types/columns";
 import { useEffect, useState } from "react";
 import { getColumns } from "../../utils/api/columnsApi";
+import CardDetailModal from "@/components/UI/Modal/CardModal/CardDetailModal";
 
 const CardsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -41,7 +41,7 @@ const CardsPage = () => {
         </div>
       ))}
       <Portal>
-        <ModalCard
+        <CardDetailModal
           id={1}
           title="카드 제목"
           description="이것은 카드 내용입니다."
