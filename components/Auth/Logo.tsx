@@ -4,11 +4,11 @@ import Link from "next/link";
 
 export default function Logo() {
   return (
-    <div className='flex flex-col items-center gap-1'>
-      <Link href='/'>
-        <Image src={logoImage} width={200} height={280} alt='logo_main' />
+    <div className="flex flex-col items-center gap-1">
+      <Link href="/">
+        <Image src={logoImage} width={200} height={280} alt="logo_main" />
       </Link>
-      <p className='text-xl'>오늘도 만나서 반가워요!</p>
+      <p className="text-xl">오늘도 만나서 반가워요!</p>
     </div>
   );
 }

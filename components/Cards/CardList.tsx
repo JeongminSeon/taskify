@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, CardListResponse } from "@/types/cards";
-import { getCards } from "@/pages/api/cardsApi";
+import { getCards } from "@/utils/api/cardsApi";
 import Image from "next/image";
 
 interface CardListProps {

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import axiosInstance from "@/pages/api/axiosInstanceApi";
+import axiosInstance from "@/utils/api/axiosInstanceApi";
 import { DashboardResponse } from "@/types/dashboards";
 
 export const useGetDashboardList = (
