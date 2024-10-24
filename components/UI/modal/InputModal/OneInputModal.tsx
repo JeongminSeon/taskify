@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { styles } from "./styles";
 
@@ -7,43 +7,29 @@ interface OneInputModalProps {
   modalTitle: string;
   inputLabel: string;
   inputPlaceholder: string;
-  onCancle: () => void;
-  cancleButtonText?: string;
+  onCancel: () => void;
+  cancelButtonText?: string;
   onConfirm: (value: string) => void;
   confirmButtonText?: string;
+  inputValue: string;
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
-
-/**
- * @param isOpen 모달 오픈 여부
- * @param modalTitle 모달 제목
- * @param inputLabel 입력창 라벨
- * @param inputPlaceholder 입력창 placeholder
- * @param onCancle 모달 닫기 핸들러
- * @param onConfirm 확인 버튼 클릭 핸들러
- * @param confirmButtonText 확인 버튼 텍스트
- */
 
 const OneInputModal: React.FC<OneInputModalProps> = ({
   isOpen,
   modalTitle,
   inputLabel,
   inputPlaceholder,
-  onCancle,
-  cancleButtonText,
+  onCancel,
+  cancelButtonText,
   onConfirm,
   confirmButtonText,
+  inputValue,
+  onInputChange,
 }) => {
-  const [inputValue, setInputValue] = useState("");
-
-  const handleCancle = () => {
-    setInputValue(""); // 입력값 초기화
-    onCancle();
-  };
-
   const handleConfirm = (e: React.FormEvent) => {
     e.preventDefault();
     onConfirm(inputValue);
-    setInputValue(""); // 입력값 초기화
   };
 
   if (!isOpen) return null;
@@ -54,7 +40,7 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>{modalTitle}</h2>
           <button
-            onClick={handleCancle}
+            onClick={onCancel}
             className={styles.closeButton}
             aria-label="닫기"
           >
@@ -77,16 +63,16 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
               className={styles.input}
               placeholder={inputPlaceholder}
               value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
+              onChange={onInputChange}
             />
           </div>
           <div className="flex gap-2">
             <button
               type="button"
-              onClick={handleCancle}
+              onClick={onCancel}
               className={styles.cancelButton}
             >
-              {cancleButtonText}
+              {cancelButtonText}
             </button>
             <button type="submit" className={styles.confirmButton}>
               {confirmButtonText}
