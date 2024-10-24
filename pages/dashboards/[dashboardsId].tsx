@@ -48,15 +48,20 @@ const DashboardDetail: React.FC = () => {
         teamId,
         title: inputValue,
         dashboardId: Number(dashboardsId),
-      }).then((newColumn) => {
-        if (newColumn) {
-          setColumns((prev) => [
-            ...prev,
-            { ...newColumn, teamId, dashboardId: Number(dashboardsId) },
-          ]);
-        }
-        fetchColumns();
-      });
+      })
+        .then((newColumn) => {
+          if (newColumn) {
+            setColumns((prev) => [
+              ...prev,
+              { ...newColumn, teamId, dashboardId: Number(dashboardsId) },
+            ]);
+          }
+          return fetchColumns();
+        })
+        .catch((error) => {
+          console.error("칼럼 생성 중 오류 발생:", error);
+          alert("칼럼 생성에 실패했습니다. 다시 시도해 주세요.");
+        });
     },
     [teamId, dashboardsId, fetchColumns]
   );
