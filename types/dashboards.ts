@@ -23,3 +23,27 @@ export type DashboardResponse = {
   dashboards: Dashboard[];
   totalCount: number;
 };
+
+export interface MemberProps {
+  id: number;
+  userId: number;
+  email: string;
+  nickname: string;
+  profileImageUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  isOwner: boolean;
+}
+
+export interface TodoFormProps {
+  title: string;
+  content: string;
+  datetime: Date | null;
+  tags: {
+    color: string;
+    text: string;
+    id: number;
+  }[];
+  image: File | null;
+  manager: string;
+}

@@ -2,13 +2,13 @@ import Image from "next/image";
 import InputField from "./InputField";
 import MyButton from "./MyButton";
 import { useState } from "react";
-import useModalAlert from "@/hooks/useModalAlert";
+import useModal from "@/hooks/useModal";
 import ModalAlert from "../UI/modal/ModalAlert";
 
 const MyProfile: React.FC = () => {
   const [nickname, setNickname] = useState<string>("");
   const [profileImage, setProfileImage] = useState<File | null>(null);
-  const { isOpen, openModal, closeModal } = useModalAlert();
+  const { isOpen, openModal, closeModal } = useModal();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {

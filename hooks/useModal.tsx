@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const useModalAlert = () => {
+const useModal = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
@@ -12,4 +12,4 @@ const useModalAlert = () => {
   };
 };
 
-export default useModalAlert;
+export default useModal;
