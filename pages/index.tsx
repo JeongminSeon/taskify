@@ -6,7 +6,7 @@ import LandingFooter from "./Landing/LandingFooter";
 
 const index = () => {
   return (
-    <div className="bg-black100 h-vh">
+    <div className='bg-black100 h-vh'>
       <LandingHeader />
       <LandingLayout>
         <LandingBanner />
