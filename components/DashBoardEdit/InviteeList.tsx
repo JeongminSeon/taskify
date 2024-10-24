@@ -1,4 +1,4 @@
-import { getInvitations } from "@/pages/api/dashboardsApi";
+import { getInvitations } from "@/utils/api/dashboardsApi";
 import { Invitation, InvitationsResponse } from "@/types/dashboards";
 import { useEffect, useState } from "react";
 import Pagination from "../UI/pagination/Pagination";

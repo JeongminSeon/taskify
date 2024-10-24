@@ -1,8 +1,8 @@
 import { useDashboardContext } from "@/context/DashboardContext";
-import { useState } from "react";
 import { boardCardBtn, boardCardBtnBox } from "./MyDashStyle";
-import Image from "next/image";
+import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Pagination from "../UI/pagination/Pagination";
 
 const MyDashList: React.FC = () => {
@@ -69,12 +69,14 @@ const MyDashList: React.FC = () => {
         ))}
       </div>
       {dashboards && dashboards.dashboards.length > 0 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onNextPage={handleNextPage}
-          onPreviousPage={handlePreviousPage}
-        />
+        <div className="mt-3">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onNextPage={handleNextPage}
+            onPreviousPage={handlePreviousPage}
+          />
+        </div>
       )}
     </div>
   );

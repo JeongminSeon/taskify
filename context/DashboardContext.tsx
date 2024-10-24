@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { getDashboards } from "@/pages/api/dashboardsApi";
+import { getDashboards } from "@/utils/api/dashboardsApi";
 import { DashboardResponse } from "@/types/dashboards";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 interface DashboardContextType {
   dashboards: DashboardResponse | null;
@@ -23,11 +24,11 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     const fetchDashboards = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setError("로그인 필요");
+      const token = Cookies.get("accessToken");
+      const isLoginPage = router.pathname === "/login";
+      if (!token && !isLoginPage) {
+        router.push("/"); // 메인 페이지 경로로 변경
         setLoading(false);
-        router.push("/login");
         return;
       }
 

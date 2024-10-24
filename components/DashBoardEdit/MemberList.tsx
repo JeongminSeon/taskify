@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Pagination from "../UI/pagination/Pagination";
-import { getMembers } from "@/pages/api/membersApi";
+import { getMembers } from "@/utils/api/membersApi";
 import { Member, MemberResponse } from "@/types/members";
 
 interface MemberListProps {

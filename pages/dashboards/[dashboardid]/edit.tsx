@@ -4,7 +4,7 @@ import {
   deleteDashboard,
   getDashboardDetail,
   updateDashboard,
-} from "@/pages/api/dashboardsApi";
+} from "@/utils/api/dashboardsApi";
 import { DashboardDetailResponse } from "@/types/dashboards";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import InputField from "@/components/My/InputField";

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getDashboards } from "@/pages/api/dashboardsApi";
 import { DashboardResponse } from "@/types/dashboards";
+import { getDashboards } from "@/utils/api/dashboardsApi";
 
 export const useGetDashboards = (page: number, size: number) => {
   const [data, setData] = useState<DashboardResponse | null>(null);

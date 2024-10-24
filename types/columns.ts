@@ -4,6 +4,7 @@ export interface ColoumnsParams {
   dashboardId: number;
 }
 
+// 컬럼 타입
 export interface Columns {
   id: number;
   title: string;
@@ -13,8 +14,23 @@ export interface Columns {
   updatedAt: string;
 }
 
-// 컬럼 목록 타입
+// 컬럼 목록 응답 타입
 export interface ColumnsResponse {
   result: string;
   data: Columns[];
+}
+
+// 컬럼 생성 파라미터 타입
+export interface ColumnsCreateParams {
+  teamId: string;
+  title: string;
+  dashboardId: number;
+}
+
+// 컬럼 생성 응답 타입
+export interface ColumnsCreateResponse {
+  id: number;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
 }
