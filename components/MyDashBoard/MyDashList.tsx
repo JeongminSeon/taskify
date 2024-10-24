@@ -1,19 +1,20 @@
-import { useGetDashboardList } from "@/hooks/dashboard/useGetDashboardList";
-import { boardCardBtn, boardCardBtnBox } from "./MyDashStyle";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import Image from "next/image";
+import { useGetDashboardList } from '@/hooks/dashboard/useGetDashboardList';
+import { boardCardBtn, boardCardBtnBox } from './MyDashStyle';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const MyDashList: React.FC = () => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, loading, error } = useGetDashboardList("pagination", 0, 1, 5);
+  const { data, loading, error } = useGetDashboardList('pagination', 0, 1, 5);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("token");
+    const accessToken = Cookies.get('accessToken');
     if (!accessToken) {
-      router.push("/404"); // accessToken이 없으면 404 페이지로 이동
+      router.push('/404'); // accessToken이 없으면 404 페이지로 이동
     }
   }, [router]);
 
@@ -57,7 +58,7 @@ const MyDashList: React.FC = () => {
             <Link
               href={`/dashboards/${dashboard.id}`}
               className={`flex items-center gap-3 ${boardCardBtnBox}`}
-              style={{ backgroundPosition: "right 15px center" }}
+              style={{ backgroundPosition: 'right 15px center' }}
             >
               <span
                 className="block w-2 h-2 rounded-full"
@@ -66,7 +67,7 @@ const MyDashList: React.FC = () => {
               <p className="truncate">{dashboard.title}</p>
               {dashboard.createdByMe && (
                 <Image
-                  src={"/images/icons/icon_crown.svg"}
+                  src={'/images/icons/icon_crown.svg'}
                   width={20}
                   height={18}
                   className="md:h-[14px] md:w-[18px]"
@@ -74,7 +75,7 @@ const MyDashList: React.FC = () => {
                 />
               )}
               <Image
-                src={"/images/icons/icon_arrow_right.svg"}
+                src={'/images/icons/icon_arrow_right.svg'}
                 width={18}
                 height={18}
                 className="ml-auto"
@@ -98,7 +99,7 @@ const MyDashList: React.FC = () => {
               className="relative w-9 h-9 md:w-10 md:h-10"
             >
               <Image
-                src={"/images/icons/pagination_left.svg"}
+                src={'/images/icons/pagination_left.svg'}
                 fill
                 objectFit="cover"
                 alt="이전"
@@ -110,7 +111,7 @@ const MyDashList: React.FC = () => {
               className="relative w-9 h-9 md:w-10 md:h-10"
             >
               <Image
-                src={"/images/icons/pagination_right.svg"}
+                src={'/images/icons/pagination_right.svg'}
                 fill
                 objectFit="cover"
                 alt="다음"
