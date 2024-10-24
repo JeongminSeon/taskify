@@ -23,8 +23,8 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     const fetchDashboards = async () => {
-      const accessToken = localStorage.getItem("token");
-      if (!accessToken) {
+      const token = localStorage.getItem("token");
+      if (!token) {
         setError("로그인 필요");
         setLoading(false);
         router.push("/login");

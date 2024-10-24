@@ -60,6 +60,16 @@ export const updateDashboard = async (
   }
 };
 
+// 대시보드 삭제
+export const deleteDashboard = async (dashboardId: number): Promise<void> => {
+  try {
+    await axiosInstance.delete(`/dashboards/${dashboardId}`);
+  } catch (error) {
+    console.error("Failed to fetch dashboard detail:", error);
+    throw error;
+  }
+};
+
 // 대시보드 초대 목록 불러오기 함수
 export const getInvitations = async (
   dashboardId: number,

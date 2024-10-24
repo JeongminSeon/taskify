@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getDashboardDetail, updateDashboard } from "@/pages/api/dashboardsApi";
+import {
+  deleteDashboard,
+  getDashboardDetail,
+  updateDashboard,
+} from "@/pages/api/dashboardsApi";
 import { DashboardDetailResponse } from "@/types/dashboards";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
-import Link from "next/link";
 import InputField from "@/components/My/InputField";
 import ColorChip from "@/components/UI/colorchip/ColorChip";
 import MemberList from "@/components/DashBoardEdit/MemberList";
@@ -27,6 +30,10 @@ const DashboardEdit = () => {
     { id: 4, color: "#76A5EA" },
     { id: 5, color: "#E876EA" },
   ];
+
+  const returnButton = () => {
+    router.back();
+  };
 
   useEffect(() => {
     const fetchDashboardDetail = async () => {
@@ -66,6 +73,21 @@ const DashboardEdit = () => {
     }
   };
 
+  const handleDeleteDashboard = async () => {
+    if (dashboardId) {
+      const confirmDelete = confirm("이 대시보드를 정말 삭제하시겠습니까?");
+      if (confirmDelete) {
+        try {
+          await deleteDashboard(dashboardId);
+          console.log("Dashboard deleted successfully");
+          router.push("/mydashboard");
+        } catch (error) {
+          console.error("Failed to delete dashboard:", error);
+        }
+      }
+    }
+  };
+
   if (!dashboardDetail) {
     return <div>Loading...</div>; // 로딩 중 표시
   }
@@ -73,7 +95,12 @@ const DashboardEdit = () => {
   return (
     <DashBoardLayout>
       <div className="max-w-[640px] py-4 px-3 md:p-5">
-        <Link href="">뒤로가기</Link>
+        <button
+          onClick={returnButton}
+          className="text-[16px] font-[500] mb-[29px]"
+        >
+          &lt; 돌아가기
+        </button>
         <div className="flex flex-col gap-4">
           <EditBoxUI title={originalTitle}>
             <div className="px-4 md:px-7">
@@ -85,7 +112,7 @@ const DashboardEdit = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
-              <div className="flex gap-2">
+              <div className="flex gap-2 pt-4">
                 {colorChips.map((chip) => (
                   <ColorChip
                     key={chip.id}
@@ -111,6 +138,13 @@ const DashboardEdit = () => {
             <InviteeList dashboardId={dashboardId} />
           </EditBoxUI>
         </div>
+        <button
+          type="button"
+          onClick={handleDeleteDashboard}
+          className="w-full max-w-80 mt-6 py-3 border border-gray400 rounded-lg bg-white100 text-black300 md:text-lg font-medium"
+        >
+          대시보드 삭제하기
+        </button>
       </div>
     </DashBoardLayout>
   );
