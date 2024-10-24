@@ -13,6 +13,7 @@ interface OneInputModalProps {
   confirmButtonText?: string;
   inputValue: string;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  resetInputValue: () => void;
 }
 
 const OneInputModal: React.FC<OneInputModalProps> = ({
@@ -26,10 +27,16 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
   confirmButtonText,
   inputValue,
   onInputChange,
+  resetInputValue,
 }) => {
   const handleConfirm = (e: React.FormEvent) => {
     e.preventDefault();
     onConfirm(inputValue);
+  };
+
+  const handleCancel = () => {
+    onCancel();
+    resetInputValue(); // 취소 시 입력값 초기화
   };
 
   if (!isOpen) return null;
@@ -40,7 +47,7 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>{modalTitle}</h2>
           <button
-            onClick={onCancel}
+            onClick={handleCancel}
             className={styles.closeButton}
             aria-label="닫기"
           >
@@ -69,7 +76,7 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
           <div className="flex gap-2">
             <button
               type="button"
-              onClick={onCancel}
+              onClick={handleCancel}
               className={styles.cancelButton}
             >
               {cancelButtonText}
