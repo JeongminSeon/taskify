@@ -12,11 +12,13 @@ const ColorChip: React.FC<ColorChipProps> = ({
   return (
     <button
       type="button"
-      className="w-[30px] h-[30px] rounded-full"
+      className="w-[30px] h-[30px] rounded-full bg-no-repeat bg-center"
       onClick={onClick}
       style={{
         backgroundColor: color,
-        border: isSelected ? "2px solid black" : "none",
+        backgroundImage: isSelected
+          ? 'url("/images/icons/icon_chip_selected.svg")'
+          : "none",
       }}
     ></button>
   );

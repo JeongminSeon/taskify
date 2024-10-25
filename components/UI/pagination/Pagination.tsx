@@ -27,14 +27,30 @@ const Pagination: React.FC<PaginationProps> = ({
           disabled={currentPage === 1}
           className="relative w-9 h-9 md:w-10 md:h-10"
         >
-          <Image src={"/images/icons/pagination_left.svg"} fill alt="이전" />
+          {currentPage === 1 ? (
+            <Image src={"/images/icons/pagination_left.svg"} fill alt="이전" />
+          ) : (
+            <Image
+              src={"/images/icons/pagination_left_active.svg"}
+              fill
+              alt="이전"
+            />
+          )}
         </button>
         <button
           onClick={onNextPage}
           disabled={currentPage >= totalPages}
           className="relative w-9 h-9 md:w-10 md:h-10"
         >
-          <Image src={"/images/icons/pagination_right.svg"} fill alt="다음" />
+          {currentPage < totalPages ? (
+            <Image
+              src={"/images/icons/pagination_right_active.svg"}
+              fill
+              alt="다음"
+            />
+          ) : (
+            <Image src={"/images/icons/pagination_right.svg"} fill alt="다음" />
+          )}
         </button>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { getInvitations } from "@/utils/api/dashboardsApi";
+import { deleteInvitations, getInvitations } from "@/utils/api/dashboardsApi";
 import { Invitation, InvitationsResponse } from "@/types/dashboards";
 import { useEffect, useState } from "react";
 import Pagination from "../UI/pagination/Pagination";
@@ -38,6 +38,18 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
 
   const handlePreviousPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1)); // 1페이지 이하로는 내리지 않음
+  };
+
+  // 초대하기 취소 핸들러
+  const handleDeleteInvitation = async (invitationId: number) => {
+    try {
+      await deleteInvitations(dashboardId, invitationId);
+      setInvitations((prevInvitations) =>
+        prevInvitations.filter((invitation) => invitation.id !== invitationId)
+      );
+    } catch (error) {
+      console.error("초대 취소 중 오류 발생:", error);
+    }
   };
 
   return (
@@ -92,7 +104,8 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
               <p>{invitation.invitee.email}</p>
               <button
                 type="button"
-                className="sm:w-[52px] md:w-[84px] h-8 border borer-gray400 rounded-[4px] text-xs md:text-sm text-purple100 font-medium leading-8"
+                className="sm:w-[52px] md:w-[84px] h-8 border border-gray400 rounded-[4px] text-xs md:text-sm text-purple100 font-medium leading-8"
+                onClick={() => handleDeleteInvitation(invitation.id)}
               >
                 삭제하기
               </button>

@@ -93,3 +93,18 @@ export const getInvitations = async (
     throw error;
   }
 };
+
+// 대시보드 초대 취소
+export const deleteInvitations = async (
+  dashboardId: number,
+  invitationId: number
+): Promise<void> => {
+  try {
+    await axiosInstance.delete(
+      `/dashboards/${dashboardId}/invitations/${invitationId}`
+    );
+  } catch (error) {
+    console.error("초대 취소하는 데 실패했습니다:", error);
+    throw error;
+  }
+};
