@@ -14,7 +14,6 @@ const DashboardDetail: React.FC = () => {
   const router = useRouter();
   const { dashboardid } = router.query;
   const [columns, setColumns] = useState<Columns[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   const {
@@ -36,8 +35,6 @@ const DashboardDetail: React.FC = () => {
     } catch (err) {
       console.error("Error fetching columns:", err);
       setError("Failed to fetch columns. Please try again later.");
-    } finally {
-      setLoading(false);
     }
   }, [teamId, dashboardid]);
 
@@ -72,9 +69,7 @@ const DashboardDetail: React.FC = () => {
     }
   }, [dashboardid, fetchColumns]);
 
-  if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
-  if (columns.length === 0) return <div>No columns available.</div>;
 
   return (
     <DashBoardLayout>

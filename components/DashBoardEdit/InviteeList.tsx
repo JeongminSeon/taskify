@@ -9,13 +9,11 @@ interface InviteeListProps {
 
 const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
   const [invitations, setInvitations] = useState<Invitation[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
 
   useEffect(() => {
     const fetchInvitations = async () => {
-      setLoading(true);
       try {
         const data: InvitationsResponse = await getInvitations(
           dashboardId,
@@ -26,8 +24,6 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
         setTotalPages(Math.ceil(data.totalCount / 10));
       } catch (error) {
         console.error("Error fetching invitations:", error);
-      } finally {
-        setLoading(false);
       }
     };
     fetchInvitations();
@@ -40,8 +36,6 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
   const handlePreviousPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1)); // 1페이지 이하로는 내리지 않음
   };
-
-  if (loading) return <div>Loading...</div>;
 
   return (
     <>

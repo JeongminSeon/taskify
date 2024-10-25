@@ -28,7 +28,6 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({
       const isLoginPage = router.pathname === "/login";
       if (!token && !isLoginPage) {
         router.push("/"); // 메인 페이지 경로로 변경
-        setLoading(false);
         return;
       }
 
@@ -48,7 +47,7 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <DashboardContext.Provider value={{ dashboards, loading, error }}>
-      {children}
+      {loading ? <div>Loading...</div> : children}
     </DashboardContext.Provider>
   );
 };

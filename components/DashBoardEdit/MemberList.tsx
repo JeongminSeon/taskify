@@ -11,12 +11,10 @@ const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
   const [members, setMembers] = useState<Member[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchMembers = async () => {
-      setLoading(true);
       setError(null);
       try {
         const data: MemberResponse = await getMembers(
@@ -28,8 +26,6 @@ const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
         setTotalPages(Math.ceil(data.totalCount / 5));
       } catch (error) {
         console.error("Failed to dashboard memeber:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -44,7 +40,6 @@ const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
     setCurrentPage((prev) => Math.max(prev - 1, 1)); // 1페이지 이하로는 내리지 않음
   };
 
-  if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
   return (

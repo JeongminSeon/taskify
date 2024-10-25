@@ -88,10 +88,6 @@ const DashboardEdit = () => {
     }
   };
 
-  if (!dashboardDetail) {
-    return <div>Loading...</div>; // 로딩 중 표시
-  }
-
   return (
     <DashBoardLayout>
       <div className="max-w-[640px] py-4 px-3 md:p-5">
