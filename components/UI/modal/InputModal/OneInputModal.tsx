@@ -13,7 +13,6 @@ interface OneInputModalProps {
   confirmButtonText?: string;
   inputValue: string;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  resetInputValue: () => void;
 }
 
 const OneInputModal: React.FC<OneInputModalProps> = ({
@@ -27,7 +26,6 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
   confirmButtonText,
   inputValue,
   onInputChange,
-  resetInputValue,
 }) => {
   const handleConfirm = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,7 +34,6 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
 
   const handleCancel = () => {
     onCancel();
-    resetInputValue(); // 취소 시 입력값 초기화
   };
 
   if (!isOpen) return null;
