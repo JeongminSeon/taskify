@@ -1,58 +1,67 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
+import { GetServerSidePropsContext } from "next";
 import { useDashboardContext } from "@/context/DashboardContext";
-import { DashboardDetailResponse } from "@/types/dashboards";
 import {
   deleteDashboard,
-  getDashboardDetail,
   getDashboards,
   updateDashboard,
 } from "@/utils/api/dashboardsApi";
+import { getMembers } from "@/utils/api/membersApi";
+import { Member, MemberResponse } from "@/types/members";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
+import MemberList from "@/components/DashBoardEdit/MemberList";
+import EditBox from "@/components/DashBoardEdit/EditBox";
 import InputField from "@/components/My/InputField";
 import ColorChip from "@/components/UI/colorchip/ColorChip";
-import MemberList from "@/components/DashBoardEdit/MemberList";
-import EditBoxUI from "@/components/DashBoardEdit/EditBox";
 import InviteeList from "@/components/DashBoardEdit/InviteeList";
 
-const DashboardEdit = () => {
+interface EditDashboardProps {
+  dashboardId: number;
+  initialMembers: Member[]; // 타입 지정
+  totalCount: number;
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { dashboardid } = context.query;
+
+  let initialMembers: Member[] = []; // Member[] 타입으로 초기화
+  let totalCount = 0;
+
+  try {
+    const data: MemberResponse = await getMembers(Number(dashboardid), 1, 5);
+    initialMembers = data.members;
+    totalCount = data.totalCount;
+  } catch (error) {
+    console.error("Failed to fetch members:", error);
+  }
+
+  return {
+    props: {
+      dashboardId: Number(dashboardid),
+      initialMembers,
+      totalCount,
+    },
+  };
+}
+
+const DashboardEdit: React.FC<EditDashboardProps> = ({
+  dashboardId,
+  initialMembers,
+  totalCount,
+}) => {
   const router = useRouter();
-  const { dashboardid } = router.query;
-  const dashboardId = Number(dashboardid);
-
-  const [initialDetail, setInitialDetail] =
-    useState<DashboardDetailResponse | null>(null);
+  const { dashboardDetail, setDashboardDetail, setDashboards } =
+    useDashboardContext();
   const [title, setTitle] = useState<string>("");
-  const [originalTitle, setOriginalTitle] = useState<string>("");
   const [color, setColor] = useState<string>("");
-
-  const { setDashboards, setDashboardDetail } = useDashboardContext();
-
-  // 대시보드 상세 정보 가져오기
-  useEffect(() => {
-    const fetchDashboardDetail = async () => {
-      if (dashboardId) {
-        try {
-          const detail = await getDashboardDetail(dashboardId);
-          setInitialDetail(detail);
-          setTitle(detail.title);
-          setOriginalTitle(detail.title);
-          setColor(detail.color);
-        } catch (error) {
-          console.error("Error fetching dashboard details:", error);
-        }
-      }
-    };
-
-    fetchDashboardDetail();
-  }, [dashboardId]);
 
   // 뒤로가기 버튼
   const returnButton = () => {
     router.back();
   };
 
-  // 컬러 고정
+  // 기본 컬러칩
   const colorChips = [
     { id: 1, color: "#7AC555" },
     { id: 2, color: "#760DDE" },
@@ -75,7 +84,6 @@ const DashboardEdit = () => {
           title,
           color
         );
-        setOriginalTitle(updatedDashboard.title);
         setColor(updatedDashboard.color);
         setDashboardDetail(updatedDashboard);
 
@@ -94,7 +102,6 @@ const DashboardEdit = () => {
       if (confirmDelete) {
         try {
           await deleteDashboard(dashboardId);
-          console.log("Dashboard deleted successfully");
           router.push("/mydashboard");
         } catch (error) {
           console.error("Failed to delete dashboard:", error);
@@ -113,7 +120,7 @@ const DashboardEdit = () => {
           &lt; 돌아가기
         </button>
         <div className="flex flex-col gap-4">
-          <EditBoxUI title={originalTitle}>
+          <EditBox title={dashboardDetail ? dashboardDetail.title : ""}>
             <div className="px-4 md:px-7">
               <InputField
                 label="대시보드 이름"
@@ -141,13 +148,17 @@ const DashboardEdit = () => {
                 변경
               </button>
             </div>
-          </EditBoxUI>
-          <EditBoxUI title="구성원">
-            <MemberList dashboardId={dashboardId} />
-          </EditBoxUI>
-          <EditBoxUI title="초대 내역">
+          </EditBox>
+          <EditBox title="구성원">
+            <MemberList
+              dashboardId={dashboardId}
+              initialMembers={initialMembers}
+              totalCount={totalCount}
+            />
+          </EditBox>
+          <EditBox title="초대 내역">
             <InviteeList dashboardId={dashboardId} />
-          </EditBoxUI>
+          </EditBox>
         </div>
         <button
           type="button"

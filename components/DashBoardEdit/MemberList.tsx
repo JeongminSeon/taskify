@@ -4,13 +4,21 @@ import { getMembers } from "@/utils/api/membersApi";
 import { Member, MemberResponse } from "@/types/members";
 
 interface MemberListProps {
-  dashboardId: number; // dashboardId의 타입 정의
+  dashboardId: number;
+  initialMembers: Member[];
+  totalCount: number;
 }
 
-const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
-  const [members, setMembers] = useState<Member[]>([]);
+const MemberList: React.FC<MemberListProps> = ({
+  dashboardId,
+  initialMembers,
+  totalCount,
+}) => {
+  const [members, setMembers] = useState<Member[]>(initialMembers);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(0);
+  const [totalPages, setTotalPages] = useState<number>(
+    Math.ceil(totalCount / 5)
+  );
 
   useEffect(() => {
     const fetchMembers = async () => {

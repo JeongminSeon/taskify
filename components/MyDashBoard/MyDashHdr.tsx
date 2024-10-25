@@ -1,16 +1,15 @@
 import { hdMenuBtn, hdMenuBtnIcon } from "./MyDashStyle";
 import { UserResponse } from "@/types/users";
 import { useRouter } from "next/router";
-import useGetUser from "@/hooks/useGetUser";
+import { useDashboardContext } from "@/context/DashboardContext";
+import { useEffect, useState } from "react";
+import { getDashboardDetail } from "@/utils/api/dashboardsApi";
+import { getUser } from "@/utils/api/userApi";
 import Image from "next/image";
 import Link from "next/link";
-import { useDashboardContext } from "@/context/DashboardContext";
-import { useEffect } from "react";
-import { getDashboardDetail } from "@/utils/api/dashboardsApi";
 
 const MyDashHdr = () => {
-  const { data } = useGetUser();
-  const userData = data as UserResponse;
+  const [userData, setUserData] = useState<UserResponse | null>(null);
 
   const router = useRouter();
   const { dashboardid } = router.query;
@@ -18,11 +17,24 @@ const MyDashHdr = () => {
   const { dashboardDetail, setDashboardDetail } = useDashboardContext();
 
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const data = await getUser(); // 사용자 데이터 가져오기
+        setUserData(data);
+      } catch (error) {
+        console.error("사용자 정보를 가져오는 데 실패했습니다:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
     const fetchDashboardDetail = async () => {
       if (dashboardid) {
         try {
           const detail = await getDashboardDetail(Number(dashboardid));
-          setDashboardDetail(detail); // context에 대시보드 세부정보 저장
+          setDashboardDetail(detail);
         } catch (error) {
           console.error("Failed to fetch dashboard detail:", error);
         }
