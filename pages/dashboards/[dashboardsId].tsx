@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getColumns } from "../api/columnsApi";
+import { createColumn, getColumns } from "../api/columnsApi";
 import { ColoumnsParams, Columns, ColumnsResponse } from "@/types/columns";
 import Image from "next/image";
 import Column from "@/components/DashBoard/Column";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import Portal from "@/components/UI/Modal/ModalPotal";
 import OneInputModal from "@/components/UI/Modal/InputModal/OneInputModal";
-import { useOneInputModal } from "@/hooks/modal/useOneInputModal";
 
 const DashboardDetail: React.FC = () => {
   const teamId: string = "9-1";
@@ -16,9 +15,38 @@ const DashboardDetail: React.FC = () => {
   const [columns, setColumns] = useState<Columns[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const handleAddColumn = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleConfirm = async (inputValue: string) => {
+    alert("새로운 칼럼이 생성되었습니다.");
+    setIsModalOpen(false);
+    const newColumn = await createColumn({
+      teamId,
+      title: inputValue,
+      dashboardId: Number(dashboardsId),
+    });
+
+    if (newColumn) {
+      setColumns((prev) => [
+        ...prev,
+        { ...newColumn, teamId, dashboardId: Number(dashboardsId) },
+      ]);
+    }
+    // 샐행 후 컬럼 목록을 다시 불러오는 코드 작성
+    fetchColumns();
+  };
+
+  // 컬럼 목록 조회
   const fetchColumns = useCallback(async () => {
-    const dashboardId = Number(dashboardsId);
+    const dashboardId = Number(dashboardsId); // dashboardsId 숫자로 변환
     const params: ColoumnsParams = { teamId, dashboardId };
 
     try {
@@ -30,29 +58,13 @@ const DashboardDetail: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [teamId, dashboardsId]);
-  console.log(columns);
-
-  const {
-    isOpen,
-    inputValue,
-    openModal: handleAddColumn,
-    closeModal,
-    handleInputChange,
-    handleConfirm: handleModalConfirm,
-    resetInputValue,
-  } = useOneInputModal({
-    teamId,
-    dashboardId: Number(dashboardsId),
-    setColumns,
-    fetchColumns,
-  });
+  }, [teamId, dashboardsId]); // 의존성 배열에 teamId와 dashboardsId 포함
 
   useEffect(() => {
     if (dashboardsId) {
       fetchColumns();
     }
-  }, [dashboardsId, fetchColumns]);
+  }, [dashboardsId, fetchColumns]); // fetchColumns를 의존성으로 추가
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
@@ -81,17 +93,14 @@ const DashboardDetail: React.FC = () => {
         </div>
         <Portal>
           <OneInputModal
-            isOpen={isOpen}
+            isOpen={isModalOpen}
             modalTitle="새 칼럼 생성"
             inputLabel="이름"
             inputPlaceholder="컬럼 이름을 입력해주세요"
-            onCancel={closeModal}
-            cancelButtonText="취소"
-            onConfirm={handleModalConfirm}
+            onCancle={closeModal}
+            cancleButtonText="취소"
+            onConfirm={handleConfirm}
             confirmButtonText="생성"
-            inputValue={inputValue}
-            onInputChange={handleInputChange}
-            resetInputValue={resetInputValue}
           />
         </Portal>
       </div>
