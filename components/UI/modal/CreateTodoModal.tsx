@@ -2,12 +2,7 @@ import TodoForm from "@/components/DashBoard/TodoForm";
 import ModalLayout from "@/components/Layout/ModalLayout";
 import { TodoModalProps } from "@/types/dashboards";
 
-const CreateTodoModal = ({
-  columnId,
-  members,
-  isOpen,
-  onClose,
-}: TodoModalProps) => {
+const CreateTodoModal = ({ columnId, isOpen, onClose }: TodoModalProps) => {
   if (!isOpen) return null;
 
   return (
@@ -17,7 +12,7 @@ const CreateTodoModal = ({
           <h2 className="md:text-[24px] sm:text-[20px] font-[700] md:mb-8 sm:mb-6">
             할 일 생성
           </h2>
-          <TodoForm columnId={columnId} members={members} onClose={onClose} />
+          <TodoForm columnId={columnId} onClose={onClose} />
         </div>
       </div>
     </ModalLayout>
