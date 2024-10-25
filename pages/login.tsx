@@ -11,10 +11,12 @@ import { AxiosError } from "axios";
 import { getLogin } from "../utils/api/authApi";
 import { setAccessToken } from "@/utils/api/cookie";
 import { useRouter } from "next/router";
+import { useAuthStore } from "@/store/authStore";
 
 const Login = () => {
   const router = useRouter();
   const [isShowPW, setIsShowPw] = useState(false);
+  const login = useAuthStore((state) => state.login);
 
   const {
     enteredValue: emailValue,
@@ -52,8 +54,9 @@ const Login = () => {
 
     try {
       const response = await getLogin(formData);
-      const { accessToken } = response;
+      const { user, accessToken } = response; // 수정: response.data 대신 response에서 응답 받음
       setAccessToken(accessToken);
+      login(user); // 추가: 로그인 성공 시 useAuthStore의 login 함수 호출
       router.push("/mydashboard");
       return;
     } catch (error) {
