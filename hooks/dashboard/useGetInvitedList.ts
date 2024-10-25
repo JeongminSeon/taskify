@@ -1,6 +1,6 @@
 import { InviteListResponse, InviteList } from "@/types/invitedList";
 import { useCallback, useEffect, useState } from "react";
-import axiosInstance from "@/pages/api/axiosInstanceApi";
+import axiosInstance from "@/utils/api/axiosInstanceApi";
 
 export const useGetInvitedList = (size: number = 10) => {
   const [invitations, setInvitations] = useState<InviteList[]>([]); // 초대 목록 상태

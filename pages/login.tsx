@@ -7,9 +7,14 @@ import visibilityOn from "@/public/images/icons/icon_visibility.svg?url";
 import Input from "@/components/Auth/Input";
 import { isEmailValid, isPWValid } from "@/utils/validation";
 import useInput from "@/hooks/useInput";
+import { AxiosError } from "axios";
+import { getLogin } from "../utils/api/authApi";
+import { setAccessToken } from "@/utils/api/cookie";
+import { useRouter } from "next/router";
 
 const Login = () => {
-  const [isShowPW, setIsShwoPW] = useState(false);
+  const router = useRouter();
+  const [isShowPW, setIsShowPw] = useState(false);
 
   const {
     enteredValue: emailValue,
@@ -34,14 +39,39 @@ const Login = () => {
   });
 
   const handleShowPW = () => {
-    setIsShwoPW((prev) => !prev);
+    setIsShowPw((prev) => !prev);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    resetEmailInput();
-    resetPasswordInput();
+    const formData = {
+      email: emailValue,
+      password: passwordValue,
+    };
+
+    try {
+      const response = await getLogin(formData);
+      const { accessToken } = response;
+      setAccessToken(accessToken);
+      router.push("/mydashboard");
+      return;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const message = error.message;
+        const status = error.status;
+
+        if (status === 400) {
+          alert(message);
+        } else if (status === 404) {
+          alert(message);
+        } else {
+          console.error(message);
+        }
+      } else {
+        console.error("예기치 못한 에러가 발생했습니다.", error);
+      }
+    }
   };
 
   return (
