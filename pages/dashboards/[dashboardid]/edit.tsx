@@ -5,20 +5,19 @@ import {
   getDashboardDetail,
   updateDashboard,
 } from "@/utils/api/dashboardsApi";
-import { DashboardDetailResponse } from "@/types/dashboards";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import InputField from "@/components/My/InputField";
 import ColorChip from "@/components/UI/colorchip/ColorChip";
 import MemberList from "@/components/DashBoardEdit/MemberList";
 import EditBoxUI from "@/components/DashBoardEdit/EditBox";
 import InviteeList from "@/components/DashBoardEdit/InviteeList";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 const DashboardEdit = () => {
   const router = useRouter();
   const { dashboardid } = router.query;
   const dashboardId = Number(dashboardid);
-  const [dashboardDetail, setDashboardDetail] =
-    useState<DashboardDetailResponse | null>(null);
+  const { dashboards } = useDashboardContext();
   const [title, setTitle] = useState<string>("");
   const [originalTitle, setOriginalTitle] = useState<string>("");
   const [color, setColor] = useState<string>("");
@@ -35,12 +34,13 @@ const DashboardEdit = () => {
     router.back();
   };
 
+  console.log(dashboards);
+
   useEffect(() => {
     const fetchDashboardDetail = async () => {
       if (dashboardId) {
         try {
           const detail = await getDashboardDetail(dashboardId);
-          setDashboardDetail(detail);
           setTitle(detail.title);
           setOriginalTitle(detail.title);
           setColor(detail.color);
@@ -66,7 +66,7 @@ const DashboardEdit = () => {
           color
         );
         console.log("Updated Dashboard:", updatedDashboard);
-        // 업데이트 후 추가적인 동작 (예: 리다이렉트)
+        //router.push(`/dashboard/${dashboardId}`);
       } catch (error) {
         console.error("Failed to update dashboard:", error);
       }
@@ -104,7 +104,7 @@ const DashboardEdit = () => {
                 label="대시보드 이름"
                 name="dashName"
                 type="text"
-                placeholder="새 비밀번호 입력"
+                placeholder="대시보드 이름 입력"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />

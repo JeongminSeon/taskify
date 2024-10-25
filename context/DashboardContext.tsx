@@ -27,7 +27,7 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({
       const token = Cookies.get("accessToken");
       const isLoginPage = router.pathname === "/login";
       if (!token && !isLoginPage) {
-        router.push("/"); // 메인 페이지 경로로 변경
+        router.push("/");
         return;
       }
 

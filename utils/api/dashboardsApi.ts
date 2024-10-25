@@ -86,7 +86,6 @@ export const getInvitations = async (
         },
       }
     );
-    console.log("Response data:", response.data);
     return response.data;
   } catch (error) {
     console.error("초대 목록을 가져오는 데 실패했습니다:", error);

@@ -2,6 +2,7 @@ import { getInvitations } from "@/utils/api/dashboardsApi";
 import { Invitation, InvitationsResponse } from "@/types/dashboards";
 import { useEffect, useState } from "react";
 import Pagination from "../UI/pagination/Pagination";
+import UnInvited from "../MyDashBoard/UnInvited";
 
 interface InviteeListProps {
   dashboardId: number; // dashboardId의 타입 정의
@@ -77,7 +78,7 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
 
       {invitations.length === 0 ? (
         <div className="px-4 md:px-7 text-sm text-gray-500">
-          초대 목록이 없어요.
+          <UnInvited message="초대 목록이 없어요." />
         </div>
       ) : (
         <ul className="pt-[26px] md:pt-4">

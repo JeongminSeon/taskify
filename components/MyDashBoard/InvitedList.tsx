@@ -9,7 +9,7 @@ import UnInvited from "./UnInvited";
 const InvitedList = () => {
   const size = 10;
   const [searchTerm, setSearchTerm] = useState("");
-  const { data, loading, error } = useGetInvitedList(size);
+  const { data, error } = useGetInvitedList(size);
   const [filteredInvitations, setFilteredInvitations] = useState<InviteList[]>(
     []
   );
@@ -59,7 +59,6 @@ const InvitedList = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
@@ -68,7 +67,7 @@ const InvitedList = () => {
         초대받은 대시보드
       </h3>
       {filteredInvitations.length === 0 ? (
-        <UnInvited />
+        <UnInvited message="아직 초대받은 대시보드가 없어요 " />
       ) : (
         <>
           <div className="searchBox relative flex mt-4 mx-4 md:mx-7 ">
