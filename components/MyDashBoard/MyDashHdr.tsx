@@ -5,6 +5,8 @@ import useGetUser from "@/hooks/useGetUser";
 import Image from "next/image";
 import Link from "next/link";
 import { useDashboardContext } from "@/context/DashboardContext";
+import { useEffect } from "react";
+import { getDashboardDetail } from "@/utils/api/dashboardsApi";
 
 const MyDashHdr = () => {
   const { data } = useGetUser();
@@ -13,7 +15,23 @@ const MyDashHdr = () => {
   const router = useRouter();
   const { dashboardid } = router.query;
 
-  const { dashboardDetail } = useDashboardContext();
+  const { dashboardDetail, setDashboardDetail } = useDashboardContext();
+
+  useEffect(() => {
+    const fetchDashboardDetail = async () => {
+      if (dashboardid) {
+        try {
+          const detail = await getDashboardDetail(Number(dashboardid));
+          setDashboardDetail(detail); // context에 대시보드 세부정보 저장
+        } catch (error) {
+          console.error("Failed to fetch dashboard detail:", error);
+        }
+      }
+    };
+
+    fetchDashboardDetail();
+  }, [dashboardid, setDashboardDetail]);
+
   return (
     <div className="border-b border-gray400 bg-white">
       <div className="headerWrap flex justify-between items-center w-full p-[13px_8px_13px_18px] md:px-10 md:py-[15px]">

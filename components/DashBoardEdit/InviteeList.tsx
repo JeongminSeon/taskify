@@ -15,16 +15,18 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
 
   useEffect(() => {
     const fetchInvitations = async () => {
-      try {
-        const data: InvitationsResponse = await getInvitations(
-          dashboardId,
-          currentPage,
-          10
-        );
-        setInvitations(data.invitations);
-        setTotalPages(Math.ceil(data.totalCount / 10));
-      } catch (error) {
-        console.error("Error fetching invitations:", error);
+      if (dashboardId) {
+        try {
+          const data: InvitationsResponse = await getInvitations(
+            dashboardId,
+            currentPage,
+            10
+          );
+          setInvitations(data.invitations);
+          setTotalPages(Math.ceil(data.totalCount / 10));
+        } catch (error) {
+          console.error("Error fetching invitations:", error);
+        }
       }
     };
     fetchInvitations();
