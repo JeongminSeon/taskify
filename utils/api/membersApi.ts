@@ -3,16 +3,16 @@ import { MemberResponse } from "@/types/members";
 
 // 대시보드 멤버 목록 가져오기
 export const getMembers = async (
+  dashboardId: number,
   page: number,
-  size: number,
-  dashboardId: number
+  size: number
 ) => {
   try {
     const response = await axiosInstance.get<MemberResponse>(`/members`, {
       params: {
+        dashboardId,
         page,
         size,
-        dashboardId,
       },
     });
     return response.data;

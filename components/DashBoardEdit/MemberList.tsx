@@ -1,36 +1,45 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import Pagination from "../UI/pagination/Pagination";
 import { getMembers } from "@/utils/api/membersApi";
 import { Member, MemberResponse } from "@/types/members";
+import { GetServerSidePropsContext } from "next";
 
 interface MemberListProps {
   dashboardId: number; // dashboardId의 타입 정의
 }
 
-const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { dashboardid } = context.query;
+
+  let initialMembers: Member[] = [];
+  let totalCount = 0;
+
+  try {
+    const data: MemberResponse = await getMembers(Number(dashboardid), 1, 5);
+    initialMembers = data.members;
+    totalCount = data.totalCount;
+  } catch (error) {
+    console.error("Failed to fetch members:", error);
+  }
+
+  return {
+    props: {
+      dashboardId: Number(dashboardid),
+      initialMembers,
+      totalCount,
+    },
+  };
+}
+
+const MemberList: React.FC<MemberListProps> = ({
+  dashboardId,
+  initialMembers,
+  totalCount,
+}) => {
   const [members, setMembers] = useState<Member[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchMembers = async () => {
-      setError(null);
-      try {
-        const data: MemberResponse = await getMembers(
-          currentPage,
-          5,
-          dashboardId
-        );
-        setMembers(data.members);
-        setTotalPages(Math.ceil(data.totalCount / 5));
-      } catch (error) {
-        console.error("Failed to dashboard memeber:", error);
-      }
-    };
-
-    fetchMembers();
-  }, [currentPage, dashboardId]);
 
   const handleNextPage = () => {
     setCurrentPage((prev) => prev + 1);
