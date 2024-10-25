@@ -81,6 +81,7 @@ export const getInvitations = async (
       `/dashboards/${dashboardId}/invitations`,
       {
         params: {
+          dashboardId,
           page,
           size,
         },

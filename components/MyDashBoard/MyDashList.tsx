@@ -8,7 +8,7 @@ import Pagination from "../UI/pagination/Pagination";
 const MyDashList: React.FC = () => {
   const { dashboards } = useDashboardContext();
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // 한 페이지에 보여줄 대시보드 수
+  const itemsPerPage = 5; // 한 페이지에 보여줄 대시보드 수
   const totalPages = dashboards
     ? Math.ceil(dashboards.dashboards.length / itemsPerPage)
     : 0;

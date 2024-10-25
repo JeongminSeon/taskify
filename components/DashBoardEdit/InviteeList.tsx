@@ -20,10 +20,10 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
           const data: InvitationsResponse = await getInvitations(
             dashboardId,
             currentPage,
-            10
+            5
           );
           setInvitations(data.invitations);
-          setTotalPages(Math.ceil(data.totalCount / 10));
+          setTotalPages(Math.ceil(data.totalCount / 5));
         } catch (error) {
           console.error("Error fetching invitations:", error);
         }
