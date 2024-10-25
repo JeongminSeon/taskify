@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import InputField from "./InputField";
 import MyButton from "./MyButton";
 import ModalAlert from "../UI/modal/ModalAlert";
-import useModalAlert from "@/hooks/useModalAlert";
+import useModal from "@/hooks/useModal";
 import { isPWValid, isSame, isEntered } from "@/utils/validation";
 
 const MyPassWord: React.FC = () => {
-  const { isOpen, openModal, closeModal } = useModalAlert();
+  const { isOpen, openModal, closeModal } = useModal();
   const [password, setPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [newPasswordConfirm, setNewPasswordConfirm] = useState<string>("");
