@@ -54,17 +54,11 @@ const MyDashHdr = () => {
         <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray400 md:ml-8 md:pl-8 lg:ml-9 lg:pl-9">
           <span className="overflow-hidden relative w-[34px] h-[34px] rounded-full bg-slate-500">
             {userData?.profileImageUrl ? (
-              <Image
-                src={userData.profileImageUrl}
-                fill
-                objectFit="cover"
-                alt="Profile Image"
-              />
+              <Image src={userData.profileImageUrl} fill alt="Profile Image" />
             ) : (
               <Image
                 src="https://via.placeholder.com/34"
                 fill
-                objectFit="cover"
                 alt="Default Profile"
               />
             )}
