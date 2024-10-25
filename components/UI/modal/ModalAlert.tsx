@@ -1,3 +1,5 @@
+import ModalLayout from "@/components/Layout/ModalLayout";
+
 interface ModalAlertProps {
   isOpen: boolean;
   onClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -7,7 +9,7 @@ interface ModalAlertProps {
 const ModalAlert = ({ isOpen, onClose, text }: ModalAlertProps) => {
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <ModalLayout>
       <div className="flex flex-col justify-center items-center bg-white rounded-2xl md:w-[368px] md:h-48 sm:w-[272px] sm:h-[164px]">
         <p className="md:text-[20px] sm:text-[16px] font-[500] mb-8">{text}</p>
         <button
@@ -17,7 +19,7 @@ const ModalAlert = ({ isOpen, onClose, text }: ModalAlertProps) => {
           닫기
         </button>
       </div>
-    </div>
+    </ModalLayout>
   );
 };
 

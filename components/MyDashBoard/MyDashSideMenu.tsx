@@ -5,6 +5,7 @@ import DashBoardLink from "./DashBoardLink";
 
 const MyDashSideMenu: React.FC = () => {
   const { dashboards } = useDashboardContext();
+
   return (
     <div className="sticky top-0 h-screen py-5 px-[14px] border-r border-gray400 bg-white lg:px-2 ">
       <h1 className="md:hidden">

@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import useGetUser from "@/hooks/useGetUser";
 import Image from "next/image";
 import Link from "next/link";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 const MyDashHdr = () => {
   const { data } = useGetUser();
@@ -12,11 +13,12 @@ const MyDashHdr = () => {
   const router = useRouter();
   const { dashboardid } = router.query;
 
+  const { dashboardDetail } = useDashboardContext();
   return (
     <div className="border-b border-gray400 bg-white">
       <div className="headerWrap flex justify-between items-center w-full p-[13px_8px_13px_18px] md:px-10 md:py-[15px]">
         <h2 className="pageTitle flex-1 text-x font-bold md:text-xl lg:text-[2rem]">
-          내 대시보드
+          {dashboardDetail?.title || "내 대시보드"}
         </h2>
         <ul className="flex gap-[6px] md:gap-4">
           <li>

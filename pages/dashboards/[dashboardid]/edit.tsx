@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useDashboardContext } from "@/context/DashboardContext";
+import { DashboardDetailResponse } from "@/types/dashboards";
 import {
   deleteDashboard,
   getDashboardDetail,
+  getDashboards,
   updateDashboard,
 } from "@/utils/api/dashboardsApi";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
@@ -11,36 +14,27 @@ import ColorChip from "@/components/UI/colorchip/ColorChip";
 import MemberList from "@/components/DashBoardEdit/MemberList";
 import EditBoxUI from "@/components/DashBoardEdit/EditBox";
 import InviteeList from "@/components/DashBoardEdit/InviteeList";
-import { useDashboardContext } from "@/context/DashboardContext";
 
 const DashboardEdit = () => {
   const router = useRouter();
   const { dashboardid } = router.query;
   const dashboardId = Number(dashboardid);
-  const { dashboards } = useDashboardContext();
+
+  const [initialDetail, setInitialDetail] =
+    useState<DashboardDetailResponse | null>(null);
   const [title, setTitle] = useState<string>("");
   const [originalTitle, setOriginalTitle] = useState<string>("");
   const [color, setColor] = useState<string>("");
 
-  const colorChips = [
-    { id: 1, color: "#7AC555" },
-    { id: 2, color: "#760DDE" },
-    { id: 3, color: "#FFA500" },
-    { id: 4, color: "#76A5EA" },
-    { id: 5, color: "#E876EA" },
-  ];
+  const { setDashboards, setDashboardDetail } = useDashboardContext();
 
-  const returnButton = () => {
-    router.back();
-  };
-
-  console.log(dashboards);
-
+  // 대시보드 상세 정보 가져오기
   useEffect(() => {
     const fetchDashboardDetail = async () => {
       if (dashboardId) {
         try {
           const detail = await getDashboardDetail(dashboardId);
+          setInitialDetail(detail);
           setTitle(detail.title);
           setOriginalTitle(detail.title);
           setColor(detail.color);
@@ -53,10 +47,26 @@ const DashboardEdit = () => {
     fetchDashboardDetail();
   }, [dashboardId]);
 
+  // 뒤로가기 버튼
+  const returnButton = () => {
+    router.back();
+  };
+
+  // 컬러 고정
+  const colorChips = [
+    { id: 1, color: "#7AC555" },
+    { id: 2, color: "#760DDE" },
+    { id: 3, color: "#FFA500" },
+    { id: 4, color: "#76A5EA" },
+    { id: 5, color: "#E876EA" },
+  ];
+
+  // 컬러 변경
   const handleColorChange = (selectedColor: string) => {
     setColor(selectedColor);
   };
 
+  // 대시보드 변경 사항 업데이트
   const handleUpdate = async () => {
     if (dashboardId) {
       try {
@@ -65,14 +75,19 @@ const DashboardEdit = () => {
           title,
           color
         );
-        console.log("Updated Dashboard:", updatedDashboard);
-        //router.push(`/dashboard/${dashboardId}`);
+        setOriginalTitle(updatedDashboard.title);
+        setColor(updatedDashboard.color);
+        setDashboardDetail(updatedDashboard);
+
+        const updatedDashboards = await getDashboards(1, 10);
+        setDashboards(updatedDashboards);
       } catch (error) {
         console.error("Failed to update dashboard:", error);
       }
     }
   };
 
+  // 대시보드 삭제
   const handleDeleteDashboard = async () => {
     if (dashboardId) {
       const confirmDelete = confirm("이 대시보드를 정말 삭제하시겠습니까?");

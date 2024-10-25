@@ -1,32 +1,41 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { getDashboards } from "@/utils/api/dashboardsApi";
-import { DashboardResponse } from "@/types/dashboards";
+import { DashboardDetailResponse, DashboardResponse } from "@/types/dashboards";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 
 interface DashboardContextType {
   dashboards: DashboardResponse | null;
+  dashboardDetail: DashboardDetailResponse | null;
+  setDashboards: React.Dispatch<React.SetStateAction<DashboardResponse | null>>;
+  setDashboardDetail: React.Dispatch<
+    React.SetStateAction<DashboardDetailResponse | null>
+  >;
   loading: boolean;
   error: string | null;
 }
 
+// 대시보드와 관련된 상태를 관리할 Context를 생성
 const DashboardContext = createContext<DashboardContextType | undefined>(
   undefined
 );
 
+// 대시보드의 상세 정보를 저장할 상태를 정의
 export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
   const [dashboards, setDashboards] = useState<DashboardResponse | null>(null);
+  const [dashboardDetail, setDashboardDetail] =
+    useState<DashboardDetailResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchDashboards = async () => {
-      const token = Cookies.get("accessToken");
+      const accessToken = Cookies.get("accessToken");
       const isLoginPage = router.pathname === "/login";
-      if (!token && !isLoginPage) {
+      if (!accessToken && !isLoginPage) {
         router.push("/");
         return;
       }
@@ -46,8 +55,17 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [router]);
 
   return (
-    <DashboardContext.Provider value={{ dashboards, loading, error }}>
-      {loading ? <div>Loading...</div> : children}
+    <DashboardContext.Provider
+      value={{
+        dashboards,
+        dashboardDetail,
+        setDashboards,
+        setDashboardDetail,
+        loading,
+        error,
+      }}
+    >
+      {children}
     </DashboardContext.Provider>
   );
 };

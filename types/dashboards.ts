@@ -51,3 +51,34 @@ export interface InvitationsResponse {
   invitations: Invitation[];
   totalCount: number;
 }
+
+export interface MemberProps {
+  id: number;
+  userId: number;
+  email: string;
+  nickname: string;
+  profileImageUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  isOwner: boolean;
+}
+
+export interface TodoFormProps {
+  title: string;
+  description: string;
+  dueDate: Date | null;
+  tags: {
+    color: string;
+    text: string;
+    id: number;
+  }[];
+  imageUrl: File[] | null;
+}
+
+export interface TodoModalProps {
+  columnId: number;
+  members: MemberProps[];
+  isOpen?: boolean;
+  onClose: () => void;
+  data?: TodoFormProps;
+}

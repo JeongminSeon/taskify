@@ -34,3 +34,14 @@ export interface ColumnsCreateResponse {
   createdAt: string;
   updatedAt: string;
 }
+
+// 이미지 생성 파라미터 타입
+export interface ImageCreateParams {
+  columnId: number;
+  image: File | null;
+}
+
+// 이미지 생성 응답 타입
+export interface ImageCreateResponse {
+  imageUrl: string;
+}
