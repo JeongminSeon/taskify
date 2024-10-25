@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Pagination from "../UI/pagination/Pagination";
-import { getMembers } from "@/utils/api/membersApi";
+import { deleteMember, getMembers } from "@/utils/api/membersApi";
 import { Member, MemberResponse } from "@/types/members";
 
 interface MemberListProps {
@@ -48,6 +48,18 @@ const MemberList: React.FC<MemberListProps> = ({
     setCurrentPage((prev) => Math.max(prev - 1, 1)); // 1페이지 이하로는 내리지 않음
   };
 
+  // 멤버 삭제 핸들러
+  const handleDeleteMember = async (memberId: number) => {
+    try {
+      await deleteMember(memberId);
+      setMembers((prevMembers) =>
+        prevMembers.filter((member) => member.id !== memberId)
+      ); // 삭제 후 상태 업데이트
+    } catch (error) {
+      console.error("Failed to delete member:", error);
+    }
+  };
+
   return (
     <>
       <div className="absolute right-4 md:right-7 top-5">
@@ -72,6 +84,7 @@ const MemberList: React.FC<MemberListProps> = ({
             <button
               type="button"
               className="sm:w-[52px] md:w-[84px] h-8 border borer-gray400 rounded-[4px] text-xs md:text-sm text-purple100 font-medium leading-8"
+              onClick={() => handleDeleteMember(member.id)}
             >
               삭제하기
             </button>

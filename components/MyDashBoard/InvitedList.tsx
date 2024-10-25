@@ -1,7 +1,7 @@
-import { useGetInvitedList } from "@/hooks/dashboard/useGetInvitedList";
 import { useEffect, useState } from "react";
-import { InviteList } from "@/types/invitedList";
+import { MyInviteList } from "@/types/invitedList";
 import { tableHd, tableBox, acceptBtn } from "./MyDashStyle";
+import { getMyInvitations } from "@/utils/api/invitationsApi";
 import Image from "next/image";
 import axiosInstance from "@/utils/api/axiosInstanceApi";
 import UnInvited from "./UnInvited";
@@ -9,10 +9,24 @@ import UnInvited from "./UnInvited";
 const InvitedList = () => {
   const size = 10;
   const [searchTerm, setSearchTerm] = useState("");
-  const { data, error } = useGetInvitedList(size);
-  const [filteredInvitations, setFilteredInvitations] = useState<InviteList[]>(
-    []
-  );
+  const [invitations, setInvitations] = useState<MyInviteList[]>([]);
+  const [filteredInvitations, setFilteredInvitations] = useState<
+    MyInviteList[]
+  >([]);
+
+  useEffect(() => {
+    const fetchInvitations = async () => {
+      try {
+        const data = await getMyInvitations(size);
+        setInvitations(data.invitations);
+        setFilteredInvitations(data.invitations);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchInvitations();
+  }, []);
 
   const handleInviteResponse = async (
     invitationId: number,
@@ -27,20 +41,14 @@ const InvitedList = () => {
     }
   };
 
-  useEffect(() => {
-    if (data) {
-      setFilteredInvitations(data);
-    }
-  }, [data]);
-
   // 검색 기능
   const performSearch = () => {
     if (!searchTerm) {
-      setFilteredInvitations(data || []);
+      setFilteredInvitations(invitations || []);
       return;
     }
 
-    const filtered = (data || []).filter(
+    const filtered = (invitations || []).filter(
       (invite) =>
         invite.invitee.nickname
           .toLowerCase()
@@ -59,15 +67,13 @@ const InvitedList = () => {
     }
   };
 
-  if (error) return <p>Error: {error}</p>;
-
   return (
     <div className="invitedList mt-6 p md:mt-12 lg:mt-10 bg-white rounded-lg">
       <h3 className="pt-6 px-4 md:pt-[18px] md:px-7 lg:pt-8 text-2xl font-bold">
         초대받은 대시보드
       </h3>
       {filteredInvitations.length === 0 ? (
-        <UnInvited message="아직 초대받은 대시보드가 없어요 " />
+        <UnInvited />
       ) : (
         <>
           <div className="searchBox relative flex mt-4 mx-4 md:mx-7 ">

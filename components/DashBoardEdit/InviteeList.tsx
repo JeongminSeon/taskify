@@ -65,14 +65,6 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
           type="button"
           className="float-right flex items-center gap-[6px] md:gap-2 md:w-[105px] h-[26px] md:h-8 px-3 text-white100 text-xs md:text-sm bg-purple100 rounded-[4px]"
         >
-          {/* <Image
-            src="/images/icons/icon_add_box.svg"
-            width={16}
-            height={16}
-            alt="초대하기"
-            className="text-white"
-          /> 
-          */}
           <svg
             width="20"
             height="20"

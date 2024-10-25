@@ -21,3 +21,13 @@ export const getMembers = async (
     throw error;
   }
 };
+
+// 대시보드 멤버 삭제하기
+export const deleteMember = async (memberId: number): Promise<void> => {
+  try {
+    await axiosInstance.delete(`/members/${memberId}`);
+  } catch (error) {
+    console.error("멤버 목록 삭제하는 데 실패했습니다:", error);
+    throw error;
+  }
+};
