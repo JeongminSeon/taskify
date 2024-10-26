@@ -12,7 +12,7 @@ import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
 const DashboardDetail: React.FC = () => {
   const teamId: string = "9-1";
   const router = useRouter();
-  const { dashboardid } = router.query;
+  const { dashboardsId } = router.query;
   const [columns, setColumns] = useState<Columns[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +26,7 @@ const DashboardDetail: React.FC = () => {
   } = useOneInputModal();
 
   const fetchColumns = useCallback(async () => {
-    const dashboardId = Number(dashboardid);
+    const dashboardId = Number(dashboardsId);
     const params: ColoumnsParams = { teamId, dashboardId };
 
     try {
@@ -36,7 +36,7 @@ const DashboardDetail: React.FC = () => {
       console.error("Error fetching columns:", err);
       setError("Failed to fetch columns. Please try again later.");
     }
-  }, [teamId, dashboardid]);
+  }, [teamId, dashboardsId]);
 
   const handleConfirm = useCallback(
     (inputValue: string) => {
@@ -44,30 +44,25 @@ const DashboardDetail: React.FC = () => {
       createColumn({
         teamId,
         title: inputValue,
-        dashboardId: Number(dashboardid),
-      })
-        .then((newColumn) => {
-          if (newColumn) {
-            setColumns((prev) => [
-              ...prev,
-              { ...newColumn, teamId, dashboardId: Number(dashboardid) },
-            ]);
-          }
-          return fetchColumns();
-        })
-        .catch((error) => {
-          console.error("칼럼 생성 중 오류 발생:", error);
-          alert("칼럼 생성에 실패했습니다. 다시 시도해 주세요.");
-        });
+        dashboardId: Number(dashboardsId),
+      }).then((newColumn) => {
+        if (newColumn) {
+          setColumns((prev) => [
+            ...prev,
+            { ...newColumn, teamId, dashboardId: Number(dashboardsId) },
+          ]);
+        }
+        fetchColumns();
+      });
     },
-    [teamId, dashboardid, fetchColumns]
+    [teamId, dashboardsId, fetchColumns]
   );
 
   useEffect(() => {
-    if (dashboardid) {
+    if (dashboardsId) {
       fetchColumns();
     }
-  }, [dashboardid, fetchColumns]);
+  }, [dashboardsId, fetchColumns]);
 
   if (error) return <div>{error}</div>;
 

@@ -1,8 +1,8 @@
-import Portal from "@/components/UI/Modal/ModalPotal";
+import Portal from "@/components/UI/modal/ModalPotal";
 import { Columns, ColumnsResponse } from "@/types/columns";
 import { useEffect, useState } from "react";
 import { getColumns } from "../../utils/api/columnsApi";
-import CardDetailModal from "@/components/UI/Modal/CardModal/CardDetailModal";
+import CardDetailModal from "@/components/UI/modal/CardModal/CardDetailModal";
 
 const CardsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

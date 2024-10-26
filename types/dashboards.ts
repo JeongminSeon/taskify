@@ -57,18 +57,22 @@ export interface MemberProps {
   userId: number;
   email: string;
   nickname: string;
-  profileImageUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  isOwner: boolean;
+  profileImageUrl?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  isOwner?: boolean;
+}
+export interface MembersResponse {
+  members: MemberProps[];
+  totalCount: number;
 }
 
 export interface TodoFormProps {
+  assigneeUserId: number;
   title: string;
   description: string;
   dueDate: Date | null;
   tags: {
-    color: string;
     text: string;
     id: number;
   }[];
@@ -77,7 +81,6 @@ export interface TodoFormProps {
 
 export interface TodoModalProps {
   columnId: number;
-  members: MemberProps[];
   isOpen?: boolean;
   onClose: () => void;
   data?: TodoFormProps;

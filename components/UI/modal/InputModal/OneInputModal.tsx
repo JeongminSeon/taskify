@@ -32,6 +32,10 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
     onConfirm(inputValue);
   };
 
+  const handleCancel = () => {
+    onCancel();
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -40,7 +44,7 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>{modalTitle}</h2>
           <button
-            onClick={onCancel}
+            onClick={handleCancel}
             className={styles.closeButton}
             aria-label="닫기"
           >
@@ -69,7 +73,7 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
           <div className="flex gap-2">
             <button
               type="button"
-              onClick={onCancel}
+              onClick={handleCancel}
               className={styles.cancelButton}
             >
               {cancelButtonText}

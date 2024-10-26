@@ -18,6 +18,7 @@ const onError = (status: number, message: string) => {
   throw error;
 };
 
+// 회원가입
 export const createUser = async (formData: formData) => {
   try {
     const response = await axiosInstance.post("/users", formData);
@@ -43,9 +44,12 @@ export const createUser = async (formData: formData) => {
   }
 };
 
+// 로그인
 export const getLogin = async (loginData: loginData) => {
   try {
     const response = await axiosInstance.post("/auth/login", loginData);
+    console.log(response.data);
+
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -64,5 +68,16 @@ export const getLogin = async (loginData: loginData) => {
           break;
       }
     }
+  }
+};
+
+// 내 정보 조회
+export const getUserInfo = async () => {
+  try {
+    const response = await axiosInstance.get("/users/me");
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch user info:", error);
+    throw error;
   }
 };

@@ -2,18 +2,17 @@ import Image from "next/image";
 import CardList from "@/components/Cards/CardList";
 import useModal from "@/hooks/useModal";
 import CreateTodoModal from "@/components/UI/modal/CreateTodoModal";
-import { MemberProps } from "@/types/dashboards";
+import Portal from "../UI/modal/ModalPotal";
 
 interface ColumnProps {
   id: number;
   title: string;
-  members: MemberProps[];
 }
 
-const Column: React.FC<ColumnProps> = ({ id, title, members }) => {
+const Column: React.FC<ColumnProps> = ({ id, title }) => {
   const { isOpen, openModal, closeModal } = useModal();
 
-  const handleAddColumn = () => {
+  const handleAddCard = () => {
     openModal();
   };
   return (
@@ -33,7 +32,7 @@ const Column: React.FC<ColumnProps> = ({ id, title, members }) => {
       <button
         type="button"
         className="block w-full h-8 md:h-10 mt-6 border border-gray400 rounded-md bg-white100"
-        onClick={handleAddColumn}
+        onClick={handleAddCard}
       >
         <Image
           src="/images/icons/icon_add_column.svg"
@@ -45,12 +44,9 @@ const Column: React.FC<ColumnProps> = ({ id, title, members }) => {
       </button>
       <CardList columnId={id} />
       {isOpen && (
-        <CreateTodoModal
-          columnId={id}
-          members={members}
-          isOpen={isOpen}
-          onClose={closeModal}
-        />
+        <Portal>
+          <CreateTodoModal columnId={id} isOpen={isOpen} onClose={closeModal} />
+        </Portal>
       )}
     </div>
   );
