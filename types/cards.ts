@@ -1,7 +1,7 @@
 // 카드 생성 body 타입
 export interface CreateCardBody {
   assigneeUserId: number;
-  dashboardId: string | string[] | undefined; //query사용을 위해 임시로 등록
+  dashboardId: number;
   columnId: number;
   title: string;
   description: string;

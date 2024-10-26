@@ -75,7 +75,12 @@ const DashboardDetail: React.FC = () => {
     <DashBoardLayout>
       <div className="columns flex flex-col lg:flex-row">
         {columns.map((item) => (
-          <Column key={item.id} id={item.id} title={item.title} />
+          <Column
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            dashboardId={Number(dashboardsId)}
+          />
         ))}
         <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 border-r border-[gray600]">
           <button

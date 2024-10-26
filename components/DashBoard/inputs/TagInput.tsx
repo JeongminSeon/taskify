@@ -1,48 +1,49 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { boxStyle, inputStyle, labelStyle } from "../styles";
 import TodoTagList from "../TodoTagList";
 
 interface TagInputProps {
   value: string[];
+  onChange: (tags: TempTagsProps[]) => void;
 }
 
 export interface TempTagsProps {
   text: string;
-  id: number;
+  id: string;
 }
 
-const TagInput = ({ value }: TagInputProps) => {
+const TagInput = ({ value, onChange }: TagInputProps) => {
   const [tag, setTag] = useState<string>("");
   const [tempTags, setTempTags] = useState<TempTagsProps[]>([]);
-  const idRef = useRef<number>(0);
 
   useEffect(() => {
     setTempTags(
       value.map((item) => ({
         text: item,
-        id: idRef.current++,
+        id: uuidv4(),
       }))
     );
   }, [value]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && tag.length > 0) {
+    if (e.key === "Enter" && tag.trim().length > 0) {
       e.preventDefault();
       const newTag = {
         text: tag,
-        id: idRef.current++,
+        id: uuidv4(),
       };
-      setTempTags((prevData) => ({
-        ...prevData,
-        tags: [...prevData, newTag],
-      }));
+      const updatedTags = [...tempTags, newTag];
+      setTempTags(updatedTags);
+      onChange(updatedTags);
       setTag("");
     }
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     const nextTags = tempTags.filter((item) => item.id !== id);
     setTempTags(nextTags);
+    onChange(nextTags);
   };
 
   return (

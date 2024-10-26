@@ -5,9 +5,10 @@ import Card from "./Card";
 
 interface CardListProps {
   columnId: number;
+  dashboardId: number;
 }
 
-const CardList: React.FC<CardListProps> = ({ columnId }) => {
+const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
   const [cards, setCards] = useState<CardType[]>([]);
 
   useEffect(() => {
@@ -28,7 +29,12 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
   return (
     <ul className="mt-4 flex flex-col gap-4">
       {cards.map((card) => (
-        <Card key={card.id} card={card} id={card.id} />
+        <Card
+          key={card.id}
+          card={card}
+          id={card.id}
+          dashboardId={dashboardId}
+        />
       ))}
     </ul>
   );

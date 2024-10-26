@@ -6,7 +6,7 @@ const TodoTagList = ({
   onDelete,
 }: {
   tags: TempTagsProps[];
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => void;
 }) => {
   return (
     <ul className="flex flex-wrap gap-[10px] mt-2">
@@ -22,9 +22,7 @@ const TodoTagList = ({
             width="22"
             height="22"
             alt="태그 취소"
-            onClick={() => {
-              onDelete(tag.id);
-            }}
+            onClick={() => onDelete(tag.id)}
           />
         </li>
       ))}

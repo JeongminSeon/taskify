@@ -4,7 +4,6 @@ import TodoButton from "./TodoButton";
 import "react-datepicker/dist/react-datepicker.css";
 import { INITIAL_VALUES, validateForm } from "@/utils/TodoForm";
 import useImagePreview from "@/hooks/dashboard/useImagePreview";
-import { createCardImage } from "@/utils/api/columnsApi";
 import { createCard } from "@/utils/api/cardsApi";
 import { CreateCardBody } from "@/types/cards";
 import TitleInput from "./inputs/TitleInput";
@@ -14,13 +13,9 @@ import TagInput from "./inputs/TagInput";
 import ImageUpload from "./ImageUpload";
 import UserInput from "./inputs/UserInput";
 
-import { useRouter } from "next/router";
-
-const CreateTodoForm = ({ columnId, onClose }: TodoModalProps) => {
+const CreateTodoForm = ({ columnId, onClose, dashboardId }: TodoModalProps) => {
   const [formData, setFormData] = useState<TodoFormProps>(INITIAL_VALUES);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const router = useRouter();
-  const { dashboardsId } = router.query;
   const preview = useImagePreview(formData.imageUrl ? formData.imageUrl : null);
 
   useEffect(() => {
@@ -41,30 +36,22 @@ const CreateTodoForm = ({ columnId, onClose }: TodoModalProps) => {
       return;
     }
 
+    if (!columnId) return;
+    if (!dashboardId) return;
     try {
-      const file = formData.imageUrl ? formData.imageUrl : "";
-      if (!columnId) return;
-
-      const updatedImage = await createCardImage({ columnId, image: file! });
-
-      if (!updatedImage || !updatedImage.imageUrl) {
-        throw new Error("이미지 업로드 실패");
-      }
-
       const outputData: CreateCardBody = {
         assigneeUserId: formData.assigneeUserId,
-        dashboardId: dashboardsId,
+        dashboardId,
         columnId,
         title: formData.title,
         description: formData.description,
         dueDate: formData.dueDate,
         tags: formData.tags,
-        imageUrl: updatedImage.imageUrl,
+        imageUrl: formData.imageUrl,
       };
 
       try {
         await createCard(outputData);
-
         setFormData(INITIAL_VALUES);
         onClose();
       } catch (error) {
@@ -82,7 +69,7 @@ const CreateTodoForm = ({ columnId, onClose }: TodoModalProps) => {
         onChange={(value) =>
           setFormData({ ...formData, assigneeUserId: Number(value) })
         }
-        dashboardsId={dashboardsId}
+        dashboardId={dashboardId || 0}
       />
 
       <TitleInput
@@ -98,7 +85,12 @@ const CreateTodoForm = ({ columnId, onClose }: TodoModalProps) => {
         onChange={(date) => setFormData({ ...formData, dueDate: date })}
       />
 
-      <TagInput value={formData.tags} />
+      <TagInput
+        value={formData.tags}
+        onChange={(tags) =>
+          setFormData({ ...formData, tags: tags.map((tag) => tag.text) })
+        }
+      />
 
       {columnId && (
         <ImageUpload

@@ -4,21 +4,21 @@ import { Card as CardType } from "@/types/cards";
 import useModal from "@/hooks/useModal";
 import Portal from "../UI/modal/ModalPotal";
 import UpdateTodoModal from "../UI/modal/UpdateTodoModal";
+import { v4 as uuidv4 } from "uuid";
 
 interface CardProps {
   card: CardType;
   id: number;
+  dashboardId: number;
 }
 
-const Card: React.FC<CardProps> = ({ card, id }) => {
+const Card: React.FC<CardProps> = ({ card, id, dashboardId }) => {
   const { isOpen, openModal, closeModal } = useModal();
-
-  const handleUpdateCard = () => openModal();
 
   return (
     <li
-      onClick={handleUpdateCard}
-      className="md:flex md:gap-5 lg:block p-3 border border-gray400 rounded-md bg-white100"
+      onClick={openModal}
+      className="md:flex md:gap-5 lg:block p-3 border border-gray400 rounded-md bg-white100 cursor-pointer"
     >
       <div className="overflow-hidden relative w-full h-40 md:flex-[0_0_90px] lg:flex-1 md:h-auto lg:h-40 rounded-md">
         <Image
@@ -36,7 +36,7 @@ const Card: React.FC<CardProps> = ({ card, id }) => {
               const tagColor = getRandomColor();
               return (
                 <span
-                  key={tag}
+                  key={uuidv4()}
                   className="tag py-1 px-[6px] rounded"
                   style={{
                     backgroundColor: hexToRgba(tagColor, 0.2),
@@ -74,7 +74,12 @@ const Card: React.FC<CardProps> = ({ card, id }) => {
       </div>
       {isOpen && (
         <Portal>
-          <UpdateTodoModal cardId={id} isOpen={isOpen} onClose={closeModal} />
+          <UpdateTodoModal
+            cardId={id}
+            isOpen={isOpen}
+            onClose={closeModal}
+            dashboardId={dashboardId}
+          />
         </Portal>
       )}
     </li>

@@ -38,7 +38,7 @@ export interface ColumnsCreateResponse {
 // 이미지 생성 파라미터 타입
 export interface ImageCreateParams {
   columnId: number;
-  image: File | string | null;
+  image: File;
 }
 
 // 이미지 생성 응답 타입

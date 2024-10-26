@@ -52,3 +52,20 @@ export const getCard = async ({
     throw error;
   }
 };
+
+// 카드 상세 수정
+export const UpdateCard = async ({
+  cardId,
+  formData,
+}: {
+  cardId: number;
+  formData: CreateCardBody;
+}): Promise<CardResponse> => {
+  try {
+    const response = await axiosInstance.put(`/cards/${cardId}`, formData);
+    return response.data;
+  } catch (error) {
+    console.error("카드를 조회하는 중 오류가 발생했습니다:", error);
+    throw error;
+  }
+};

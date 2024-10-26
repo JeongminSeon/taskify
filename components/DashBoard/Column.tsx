@@ -7,14 +7,12 @@ import Portal from "../UI/modal/ModalPotal";
 interface ColumnProps {
   id: number;
   title: string;
+  dashboardId: number;
 }
 
-const Column: React.FC<ColumnProps> = ({ id, title }) => {
+const Column: React.FC<ColumnProps> = ({ id, title, dashboardId }) => {
   const { isOpen, openModal, closeModal } = useModal();
 
-  const handleAddCard = () => {
-    openModal();
-  };
   return (
     <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 sm:border-b border-r border-[gray600]">
       <h2 className="flex items-center gap-2 text-black100 font-bold">
@@ -32,7 +30,7 @@ const Column: React.FC<ColumnProps> = ({ id, title }) => {
       <button
         type="button"
         className="block w-full h-8 md:h-10 mt-6 border border-gray400 rounded-md bg-white100"
-        onClick={handleAddCard}
+        onClick={openModal}
       >
         <Image
           src="/images/icons/icon_add_column.svg"
@@ -42,10 +40,15 @@ const Column: React.FC<ColumnProps> = ({ id, title }) => {
           className="mx-auto"
         />
       </button>
-      <CardList columnId={id} />
+      <CardList columnId={id} dashboardId={dashboardId} />
       {isOpen && (
         <Portal>
-          <CreateTodoModal columnId={id} isOpen={isOpen} onClose={closeModal} />
+          <CreateTodoModal
+            columnId={id}
+            isOpen={isOpen}
+            onClose={closeModal}
+            dashboardId={dashboardId}
+          />
         </Portal>
       )}
     </div>

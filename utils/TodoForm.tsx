@@ -27,7 +27,7 @@ export const validateForm = (formData: TodoFormProps) => {
     formData.description &&
     formData.dueDate &&
     formData.tags.length > 0 &&
-    formData.imageUrl !== null
+    formData.imageUrl !== ""
   );
 };
 

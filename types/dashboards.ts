@@ -55,4 +55,5 @@ export interface TodoModalProps {
   columnId?: number;
   isOpen?: boolean;
   onClose: () => void;
+  dashboardId?: number;
 }
