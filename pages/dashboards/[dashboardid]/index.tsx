@@ -12,7 +12,7 @@ import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
 const DashboardDetail: React.FC = () => {
   const teamId: string = "9-1";
   const router = useRouter();
-  const { dashboardsId } = router.query;
+  const { dashboardid } = router.query;
   const [columns, setColumns] = useState<Columns[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +26,7 @@ const DashboardDetail: React.FC = () => {
   } = useOneInputModal();
 
   const fetchColumns = useCallback(async () => {
-    const dashboardId = Number(dashboardsId);
+    const dashboardId = Number(dashboardid);
     const params: ColoumnsParams = { teamId, dashboardId };
 
     try {
@@ -36,7 +36,7 @@ const DashboardDetail: React.FC = () => {
       console.error("Error fetching columns:", err);
       setError("Failed to fetch columns. Please try again later.");
     }
-  }, [teamId, dashboardsId]);
+  }, [teamId, dashboardid]);
 
   const handleConfirm = useCallback(
     (inputValue: string) => {
@@ -44,25 +44,25 @@ const DashboardDetail: React.FC = () => {
       createColumn({
         teamId,
         title: inputValue,
-        dashboardId: Number(dashboardsId),
+        dashboardId: Number(dashboardid),
       }).then((newColumn) => {
         if (newColumn) {
           setColumns((prev) => [
             ...prev,
-            { ...newColumn, teamId, dashboardId: Number(dashboardsId) },
+            { ...newColumn, teamId, dashboardId: Number(dashboardid) },
           ]);
         }
         fetchColumns();
       });
     },
-    [teamId, dashboardsId, fetchColumns]
+    [teamId, dashboardid, fetchColumns]
   );
 
   useEffect(() => {
-    if (dashboardsId) {
+    if (dashboardid) {
       fetchColumns();
     }
-  }, [dashboardsId, fetchColumns]);
+  }, [dashboardid, fetchColumns]);
 
   if (error) return <div>{error}</div>;
 
