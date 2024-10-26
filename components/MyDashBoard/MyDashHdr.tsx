@@ -47,15 +47,17 @@ const MyDashHdr = () => {
               <Image
                 src={userData.profileImageUrl}
                 fill
-                objectFit="cover"
                 alt="Profile Image"
+                style={{ objectFit: "cover" }} // CSS 스타일로 objectFit 설정
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // 뷰포트에 따른 이미지 크기 설정
               />
             ) : (
               <Image
                 src="https://via.placeholder.com/34"
                 fill
-                objectFit="cover"
                 alt="Default Profile"
+                style={{ objectFit: "cover" }} // CSS 스타일로 objectFit 설정
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // 뷰포트에 따른 이미지 크기 설정
               />
             )}
           </span>

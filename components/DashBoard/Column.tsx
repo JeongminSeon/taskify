@@ -15,6 +15,7 @@ const Column: React.FC<ColumnProps> = ({ id, title }) => {
   const handleAddCard = () => {
     openModal();
   };
+
   return (
     <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 sm:border-b border-r border-[gray600]">
       <h2 className="flex items-center gap-2 text-black100 font-bold">

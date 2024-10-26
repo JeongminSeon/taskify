@@ -12,6 +12,7 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
   const [cards, setCards] = useState<Card[]>([]);
 
   const handleCardClick = () => {};
+
   useEffect(() => {
     const fetchCards = async () => {
       try {
@@ -38,9 +39,10 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
           <div className="overflow-hidden relative w-full h-40 md:flex-[0_0_90px] lg:flex-1 md:h-[53px] lg:h-40 rounded-md">
             <Image
               src={card.imageUrl || "/images/resource/card_image1.png"}
-              layout="fill"
-              objectFit="cover"
+              fill
               alt="카드 이미지"
+              style={{ objectFit: "cover" }}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
           <div className="w-full pt-1 md:pt-0 lg:pt-[15px]">
