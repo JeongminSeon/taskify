@@ -6,8 +6,8 @@ import Image from "next/image";
 import Column from "@/components/DashBoard/Column";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import Portal from "@/components/UI/modal/ModalPotal";
-import { useOneInputModal } from "@/hooks/modal/useOneInputModal";
 import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
+import useModal from "@/hooks/modal/useModal";
 
 const DashboardDetail: React.FC = () => {
   const teamId: string = "9-1";
@@ -18,13 +18,13 @@ const DashboardDetail: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const {
-    isModalOpen,
+    isOpen,
     inputValue,
     openModal: handleAddColumn,
     closeModal,
     handleInputChange,
     handleConfirm: handleModalConfirm,
-  } = useOneInputModal();
+  } = useModal();
 
   const fetchColumns = useCallback(async () => {
     const dashboardId = Number(dashboardsId);
@@ -94,7 +94,7 @@ const DashboardDetail: React.FC = () => {
         </div>
         <Portal>
           <OneInputModal
-            isOpen={isModalOpen}
+            isOpen={isOpen}
             modalTitle="새 칼럼 생성"
             inputLabel="이름"
             inputPlaceholder="컬럼 이름을 입력해주세요"

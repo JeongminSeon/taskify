@@ -11,6 +11,7 @@ interface CardListProps {
 const CardList: React.FC<CardListProps> = ({ columnId }) => {
   const [cards, setCards] = useState<Card[]>([]);
 
+  const handleCardClick = () => {};
   useEffect(() => {
     const fetchCards = async () => {
       try {
@@ -32,7 +33,7 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
         <button
           key={card.id}
           className="w-full md:flex md:gap-5 lg:block p-3 border border-gray400 rounded-md bg-white100"
-          onClick={() => alert(`카드 ${card.id} 클릭`)}
+          onClick={handleCardClick}
         >
           <div className="overflow-hidden relative w-full h-40 md:flex-[0_0_90px] lg:flex-1 md:h-[53px] lg:h-40 rounded-md">
             <Image

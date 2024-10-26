@@ -1,8 +1,8 @@
 import Image from "next/image";
 import CardList from "@/components/Cards/CardList";
-import useModal from "@/hooks/useModal";
 import CreateTodoModal from "@/components/UI/modal/CreateTodoModal";
 import Portal from "../UI/modal/ModalPotal";
+import useModal from "@/hooks/modal/useModal";
 
 interface ColumnProps {
   id: number;
