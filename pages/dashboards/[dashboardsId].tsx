@@ -5,9 +5,9 @@ import { ColoumnsParams, Columns, ColumnsResponse } from "@/types/columns";
 import Image from "next/image";
 import Column from "@/components/DashBoard/Column";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
-import Portal from "@/components/UI/Modal/ModalPotal";
+import Portal from "@/components/UI/modal/ModalPotal";
 import { useOneInputModal } from "@/hooks/modal/useOneInputModal";
-import OneInputModal from "@/components/UI/Modal/InputModal/OneInputModal";
+import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
 
 const DashboardDetail: React.FC = () => {
   const teamId: string = "9-1";
