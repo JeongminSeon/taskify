@@ -1,7 +1,7 @@
 // 카드 생성 body 타입
 export interface CreateCardBody {
   assigneeUserId: number;
-  dashboardId: number;
+  dashboardId: string | string[] | undefined; //query사용을 위해 임시로 등록
   columnId: number;
   title: string;
   description: string;
@@ -60,4 +60,22 @@ export interface CardProps {
   updatedAt: string;
   isOpen: boolean;
   onClose: () => void;
+}
+
+export interface CardResponse {
+  id: number;
+  title: string;
+  description: string;
+  tags: string[];
+  dueDate: string;
+  assignee: {
+    profileImageUrl: string;
+    nickname: string;
+    id: number;
+  };
+  imageUrl: string;
+  teamId: string;
+  columnId: number;
+  createdAt: string;
+  updatedAt: string;
 }

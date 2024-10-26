@@ -6,23 +6,23 @@ import { MemberProps } from "@/types/dashboards";
 interface UserInputProps {
   value: number;
   onChange: (value: number) => void;
+  dashboardsId: string | string[] | undefined; //임시 데이터
 }
 
-const DASHBOARD_ID = 12060;
-
-const UserInput = ({ value, onChange }: UserInputProps) => {
+const UserInput = ({ value, onChange, dashboardsId }: UserInputProps) => {
   const [members, setMembers] = useState<MemberProps[]>([]);
-  const fetchMembers = async () => {
-    try {
-      const { members } = await getMembers(DASHBOARD_ID);
-      setMembers(members);
-    } catch (error) {
-      console.error("Failed to fetch members:", error);
-    }
-  };
+
   useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const { members } = await getMembers(Number(dashboardsId));
+        setMembers(members);
+      } catch (error) {
+        console.error("Failed to fetch members:", error);
+      }
+    };
     fetchMembers();
-  }, []);
+  }, [dashboardsId]);
 
   return (
     <div className={`${boxStyle}`}>

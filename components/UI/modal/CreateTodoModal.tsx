@@ -1,21 +1,14 @@
-import TodoForm from "@/components/DashBoard/TodoForm";
-import ModalLayout from "@/components/Layout/ModalLayout";
+import CreateTodoForm from "@/components/DashBoard/CreateTodoForm";
+import TodoModalLayout from "@/components/Layout/TodoModalLayout";
 import { TodoModalProps } from "@/types/dashboards";
 
 const CreateTodoModal = ({ columnId, isOpen, onClose }: TodoModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <ModalLayout>
-      <div className="flex flex-col justify-center items-center bg-white rounded-2xl md:w-[584px] md:h-[1000px] sm:w-[327px] sm:h-[766px] md:px-8 md:py-8 sm:px-5 sm:py-5">
-        <div className="overflow-y-auto scrollbar-hidden">
-          <h2 className="md:text-[24px] sm:text-[20px] font-[700] md:mb-8 sm:mb-6">
-            할 일 생성
-          </h2>
-          <TodoForm columnId={columnId} onClose={onClose} />
-        </div>
-      </div>
-    </ModalLayout>
+    <TodoModalLayout text="할 일 생성">
+      <CreateTodoForm columnId={columnId} onClose={onClose} />
+    </TodoModalLayout>
   );
 };
 

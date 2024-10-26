@@ -1,16 +1,16 @@
-import { TodoFormProps } from "@/types/dashboards";
 import Image from "next/image";
+import { TempTagsProps } from "./inputs/TagInput";
 
 const TodoTagList = ({
-  formData,
+  tags,
   onDelete,
 }: {
-  formData: TodoFormProps;
+  tags: TempTagsProps[];
   onDelete: (id: number) => void;
 }) => {
   return (
     <ul className="flex flex-wrap gap-[10px] mt-2">
-      {formData.tags.map((tag) => (
+      {tags.map((tag) => (
         <li
           key={tag.id}
           className="flex gap-1 items-center px-[6px] py-[6px] rounded bg-gray500"

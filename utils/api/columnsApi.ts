@@ -57,8 +57,7 @@ export const createCardImage = async ({
 }: ImageCreateParams): Promise<ImageCreateResponse> => {
   const formData = new FormData();
   if (!image) throw new Error("이미지가 없습니다.");
-  formData.append("image", image); // 이미지 파일 추가
-
+  formData.append("image", image);
   try {
     const response = await axiosInstance.post(
       `/columns/${columnId}/card-image`,

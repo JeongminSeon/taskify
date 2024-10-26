@@ -13,23 +13,15 @@ import DateInput from "./inputs/DateInput";
 import TagInput from "./inputs/TagInput";
 import ImageUpload from "./ImageUpload";
 import UserInput from "./inputs/UserInput";
-import { format } from "date-fns";
 
-const DASHBOARD_ID = 12060;
+import { useRouter } from "next/router";
 
-const TodoForm = ({
-  columnId,
-  onClose,
-
-  data = INITIAL_VALUES,
-}: TodoModalProps) => {
-  const [formData, setFormData] = useState<TodoFormProps>(data);
-
+const CreateTodoForm = ({ columnId, onClose }: TodoModalProps) => {
+  const [formData, setFormData] = useState<TodoFormProps>(INITIAL_VALUES);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-
-  const preview = useImagePreview(
-    formData.imageUrl ? formData.imageUrl[0] : null
-  );
+  const router = useRouter();
+  const { dashboardsId } = router.query;
+  const preview = useImagePreview(formData.imageUrl ? formData.imageUrl : null);
 
   useEffect(() => {
     const isFormComplete =
@@ -50,7 +42,9 @@ const TodoForm = ({
     }
 
     try {
-      const file = formData.imageUrl ? formData.imageUrl[0] : null;
+      const file = formData.imageUrl ? formData.imageUrl : "";
+      if (!columnId) return;
+
       const updatedImage = await createCardImage({ columnId, image: file! });
 
       if (!updatedImage || !updatedImage.imageUrl) {
@@ -59,14 +53,12 @@ const TodoForm = ({
 
       const outputData: CreateCardBody = {
         assigneeUserId: formData.assigneeUserId,
-        dashboardId: DASHBOARD_ID,
+        dashboardId: dashboardsId,
         columnId,
         title: formData.title,
         description: formData.description,
-        dueDate: formData.dueDate
-          ? format(formData.dueDate, "yyyy-MM-dd HH:mm")
-          : "",
-        tags: formData.tags.map((tag) => tag.text),
+        dueDate: formData.dueDate,
+        tags: formData.tags,
         imageUrl: updatedImage.imageUrl,
       };
 
@@ -90,6 +82,7 @@ const TodoForm = ({
         onChange={(value) =>
           setFormData({ ...formData, assigneeUserId: Number(value) })
         }
+        dashboardsId={dashboardsId}
       />
 
       <TitleInput
@@ -102,19 +95,22 @@ const TodoForm = ({
       />
       <DateInput
         value={formData.dueDate}
-        onChange={(date) => setFormData({ ...formData, dueDate: date! })}
+        onChange={(date) => setFormData({ ...formData, dueDate: date })}
       />
-      <TagInput formData={formData} setFormData={setFormData} />
 
-      <ImageUpload
-        setFormData={setFormData}
-        preview={preview}
-        columnId={columnId}
-      />
+      <TagInput value={formData.tags} />
+
+      {columnId && (
+        <ImageUpload
+          setFormData={setFormData}
+          preview={preview}
+          columnId={columnId}
+        />
+      )}
 
       <TodoButton onClose={onClose} text="생성" disabled={isButtonDisabled} />
     </form>
   );
 };
 
-export default TodoForm;
+export default CreateTodoForm;

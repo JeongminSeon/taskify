@@ -11,13 +11,14 @@ export const getRandomColor = () => {
 };
 
 export const INITIAL_VALUES = {
+  dashboardId: 0,
+  columnId: 0,
   assigneeUserId: 0,
   title: "",
   description: "",
-  dueDate: null,
+  dueDate: "",
   tags: [],
-  imageUrl: null,
-  manager: "",
+  imageUrl: "",
 };
 
 export const validateForm = (formData: TodoFormProps) => {

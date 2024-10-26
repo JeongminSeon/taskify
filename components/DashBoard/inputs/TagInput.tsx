@@ -1,16 +1,29 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { boxStyle, inputStyle, labelStyle } from "../styles";
 import TodoTagList from "../TodoTagList";
-import { TodoFormProps } from "@/types/dashboards";
 
 interface TagInputProps {
-  formData: TodoFormProps;
-  setFormData: React.Dispatch<React.SetStateAction<TodoFormProps>>;
+  value: string[];
 }
 
-const TagInput = ({ formData, setFormData }: TagInputProps) => {
+export interface TempTagsProps {
+  text: string;
+  id: number;
+}
+
+const TagInput = ({ value }: TagInputProps) => {
   const [tag, setTag] = useState<string>("");
+  const [tempTags, setTempTags] = useState<TempTagsProps[]>([]);
   const idRef = useRef<number>(0);
+
+  useEffect(() => {
+    setTempTags(
+      value.map((item) => ({
+        text: item,
+        id: idRef.current++,
+      }))
+    );
+  }, [value]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && tag.length > 0) {
@@ -19,20 +32,17 @@ const TagInput = ({ formData, setFormData }: TagInputProps) => {
         text: tag,
         id: idRef.current++,
       };
-      setFormData((prevData) => ({
+      setTempTags((prevData) => ({
         ...prevData,
-        tags: [...prevData.tags, newTag],
+        tags: [...prevData, newTag],
       }));
       setTag("");
     }
   };
 
   const handleDelete = (id: number) => {
-    const nextTags = formData.tags.filter((item) => item.id !== id);
-    setFormData((prevData) => ({
-      ...prevData,
-      tags: nextTags,
-    }));
+    const nextTags = tempTags.filter((item) => item.id !== id);
+    setTempTags(nextTags);
   };
 
   return (
@@ -50,7 +60,7 @@ const TagInput = ({ formData, setFormData }: TagInputProps) => {
         onChange={(e) => setTag(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      <TodoTagList formData={formData} onDelete={handleDelete} />
+      <TodoTagList tags={tempTags} onDelete={handleDelete} />
     </div>
   );
 };
