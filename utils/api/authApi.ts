@@ -1,5 +1,6 @@
 import axiosInstance from "./axiosInstanceApi";
 import { AxiosError } from "axios";
+import { getAccessToken } from "./cookie";
 
 interface formData {
   email: string;
@@ -73,8 +74,13 @@ export const getLogin = async (loginData: loginData) => {
 
 // 내 정보 조회
 export const getUserInfo = async () => {
+  const token = getAccessToken();
+  if (!token) {
+    throw new Error("로그인이 필요합니다.");
+  }
   try {
     const response = await axiosInstance.get("/users/me");
+
     return response.data;
   } catch (error) {
     console.error("Failed to fetch user info:", error);
