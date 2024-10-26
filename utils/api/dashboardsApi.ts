@@ -1,4 +1,8 @@
-import { DashboardResponse, DashboardDetailResponse } from "@/types/dashboards";
+import {
+  DashboardResponse,
+  DashboardDetailResponse,
+  MembersResponse,
+} from "@/types/dashboards";
 import axiosInstance from "./axiosInstanceApi";
 
 // 대시보드 목록 가져오기
@@ -29,6 +33,22 @@ export const getDashboardDetail = async (
     return response.data;
   } catch (error) {
     console.error("Failed to fetch dashboard detail:", error);
+    throw error;
+  }
+};
+
+export const getMembers = async (
+  dashboardId: number,
+  page: number = 1,
+  size: number = 10
+): Promise<MembersResponse> => {
+  try {
+    const response = await axiosInstance.get(
+      `/members?page=${page}&size=${size}&dashboardId=${dashboardId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch Members:", error);
     throw error;
   }
 };

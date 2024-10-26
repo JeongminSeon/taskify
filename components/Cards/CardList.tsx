@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardListResponse } from "@/types/cards";
 import { getCards } from "@/utils/api/cardsApi";
 import Image from "next/image";
+import { getRandomColor, hexToRgba } from "@/utils/TodoForm";
 
 interface CardListProps {
   columnId: number;
@@ -26,7 +27,7 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
   }, [columnId]);
 
   return (
-    <ul className="mt-[10px]">
+    <ul className="mt-4 flex flex-col gap-4">
       {cards.map((card) => (
         <li
           key={card.id}
@@ -46,14 +47,21 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
             </h2>
             <div className="md:flex lg:block gap-4">
               <div className="tags flex items-center gap-[6px] mt-[6px]">
-                {card.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="tag py-1 px-[6px] rounded bg-[#F9EEE3] text-xs"
-                  >
-                    {tag}
-                  </span>
-                ))}
+                {card.tags.map((tag) => {
+                  const tagColor = getRandomColor();
+                  return (
+                    <span
+                      key={tag}
+                      className="tag py-1 px-[6px] rounded"
+                      style={{
+                        backgroundColor: hexToRgba(tagColor, 0.2),
+                        color: tagColor,
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  );
+                })}
               </div>
               <div className="md:flex-1 flex justify-between items-center pt-[6px]">
                 <p className="flex items-center text-gray200 text-xs font-medium">

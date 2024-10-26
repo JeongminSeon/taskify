@@ -1,14 +1,6 @@
 import { TodoFormProps } from "@/types/dashboards";
 import Image from "next/image";
 
-const hexToRgba = (hex: string, opacity: number) => {
-  const r = parseInt(hex.slice(1, 3), 16); // red
-  const g = parseInt(hex.slice(3, 5), 16); // green
-  const b = parseInt(hex.slice(5, 7), 16); // blue
-
-  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-};
-
 const TodoTagList = ({
   formData,
   onDelete,
@@ -21,11 +13,7 @@ const TodoTagList = ({
       {formData.tags.map((tag) => (
         <li
           key={tag.id}
-          className="flex gap-1 items-center px-[6px] py-[6px] rounded"
-          style={{
-            backgroundColor: hexToRgba(tag.color, 0.2),
-            color: tag.color,
-          }}
+          className="flex gap-1 items-center px-[6px] py-[6px] rounded bg-gray500"
         >
           {tag.text}
           <Image

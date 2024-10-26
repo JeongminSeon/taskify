@@ -5,8 +5,8 @@ import { ColoumnsParams, Columns, ColumnsResponse } from "@/types/columns";
 import Image from "next/image";
 import Column from "@/components/DashBoard/Column";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
-import Portal from "@/components/UI/Modal/ModalPotal";
-import OneInputModal from "@/components/UI/Modal/InputModal/OneInputModal";
+import Portal from "@/components/UI/modal/ModalPotal";
+import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
 import { useOneInputModal } from "@/hooks/modal/useOneInputModal";
 
 const DashboardDetail: React.FC = () => {
