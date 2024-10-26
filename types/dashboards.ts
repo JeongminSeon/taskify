@@ -19,7 +19,7 @@ export type Dashboard = {
 };
 
 export type DashboardResponse = {
-  cursorId: string;
+  cursorId: number;
   dashboards: Dashboard[];
   totalCount: number;
 };

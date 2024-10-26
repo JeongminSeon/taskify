@@ -2,9 +2,29 @@ import { useDashboardContext } from "@/context/DashboardContext";
 import Link from "next/link";
 import Image from "next/image";
 import DashBoardLink from "./DashBoardLink";
+import Pagination from "../UI/pagination/Pagination";
+import { useState } from "react";
 
 const MyDashSideMenu: React.FC = () => {
   const { dashboards } = useDashboardContext();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
+  const totalPages = dashboards
+    ? Math.ceil(dashboards.dashboards.length / itemsPerPage)
+    : 0;
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const currentDashboards = dashboards?.dashboards.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="sticky top-0 h-screen py-5 px-[14px] border-r border-gray400 bg-white lg:px-2 ">
@@ -45,7 +65,7 @@ const MyDashSideMenu: React.FC = () => {
           />
         </button>
         <ul className="flex flex-col gap-2">
-          {dashboards?.dashboards.map((dashboard) => (
+          {currentDashboards?.map((dashboard) => (
             <li key={dashboard.id} className="md:px-[10px] lg:px-3">
               <DashBoardLink
                 id={dashboard.id}
@@ -57,6 +77,16 @@ const MyDashSideMenu: React.FC = () => {
           ))}
         </ul>
       </div>
+      {dashboards && dashboards.dashboards.length > 0 && (
+        <div className="mt-3">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onNextPage={handleNextPage}
+            onPreviousPage={handlePreviousPage}
+          />
+        </div>
+      )}
     </div>
   );
 };
