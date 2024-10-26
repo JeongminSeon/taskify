@@ -27,13 +27,14 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
   }, [columnId]);
 
   return (
-    <ul className="mt-4 flex flex-col gap-4">
+    <div className="mt-[10px]">
       {cards.map((card) => (
-        <li
+        <button
           key={card.id}
-          className="md:flex md:gap-5 lg:block p-3 border border-gray400 rounded-md bg-white100"
+          className="w-full md:flex md:gap-5 lg:block p-3 border border-gray400 rounded-md bg-white100"
+          onClick={() => alert(`카드 ${card.id} 클릭`)}
         >
-          <div className="overflow-hidden relative w-full h-40 md:flex-[0_0_90px] lg:flex-1 md:h-auto lg:h-40 rounded-md">
+          <div className="overflow-hidden relative w-full h-40 md:flex-[0_0_90px] lg:flex-1 md:h-[53px] lg:h-40 rounded-md">
             <Image
               src={card.imageUrl || "/images/resource/card_image1.png"}
               layout="fill"
@@ -42,7 +43,7 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
             />
           </div>
           <div className="w-full pt-1 md:pt-0 lg:pt-[15px]">
-            <h2 className="sm:text-sm md:text-[16px] font-medium">
+            <h2 className="sm:text-sm md:text-[16px] font-medium text-left">
               {card.title}
             </h2>
             <div className="md:flex lg:block gap-4">
@@ -80,7 +81,6 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
                       day: "numeric",
                     })
                     .replace(/\.$/, "")}
-                  {/* 맨 뒤의 점(.) 제거 */}
                 </p>
                 <p className="overflow-hidden relative w-[34px] h-[34px] rounded-full bg-slate-500">
                   {card.assignee.nickname}
@@ -88,9 +88,9 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
               </div>
             </div>
           </div>
-        </li>
+        </button>
       ))}
-    </ul>
+    </div>
   );
 };
 

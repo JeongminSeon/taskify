@@ -6,8 +6,8 @@ import Image from "next/image";
 import Column from "@/components/DashBoard/Column";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import Portal from "@/components/UI/modal/ModalPotal";
-import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
 import { useOneInputModal } from "@/hooks/modal/useOneInputModal";
+import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
 
 const DashboardDetail: React.FC = () => {
   const teamId: string = "9-1";
@@ -48,20 +48,15 @@ const DashboardDetail: React.FC = () => {
         teamId,
         title: inputValue,
         dashboardId: Number(dashboardsId),
-      })
-        .then((newColumn) => {
-          if (newColumn) {
-            setColumns((prev) => [
-              ...prev,
-              { ...newColumn, teamId, dashboardId: Number(dashboardsId) },
-            ]);
-          }
-          return fetchColumns();
-        })
-        .catch((error) => {
-          console.error("칼럼 생성 중 오류 발생:", error);
-          alert("칼럼 생성에 실패했습니다. 다시 시도해 주세요.");
-        });
+      }).then((newColumn) => {
+        if (newColumn) {
+          setColumns((prev) => [
+            ...prev,
+            { ...newColumn, teamId, dashboardId: Number(dashboardsId) },
+          ]);
+        }
+        fetchColumns();
+      });
     },
     [teamId, dashboardsId, fetchColumns]
   );
