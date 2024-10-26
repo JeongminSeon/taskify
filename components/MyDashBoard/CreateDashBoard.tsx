@@ -4,11 +4,20 @@ import ModalLayout from "../Layout/ModalLayout";
 import Input from "../Auth/Input";
 import useInput from "@/hooks/useInput";
 import { isEntered } from "@/utils/validation";
+import ColorInput from "../DashBoard/inputs/ColorInput";
 
 interface DashBoardProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+const COLOR = {
+  green: "green",
+  purple: "violet",
+  orange: "orange",
+  blue: "blue",
+  pink: "pink",
+};
 
 const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
   if (!isOpen) return null;
@@ -43,12 +52,10 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
               type="text"
               labelStyle="text-xl font-bold"
             />
-            <div className="flex gap-2">
-              <li>그린</li>
-              <li>블루</li>
-              <li>주황</li>
-              <li>파랑</li>
-              <li>핑크</li>
+            <div className="flex gap-3">
+              {Object.entries(COLOR).map(([key, color]) => (
+                <ColorInput color={color} />
+              ))}
             </div>
           </form>
           <div className="flex justify-between gap-3 mt-5">
@@ -59,7 +66,7 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
               취소
             </button>
             <button
-              className="border w-full py-3.5 px-11 rounded-lg text-lg text-white border-purple200 bg-purple200"
+              className="border w-full py-3.5 px-11 rounded-lg text-lg text-white border-purple100 bg-purple100"
               onClick={onClose}
             >
               생성

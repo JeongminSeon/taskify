@@ -24,7 +24,7 @@ const config: Config = {
         red100: "var(--red100)",
         pink100: "var(--pink100)",
         green100: "var(--green100)",
-        purple200: "var(--purple200)",
+        violet100: "var(--purple200)",
         blue100: "var(--blue100)",
         orange100: "var(--orange100)",
       },
