@@ -29,7 +29,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   let totalCount = 0;
 
   try {
-    const data: MemberResponse = await getMembers(Number(dashboardid), 1, 5);
+    const data: MemberResponse = await getMembers(1, 5, Number(dashboardid));
     initialMembers = data.members;
     totalCount = data.totalCount;
   } catch (error) {

@@ -25,9 +25,9 @@ const MemberList: React.FC<MemberListProps> = ({
       if (dashboardId) {
         try {
           const data: MemberResponse = await getMembers(
-            dashboardId,
             currentPage,
-            5
+            5,
+            dashboardId
           );
           setMembers(data.members);
           setTotalPages(Math.ceil(data.totalCount / 5));
@@ -50,13 +50,16 @@ const MemberList: React.FC<MemberListProps> = ({
 
   // 멤버 삭제 핸들러
   const handleDeleteMember = async (memberId: number) => {
-    try {
-      await deleteMember(memberId);
-      setMembers((prevMembers) =>
-        prevMembers.filter((member) => member.id !== memberId)
-      ); // 삭제 후 상태 업데이트
-    } catch (error) {
-      console.error("Failed to delete member:", error);
+    const confirmDelete = confirm("해당 구성원을 삭제하시겠습니까?");
+    if (confirmDelete) {
+      try {
+        await deleteMember(memberId);
+        setMembers((prevMembers) =>
+          prevMembers.filter((member) => member.id !== memberId)
+        ); // 삭제 후 상태 업데이트
+      } catch (error) {
+        console.error("Failed to delete member:", error);
+      }
     }
   };
 

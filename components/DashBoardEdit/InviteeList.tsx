@@ -42,13 +42,16 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
 
   // 초대하기 취소 핸들러
   const handleDeleteInvitation = async (invitationId: number) => {
-    try {
-      await deleteInvitations(dashboardId, invitationId);
-      setInvitations((prevInvitations) =>
-        prevInvitations.filter((invitation) => invitation.id !== invitationId)
-      );
-    } catch (error) {
-      console.error("초대 취소 중 오류 발생:", error);
+    const confirmDelete = confirm("해당 이메일을 삭제하시겠습니까?");
+    if (confirmDelete) {
+      try {
+        await deleteInvitations(dashboardId, invitationId);
+        setInvitations((prevInvitations) =>
+          prevInvitations.filter((invitation) => invitation.id !== invitationId)
+        );
+      } catch (error) {
+        console.error("초대 취소 중 오류 발생:", error);
+      }
     }
   };
 
