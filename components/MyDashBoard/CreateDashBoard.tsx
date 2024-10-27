@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Portal from "../UI/modal/ModalPotal";
 import ModalLayout from "../Layout/ModalLayout";
 import Input from "../Auth/Input";
@@ -21,7 +21,7 @@ const COLOR: Record<ColorKey, string> = {
 };
 
 const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
-  if (!isOpen) return null;
+  const [selectedColor, setSelectedColor] = useState<string>("");
 
   const {
     enteredValue: nameValue,
@@ -32,51 +32,60 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
     defaultValue: "",
     hasError: (enteredValue: string) => isEntered(enteredValue),
   });
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   };
 
-  return (
-    <Portal>
-      <ModalLayout>
-        <div className="bg-white rounded-2xl md:w-[584px] p-5 flex flex-col gap-3">
-          <h2 className="text-black text-2xl font-bold">새로운 대시보드</h2>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-5">
-            <Input
-              id="name"
-              label="대시보드 이름"
-              onBlur={handleBlurChange}
-              onChange={(event) => handleInputChange(event)}
-              value={nameValue}
-              isPassword={false}
-              placeholder=""
-              type="text"
-              labelStyle="text-xl font-bold"
-            />
-            <div className="flex gap-3">
-              {Object.entries(COLOR).map(([key, color]) => (
-                <ColorInput color={color as ColorKey} isSelected={true} />
-              ))}
+  if (!isOpen) {
+    return null;
+  } else {
+    return (
+      <Portal>
+        <ModalLayout>
+          <div className="bg-white rounded-2xl md:w-[584px] p-5 flex flex-col gap-3">
+            <h2 className="text-black text-2xl font-bold">새로운 대시보드</h2>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-5">
+              <Input
+                id="name"
+                label="대시보드 이름"
+                onBlur={handleBlurChange}
+                onChange={(event) => handleInputChange(event)}
+                value={nameValue}
+                isPassword={false}
+                placeholder=""
+                type="text"
+                labelStyle="text-xl font-bold"
+              />
+              <div className="flex gap-3">
+                {Object.entries(COLOR).map(([key, color]) => (
+                  <ColorInput
+                    color={color as ColorKey}
+                    isSelected={selectedColor === color}
+                    onClick={setSelectedColor}
+                  />
+                ))}
+              </div>
+            </form>
+            <div className="flex justify-between gap-3 mt-5">
+              <button
+                className="border w-full py-3.5 px-11 rounded-lg text-lg"
+                onClick={onClose}
+              >
+                취소
+              </button>
+              <button
+                className="border w-full py-3.5 px-11 rounded-lg text-lg text-white border-purple100 bg-purple100"
+                onClick={onClose}
+              >
+                생성
+              </button>
             </div>
-          </form>
-          <div className="flex justify-between gap-3 mt-5">
-            <button
-              className="border w-full py-3.5 px-11 rounded-lg text-lg"
-              onClick={onClose}
-            >
-              취소
-            </button>
-            <button
-              className="border w-full py-3.5 px-11 rounded-lg text-lg text-white border-purple100 bg-purple100"
-              onClick={onClose}
-            >
-              생성
-            </button>
           </div>
-        </div>
-      </ModalLayout>
-    </Portal>
-  );
+        </ModalLayout>
+      </Portal>
+    );
+  }
 };
 
 export default CreateDashBoard;
