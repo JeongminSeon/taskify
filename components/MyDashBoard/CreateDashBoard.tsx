@@ -16,11 +16,11 @@ interface DashBoardProps {
 }
 
 const COLOR: Record<ColorKey, string> = {
-  green: "green",
-  violet: "violet",
-  orange: "orange",
-  blue: "blue",
-  pink: "pink",
+  green: "#7ac555",
+  violet: "#760dde",
+  orange: "#ffa500",
+  blue: "#76a5ea",
+  pink: "#e876ea",
 };
 
 const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
@@ -31,19 +31,18 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
     enteredValue: nameValue,
     handleInputChange,
     handleBlurChange,
-    error: isNameValid,
+    error: isNameNotValid,
   } = useInput({
     defaultValue: "",
     hasError: (enteredValue: string) => isEntered(enteredValue),
   });
 
-  const isSubmitEnabled = isNameValid && selectedColor === "";
+  const isSubmitEnabled = !isNameNotValid && selectedColor !== "";
 
   const isDisabled = !isSubmitEnabled;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     try {
       const response = await createDashboard(nameValue, selectedColor);
       const { id } = response;
@@ -75,33 +74,33 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
                 placeholder=""
                 type="text"
                 labelStyle="text-xl font-bold"
-                error={isNameValid ? "대시보드 이름을 입력해주세요." : ""}
+                error={isNameNotValid ? "대시보드 이름을 입력해주세요." : ""}
               />
               <div className="flex gap-3">
                 {Object.entries(COLOR).map(([key, color]) => (
                   <ColorInput
-                    color={color as ColorKey}
+                    color={key as ColorKey}
                     isSelected={selectedColor === color}
                     onClick={setSelectedColor}
                   />
                 ))}
               </div>
+              <div className="flex justify-between gap-3 mt-5">
+                <button
+                  className="border w-full py-3.5 px-11 rounded-lg text-lg"
+                  onClick={onClose}
+                >
+                  취소
+                </button>
+                <button
+                  type="submit"
+                  className="border w-full py-3.5 px-11 rounded-lg text-lg text-white border-purple100 bg-purple100"
+                  disabled={isDisabled}
+                >
+                  생성
+                </button>
+              </div>
             </form>
-            <div className="flex justify-between gap-3 mt-5">
-              <button
-                className="border w-full py-3.5 px-11 rounded-lg text-lg"
-                onClick={onClose}
-              >
-                취소
-              </button>
-              <button
-                className="border w-full py-3.5 px-11 rounded-lg text-lg text-white border-purple100 bg-purple100"
-                onClick={onClose}
-                disabled={isDisabled}
-              >
-                생성
-              </button>
-            </div>
           </div>
         </ModalLayout>
       </Portal>
