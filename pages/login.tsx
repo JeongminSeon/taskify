@@ -23,7 +23,7 @@ const Login = () => {
     handleInputChange: handleEmailInputChange,
     handleBlurChange: handleEmailBlurChange,
     error: isEmailNotValid,
-    reset: resetEmailInput,
+    // reset: resetEmailInput,
   } = useInput<string>({
     defaultValue: "",
     hasError: (value) => isEmailValid(value),
@@ -34,7 +34,7 @@ const Login = () => {
     handleInputChange: handlePWInputChange,
     handleBlurChange: handlePWBlurChange,
     error: isPWNotValid,
-    reset: resetPasswordInput,
+    // reset: resetPasswordInput,
   } = useInput<string>({
     defaultValue: "",
     hasError: (value) => isPWValid(value),
@@ -53,9 +53,8 @@ const Login = () => {
     };
 
     try {
-      //CSR
       const response = await getLogin(formData);
-      const { user, accessToken } = response; // 수정: response.data 대신 response에서 응답 받음
+      const { user, accessToken } = response;
       setAccessToken(accessToken);
       login(user); // 추가: 로그인 성공 시 useAuthStore의 login 함수 호출
       router.push("/mydashboard");
