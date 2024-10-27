@@ -60,9 +60,6 @@ const Login = () => {
       login(user); // 추가: 로그인 성공 시 useAuthStore의 login 함수 호출
       router.push("/mydashboard");
       return;
-      // SSR 대응
-      // await login(formData);
-      // router.push("/mydashboard");
     } catch (error) {
       console.error("로그인 중 오류 발생:", error);
       if (error instanceof AxiosError) {

@@ -9,6 +9,3 @@ export const setAccessToken = (token: string) => {
 export const getAccessToken = () => {
   return Cookies.get("accessToken") || null;
 };
-
-// setAccessToken 함수는 더 이상 클라이언트에서 사용하지 않으므로 제거합니다.
-// 대신 pages/api/auth/login.ts에서 사용하도록 변경했습니다.

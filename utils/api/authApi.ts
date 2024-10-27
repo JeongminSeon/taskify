@@ -43,35 +43,6 @@ export const createUser = async (formData: formData) => {
     }
   }
 };
-
-// 로그인
-// export const getLogin = async (loginData: loginData) => {
-//   try {
-//     const response = await axiosInstance.post("/auth/login", loginData);
-//     console.log(response.data);
-
-//     return response.data;
-//   } catch (error) {
-//     if (error instanceof AxiosError) {
-//       const message = error.message;
-//       const status = error.response?.status ?? 500; // status가 undefined면 500으로 설정
-
-//       switch (status) {
-//         case 400:
-//           onError(status, "비밀번호가 일치하지 않습니다.");
-//           break;
-//         case 404:
-//           onError(status, "존재하지 않는 유저입니다.");
-//           break;
-//         default:
-//           onError(status, message);
-//           break;
-//       }
-//     }
-//   }
-// };
-
-// SSR 로그인
 export const getLogin = async (loginData: loginData) => {
   try {
     const response = await axiosInstance.post("/auth/login", loginData);
@@ -86,22 +57,6 @@ export const getLogin = async (loginData: loginData) => {
   }
 };
 
-// 내 정보 조회
-// export const getUserInfo = async () => {
-//   const token = getAccessToken();
-//   if (!token) {
-//     throw new Error("로그인이 필요합니다.");
-//   }
-//   try {
-//     const response = await axiosInstance.get("/users/me");
-
-//     return response.data;
-//   } catch (error) {
-//     console.error("Failed to fetch user info:", error);
-//     throw error;
-//   }
-// };
-// SSR 내 정보 조회
 export const getUserInfo = async (token?: string) => {
   try {
     const response = await axiosInstance.get("/users/me", {

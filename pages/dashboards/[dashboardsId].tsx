@@ -148,7 +148,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
   );
 };
 
-// 서버사이드 렌더링으로 로그인된 유저 정보 가져오기
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = parse(context.req.headers.cookie || ""); // 쿠키 파싱
   const accessToken = cookies.accessToken; // accessToken 추출
