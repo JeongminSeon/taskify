@@ -5,15 +5,16 @@ import Input from "../Auth/Input";
 import useInput from "@/hooks/useInput";
 import { isEntered } from "@/utils/validation";
 import ColorInput from "../DashBoard/inputs/ColorInput";
+import { ColorKey } from "@/types/color";
 
 interface DashBoardProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const COLOR = {
+const COLOR: Record<ColorKey, string> = {
   green: "green",
-  purple: "violet",
+  violet: "violet",
   orange: "orange",
   blue: "blue",
   pink: "pink",
@@ -54,7 +55,7 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
             />
             <div className="flex gap-3">
               {Object.entries(COLOR).map(([key, color]) => (
-                <ColorInput color={color} />
+                <ColorInput color={color as ColorKey} isSelected={true} />
               ))}
             </div>
           </form>
