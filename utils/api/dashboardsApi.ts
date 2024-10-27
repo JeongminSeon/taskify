@@ -36,7 +36,7 @@ export const createDashboard = async (
   };
   try {
     const response = await axiosInstance.post<CreateDashboardResponse>(
-      "/dashboard",
+      "/dashboards",
       formData
     );
     return response.data;
