@@ -46,7 +46,7 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
     try {
       const response = await createDashboard(nameValue, selectedColor);
       const { id } = response;
-      router.push(`dashboard/${id}`);
+      router.push(`dashboards/${id}`);
     } catch (error) {
       if (error instanceof AxiosError) {
         const { message } = error;
@@ -79,9 +79,10 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
               <div className="flex gap-3">
                 {Object.entries(COLOR).map(([key, color]) => (
                   <ColorInput
+                    key={key}
                     color={key as ColorKey}
-                    isSelected={selectedColor === key}
-                    onClick={setSelectedColor}
+                    isSelected={selectedColor === color}
+                    onClick={() => setSelectedColor(color)}
                   />
                 ))}
               </div>
