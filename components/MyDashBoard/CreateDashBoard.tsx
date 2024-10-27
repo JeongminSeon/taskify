@@ -80,7 +80,7 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
                 {Object.entries(COLOR).map(([key, color]) => (
                   <ColorInput
                     color={key as ColorKey}
-                    isSelected={selectedColor === color}
+                    isSelected={selectedColor === key}
                     onClick={setSelectedColor}
                   />
                 ))}
