@@ -8,10 +8,10 @@ import Input from "@/components/Auth/Input";
 import { isEmailValid, isPWValid } from "@/utils/validation";
 import useInput from "@/hooks/useInput";
 import { AxiosError } from "axios";
-import { getLogin } from "../utils/api/authApi";
-import { setAccessToken } from "@/utils/api/cookie";
 import { useRouter } from "next/router";
 import { useAuthStore } from "@/store/authStore";
+import { getLogin } from "@/utils/api/authApi";
+import { setAccessToken } from "@/utils/api/cookie";
 
 const Login = () => {
   const router = useRouter();
@@ -53,13 +53,18 @@ const Login = () => {
     };
 
     try {
+      //CSR
       const response = await getLogin(formData);
       const { user, accessToken } = response; // 수정: response.data 대신 response에서 응답 받음
       setAccessToken(accessToken);
       login(user); // 추가: 로그인 성공 시 useAuthStore의 login 함수 호출
       router.push("/mydashboard");
       return;
+      // SSR 대응
+      // await login(formData);
+      // router.push("/mydashboard");
     } catch (error) {
+      console.error("로그인 중 오류 발생:", error);
       if (error instanceof AxiosError) {
         const message = error.message;
         const status = error.status;

@@ -16,7 +16,7 @@ interface AuthState {
   setUser: (user: User) => void;
   login: (loginData: { email: string; password: string }) => Promise<void>;
   logout: () => void;
-  checkAuth: () => Promise<void>; // 이 줄을 추가합니다
+  checkAuth: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
