@@ -6,6 +6,9 @@ import useInput from "@/hooks/useInput";
 import { isEntered } from "@/utils/validation";
 import ColorInput from "../DashBoard/inputs/ColorInput";
 import { ColorKey } from "@/types/color";
+import { createDashboard } from "@/utils/api/dashboardsApi";
+import { AxiosError } from "axios";
+import { useRouter } from "next/router";
 
 interface DashBoardProps {
   isOpen: boolean;
@@ -21,6 +24,7 @@ const COLOR: Record<ColorKey, string> = {
 };
 
 const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
+  const router = useRouter();
   const [selectedColor, setSelectedColor] = useState<string>("");
 
   const {
@@ -33,13 +37,24 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
     hasError: (enteredValue: string) => isEntered(enteredValue),
   });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
-
   const isSubmitEnabled = isNameValid && selectedColor === "";
 
   const isDisabled = !isSubmitEnabled;
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const response = await createDashboard(nameValue, selectedColor);
+      const { id } = response;
+      router.push(`dashboard/${id}`);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const { message } = error;
+        console.error(message);
+      }
+    }
+  };
 
   if (!isOpen) {
     return null;

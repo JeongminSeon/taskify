@@ -1,5 +1,6 @@
 import axiosInstance from "./axiosInstanceApi";
 import { AxiosError } from "axios";
+import { onError } from "./error";
 
 interface formData {
   email: string;
@@ -11,12 +12,6 @@ interface loginData {
   email: string;
   password: string;
 }
-
-// 에러 핸들링
-const onError = (status: number, message: string) => {
-  const error = { status, message };
-  throw error;
-};
 
 // 회원가입
 export const createUser = async (formData: formData) => {
