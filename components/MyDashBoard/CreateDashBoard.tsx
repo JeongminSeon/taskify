@@ -27,7 +27,7 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
     enteredValue: nameValue,
     handleInputChange,
     handleBlurChange,
-    error,
+    error: isNameValid,
   } = useInput({
     defaultValue: "",
     hasError: (enteredValue: string) => isEntered(enteredValue),
@@ -36,6 +36,10 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   };
+
+  const isSubmitEnabled = isNameValid && selectedColor === "";
+
+  const isDisabled = !isSubmitEnabled;
 
   if (!isOpen) {
     return null;
@@ -56,6 +60,7 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
                 placeholder=""
                 type="text"
                 labelStyle="text-xl font-bold"
+                error={isNameValid ? "대시보드 이름을 입력해주세요." : ""}
               />
               <div className="flex gap-3">
                 {Object.entries(COLOR).map(([key, color]) => (
@@ -77,6 +82,7 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
               <button
                 className="border w-full py-3.5 px-11 rounded-lg text-lg text-white border-purple100 bg-purple100"
                 onClick={onClose}
+                disabled={isDisabled}
               >
                 생성
               </button>
