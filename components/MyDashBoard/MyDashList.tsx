@@ -111,10 +111,10 @@ const MyDashList: React.FC = () => {
               className="relative w-9 h-9 md:w-10 md:h-10"
             >
               <Image
+                className="object-cover"
                 src={"/images/icons/pagination_left.svg"}
                 fill
                 alt="이전"
-                style={{ objectFit: "cover" }} // CSS 스타일로 objectFit 설정
                 sizes="(max-width: 768px) 50px, (max-width: 1200px) 75px, 100px" // 뷰포트에 따른 이미지 크기 설정
               />
             </button>
@@ -124,10 +124,10 @@ const MyDashList: React.FC = () => {
               className="relative w-9 h-9 md:w-10 md:h-10"
             >
               <Image
+                className="object-cover"
                 src={"/images/icons/pagination_right.svg"}
                 fill
                 alt="다음"
-                style={{ objectFit: "cover" }} // CSS 스타일로 objectFit 설정
                 sizes="(max-width: 768px) 50px, (max-width: 1200px) 75px, 100px" // 뷰포트에 따른 이미지 크기 설정
               />
             </button>

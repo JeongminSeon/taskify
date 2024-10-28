@@ -98,8 +98,7 @@ const CardDetailModal: React.FC<CardDetailModalProps> = ({
                     src={card?.imageUrl || "https://via.placeholder.com/300"}
                     alt="Two women looking at a book"
                     fill
-                    style={{ objectFit: "cover" }} // CSS 스타일로 objectFit 설정
-                    className="rounded-lg"
+                    className="rounded-lg object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // 뷰포트에 따른 이미지 크기 설정
                   />
                 </div>
