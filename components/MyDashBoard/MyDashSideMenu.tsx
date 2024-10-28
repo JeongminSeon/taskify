@@ -1,17 +1,34 @@
-import { useDashboardContext } from "@/context/DashboardContext";
 import Link from "next/link";
 import Image from "next/image";
 import DashBoardLink from "./DashBoardLink";
 import Pagination from "../UI/pagination/Pagination";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Dashboard } from "@/types/dashboards";
+import { useDashBoardStore } from "@/store/dashBoardStore";
 
-const MyDashSideMenu: React.FC = () => {
-  const { dashboards } = useDashboardContext();
+interface MyDashSideMenuProps {
+  initialDashboards: Dashboard[];
+}
+
+const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({
+  initialDashboards,
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
-  const totalPages = dashboards
-    ? Math.ceil(dashboards.dashboards.length / itemsPerPage)
+  const totalPages = initialDashboards
+    ? Math.ceil(initialDashboards.length / itemsPerPage)
     : 0;
+
+  // 인증 관련 상태와 메서드 불러오기
+  const { dashboards, setDashboards } = useDashBoardStore();
+
+  // 컴포넌트가 마운트될 때 초기 대시보드 설정
+  useEffect(() => {
+    // 상태 업데이트: initialDashboards를 Zustand에 저장
+    if (initialDashboards) {
+      setDashboards();
+    }
+  }, [initialDashboards, setDashboards]);
 
   const handleNextPage = () => {
     setCurrentPage((prev) => prev + 1);
@@ -21,7 +38,7 @@ const MyDashSideMenu: React.FC = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));
   };
 
-  const currentDashboards = dashboards?.dashboards.slice(
+  const currentDashboards = dashboards?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -79,7 +96,7 @@ const MyDashSideMenu: React.FC = () => {
           ))}
         </ul>
       </div>
-      {dashboards && dashboards.dashboards.length > 0 && (
+      {initialDashboards && initialDashboards.length > 0 && (
         <div className="mt-3">
           <Pagination
             currentPage={currentPage}

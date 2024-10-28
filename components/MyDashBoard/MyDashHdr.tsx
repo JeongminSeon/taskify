@@ -1,68 +1,16 @@
 import { hdMenuBtn, hdMenuBtnIcon } from "./MyDashStyle";
-import { UserResponse } from "@/types/users";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 //import { getDashboardDetail } from "@/utils/api/dashboardsApi";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
-import { GetServerSideProps } from "next";
-import { parse } from "cookie";
-import { getUserInfo } from "@/utils/api/authApi";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookies = parse(context.req.headers.cookie || ""); // 쿠키 파싱
-  const accessToken = cookies.accessToken; // accessToken 추출
-
-  if (!accessToken) {
-    // accessToken이 없으면 로그인 페이지로 리다이렉트
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-
-  try {
-    const user = await getUserInfo(accessToken); // accessToken으로 유저 정보 가져오기
-    return {
-      props: { initialUser: user }, // 유저 정보를 initialUser로 전달
-    };
-  } catch (error) {
-    console.error("Error fetching user info:", error);
-    // 에러 발생 시 로그인 페이지로 리다이렉트
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-};
-
-interface MyDashHdrProps {
-  initialUser: UserResponse | null;
-}
-
-const MyDashHdr: React.FC<MyDashHdrProps> = ({ initialUser }) => {
+const MyDashHdr = () => {
   const router = useRouter();
-  const { dashboardid } = router.query;
+  const { dashboardsId } = router.query;
 
   // 인증 관련 상태와 메서드 불러오기
-  const { user, setUser, checkAuth } = useAuthStore();
-
-  // 컴포넌트가 마운트될 때 initialUser가 있으면 유저 정보 설정, 없으면 인증 체크
-  useEffect(() => {
-    if (initialUser) {
-      setUser({
-        ...initialUser,
-        profileImageUrl: initialUser.profileImageUrl || "",
-      });
-    } else {
-      checkAuth();
-    }
-  }, [initialUser, setUser, checkAuth]);
+  const { user } = useAuthStore();
 
   // 대시보드 상세 가져오기
   // useEffect(() => {
@@ -89,7 +37,7 @@ const MyDashHdr: React.FC<MyDashHdrProps> = ({ initialUser }) => {
         <ul className="flex gap-[6px] md:gap-4">
           <li>
             <Link
-              href={`/dashboards/${dashboardid}/edit`}
+              href={`/dashboards/${dashboardsId}/edit`}
               className={`${hdMenuBtn}`}
             >
               <span className={`${hdMenuBtnIcon}`}>
