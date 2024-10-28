@@ -10,8 +10,8 @@ const LandingBanner = () => {
           className="lg:w-[722px] lg:h-[423px] md:w-[537px] md:h-[315px] md:mb-12 sm:w-[287px] sm:h-[168px] sm:mb-[26px]"
           src="/images/resource/main_bnr.png"
           alt="메인이미지"
-          width="722"
-          height="423"
+          width={722}
+          height={423}
           priority
         />
         <h2 className="flex md:flex-row sm:flex-col sm:items-center lg:gap-7 md:gap-6 text-white100 font-bold lg:text-[76px] lg:mb-[111px] md:text-[56px] md:mb-[109px] sm:text-[40px] sm:mb-[101px] ">

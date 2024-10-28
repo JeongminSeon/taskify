@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { CardProps } from "@/types/cards";
+import { Card, CardProps } from "@/types/cards";
 import { styles } from "./styles";
 import Dropdown from "../../dropdown/Dropdown";
 
@@ -16,15 +16,14 @@ import Dropdown from "../../dropdown/Dropdown";
  * @param isOpen 모달 오픈 여부
  * @param onClose 모달 닫기 함수
  */
+interface CardDetailModalProps {
+  card: Card | null; // Card 타입의 객체
+  isOpen: boolean;
+  onClose: () => void;
+}
 
-const CardDetailModal: React.FC<CardProps> = ({
-  title,
-  // description,
-  // tags,
-  // dueDate,
-  // assignee,
-  // imageUrl,
-  // createdAt,
+const CardDetailModal: React.FC<CardDetailModalProps> = ({
+  card,
   isOpen,
   onClose,
 }) => {
@@ -45,7 +44,7 @@ const CardDetailModal: React.FC<CardProps> = ({
         <div className={styles.modalContent}>
           {/* 헤더 */}
           <div className={styles.modalHeader}>
-            <h1 className="text-xl font-bold">{title}</h1>
+            <h1 className="text-xl font-bold">{card?.title}</h1>
             <div className="flex items-center">
               <div className="relative">
                 <button
@@ -79,38 +78,28 @@ const CardDetailModal: React.FC<CardProps> = ({
                 <span
                   className={`${styles.tagBase} bg-indigo-100 text-indigo-800`}
                 >
-                  • To Do
+                  {card?.columnId}
                 </span>
                 <div className={styles.tagDivider}></div>
-                {[
-                  { text: "프로젝트", color: "bg-orange-100 text-orange-800" },
-                  { text: "일반", color: "bg-green-100 text-green-800" },
-                  { text: "백엔드", color: "bg-pink-100 text-pink-800" },
-                  { text: "상", color: "bg-purple-100 text-purple-800" },
-                ].map((tag) => (
+                {card?.tags.map((tag) => (
                   <span
-                    key={tag.text}
-                    className={`${styles.tagBase} ${tag.color}`}
+                    key={tag}
+                    className={`${styles.tagBase} bg-orange-100 text-orange-800`}
                   >
-                    {tag.text}
+                    {tag}
                   </span>
                 ))}
               </div>
               {/* 본문 */}
               <div className="p-4">
-                <p className="mb-4">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Vestibulum finibus nibh arcu, quis consequat ante cursus eget.
-                  Cras mattis, nulla non lacerat porttitor, diam justo laoreet
-                  eros, vel aliquet diam elit at leo.
-                </p>
+                <p className="mb-4">{card?.description}</p>
                 <div className={styles.imageContainer}>
                   <Image
-                    src="https://via.placeholder.com/300"
+                    src={card?.imageUrl || "https://via.placeholder.com/300"}
                     alt="Two women looking at a book"
                     fill
-                    objectFit="cover"
-                    className="rounded-lg"
+                    className="rounded-lg object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // 뷰포트에 따른 이미지 크기 설정
                   />
                 </div>
               </div>
@@ -120,11 +109,23 @@ const CardDetailModal: React.FC<CardProps> = ({
               <div className={styles.sidebarBox}>
                 <h3 className={styles.sidebarTitle}>담당자</h3>
                 <div className="flex items-center">
-                  <div className={styles.assigneeAvatar}>B</div>
-                  <span className="ml-2 text-sm">배유정</span>
+                  <div className={styles.assigneeAvatar}>
+                    {card?.assignee.nickname.charAt(0)}
+                  </div>
+                  <span className="ml-2 text-sm">
+                    {card?.assignee.nickname}
+                  </span>
                 </div>
                 <h3 className={`${styles.sidebarTitle} mt-4`}>마감일</h3>
-                <p className="text-sm">2022.12.30 19:00</p>
+                <p className="text-sm">
+                  {new Date(card?.dueDate || "").toLocaleDateString("ko-KR", {
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                  })}
+                </p>
               </div>
             </div>
           </div>

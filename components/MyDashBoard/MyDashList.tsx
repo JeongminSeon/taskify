@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Pagination from "../UI/pagination/Pagination";
 import CreateDashBoard from "./CreateDashBoard";
-import useModal from "@/hooks/useModal";
+import useModal from "@/hooks/modal/useModal";
 
 const MyDashList: React.FC = () => {
   const { dashboards } = useDashboardContext();
