@@ -52,6 +52,16 @@ export interface InvitationsResponse {
   totalCount: number;
 }
 
+export type CreateDashboardResponse = {
+  id: number;
+  title: string;
+  color: string;
+  createdAt: string;
+  updatedAt: string;
+  createdByMe: boolean;
+  userId: number;
+};
+
 export interface MemberProps {
   id: number;
   userId: number;

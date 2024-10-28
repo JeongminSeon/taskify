@@ -17,6 +17,7 @@ interface InputProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   isShowPW?: boolean;
   Icon?: string; // visibility 아이콘
+  labelStyle?: string;
 }
 
 const Input = ({
@@ -29,12 +30,15 @@ const Input = ({
   isPassword = false,
   onClick: handleShowPW,
   value,
+  labelStyle,
   ...props
 }: InputProps) => {
   const isFail = error ? "border-red100" : "";
   return (
     <>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id} className={labelStyle}>
+        {label}
+      </label>
       <div className="flex items-center relative">
         <input
           className={`w-full border px-4 py-3 border-gray400 rounded-lg focus:outline-none focus:ring-0 focus:border-purple100 ${isFail}`}

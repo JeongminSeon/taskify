@@ -4,10 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Pagination from "../UI/pagination/Pagination";
+import CreateDashBoard from "./CreateDashBoard";
+import useModal from "@/hooks/useModal";
 
 const MyDashList: React.FC = () => {
   const { dashboards } = useDashboardContext();
   const [currentPage, setCurrentPage] = useState(1);
+  const { isOpen, openModal, closeModal } = useModal();
+
   const itemsPerPage = 5; // 한 페이지에 보여줄 대시보드 수
   const totalPages = dashboards
     ? Math.ceil(dashboards.dashboards.length / itemsPerPage)
@@ -26,15 +30,25 @@ const MyDashList: React.FC = () => {
     currentPage * itemsPerPage
   );
 
+  // 새로운 대쉬보드 모달
+  const handleNewDashBoard = () => {
+    openModal();
+  };
+
   return (
     <div>
       <div className="flex flex-col gap-2 md:flex-row md:flex-wrap md:gap-[10px] lg:gap-[13px]">
         <div className={`justify-center ${boardCardBtn}`}>
-          <button type="button" className={`${boardCardBtnBox}`}>
+          <button
+            type="button"
+            className={`${boardCardBtnBox}`}
+            onClick={handleNewDashBoard}
+          >
             <p className="inline-block pr-[34px] bg-[url('/images/icons/icon_add_card.svg')] bg-no-repeat bg-right">
               새로운 대시보드
             </p>
           </button>
+          {isOpen && <CreateDashBoard isOpen={isOpen} onClose={closeModal} />}
         </div>
         {currentDashboards?.map((dashboard) => (
           <div key={dashboard.id} className={`${boardCardBtn}`}>
