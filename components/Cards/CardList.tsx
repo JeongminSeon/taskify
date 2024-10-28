@@ -33,6 +33,8 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
     setTagColors(newTagColors);
   }, [cards]); // cards가 변경될 때만 실행
 
+  console.log("selectedCard:", selectedCard);
+
   useEffect(() => {
     const fetchCards = async () => {
       try {
@@ -115,7 +117,7 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
       ))}
       {selectedCard && (
         <CardDetailModal
-          {...selectedCard}
+          card={selectedCard}
           isOpen={isOpen}
           onClose={closeModal}
         />
