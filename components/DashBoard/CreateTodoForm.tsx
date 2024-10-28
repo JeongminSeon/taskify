@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { TodoFormProps, TodoModalProps } from "@/types/dashboards";
 import TodoButton from "./TodoButton";
 import "react-datepicker/dist/react-datepicker.css";
@@ -15,19 +15,7 @@ import UserInput from "./inputs/UserInput";
 
 const CreateTodoForm = ({ columnId, onClose, dashboardId }: TodoModalProps) => {
   const [formData, setFormData] = useState<TodoFormProps>(INITIAL_VALUES);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const preview = useImagePreview(formData.imageUrl ? formData.imageUrl : null);
-
-  useEffect(() => {
-    const isFormComplete =
-      formData.assigneeUserId &&
-      formData.title &&
-      formData.description &&
-      formData.dueDate &&
-      formData.tags.length > 0 &&
-      formData.imageUrl !== null;
-    setIsButtonDisabled(!isFormComplete);
-  }, [formData]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -100,7 +88,11 @@ const CreateTodoForm = ({ columnId, onClose, dashboardId }: TodoModalProps) => {
         />
       )}
 
-      <TodoButton onClose={onClose} text="생성" disabled={isButtonDisabled} />
+      <TodoButton
+        onClose={onClose}
+        text="생성"
+        disabled={!validateForm(formData)}
+      />
     </form>
   );
 };

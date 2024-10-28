@@ -17,7 +17,6 @@ import ColumnInput from "./inputs/ColumnInput";
 
 const UpdateTodoForm = ({ cardId, onClose, dashboardId }: TodoModalProps) => {
   const [formData, setFormData] = useState<TodoFormProps>(INITIAL_VALUES);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const preview = useImagePreview(formData.imageUrl ? formData.imageUrl : null);
 
   useEffect(() => {
@@ -42,17 +41,6 @@ const UpdateTodoForm = ({ cardId, onClose, dashboardId }: TodoModalProps) => {
 
     fetchData();
   }, [cardId]);
-
-  useEffect(() => {
-    const isFormComplete =
-      formData.assigneeUserId &&
-      formData.title &&
-      formData.description &&
-      formData.dueDate &&
-      formData.tags.length > 0 &&
-      formData.imageUrl !== "";
-    setIsButtonDisabled(!isFormComplete);
-  }, [formData]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -134,7 +122,11 @@ const UpdateTodoForm = ({ cardId, onClose, dashboardId }: TodoModalProps) => {
         />
       )}
 
-      <TodoButton onClose={onClose} text="수정" disabled={isButtonDisabled} />
+      <TodoButton
+        onClose={onClose}
+        text="수정"
+        disabled={!validateForm(formData)}
+      />
     </form>
   );
 };
