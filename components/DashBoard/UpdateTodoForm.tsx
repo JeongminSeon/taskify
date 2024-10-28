@@ -13,6 +13,7 @@ import DateInput from "./inputs/DateInput";
 import TagInput from "./inputs/TagInput";
 import ImageUpload from "./ImageUpload";
 import UserInput from "./inputs/UserInput";
+import ColumnInput from "./inputs/ColumnInput";
 
 const UpdateTodoForm = ({ cardId, onClose, dashboardId }: TodoModalProps) => {
   const [formData, setFormData] = useState<TodoFormProps>(INITIAL_VALUES);
@@ -60,15 +61,12 @@ const UpdateTodoForm = ({ cardId, onClose, dashboardId }: TodoModalProps) => {
       return;
     }
 
-    const columnId = formData.columnId;
-
-    if (!columnId) return;
     if (!dashboardId) return;
     try {
       const outputData: CreateCardBody = {
         assigneeUserId: formData.assigneeUserId,
         dashboardId,
-        columnId,
+        columnId: formData.columnId,
         title: formData.title,
         description: formData.description,
         dueDate: formData.dueDate,
@@ -90,15 +88,23 @@ const UpdateTodoForm = ({ cardId, onClose, dashboardId }: TodoModalProps) => {
 
   return (
     <form className="flex flex-col w-full text-[16px]" onSubmit={handleSubmit}>
-      {/* <ColumnInput value={formData.columnId}/> dashboardId={dashboardId || 0}*/}
+      <div className="flex gap-8">
+        <ColumnInput
+          value={formData.columnId}
+          onChange={(value) =>
+            setFormData({ ...formData, columnId: Number(value) })
+          }
+          dashboardId={dashboardId || 0}
+        />
 
-      <UserInput
-        value={formData.assigneeUserId}
-        onChange={(value) =>
-          setFormData({ ...formData, assigneeUserId: Number(value) })
-        }
-        dashboardId={dashboardId || 0}
-      />
+        <UserInput
+          value={formData.assigneeUserId}
+          onChange={(value) =>
+            setFormData({ ...formData, assigneeUserId: Number(value) })
+          }
+          dashboardId={dashboardId || 0}
+        />
+      </div>
 
       <TitleInput
         value={formData.title}

@@ -26,7 +26,7 @@ const UserInput = ({ value, onChange, dashboardId }: UserInputProps) => {
 
   return (
     <div className={`${boxStyle}`}>
-      <span className={`${labelStyle}`}>관리자</span>
+      <span className={`${labelStyle}`}>담당자</span>
       <select
         className={`${inputStyle} text-gray300`}
         name="assigneeUserId"
