@@ -1,4 +1,4 @@
-import UpdateTodoForm from "@/components/DashBoard/UpdateTodoForm";
+import UpdateTodoForm from "@/components/DashBoard/todo/UpdateTodoForm";
 import TodoModalLayout from "@/components/Layout/TodoModalLayout";
 import { TodoModalProps } from "@/types/dashboards";
 

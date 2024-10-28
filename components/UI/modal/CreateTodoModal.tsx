@@ -1,4 +1,4 @@
-import CreateTodoForm from "@/components/DashBoard/CreateTodoForm";
+import CreateTodoForm from "@/components/DashBoard/todo/CreateTodoForm";
 import TodoModalLayout from "@/components/Layout/TodoModalLayout";
 import { TodoModalProps } from "@/types/dashboards";
 

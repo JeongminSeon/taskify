@@ -6,12 +6,12 @@ import { INITIAL_VALUES, validateForm } from "@/utils/TodoForm";
 import useImagePreview from "@/hooks/dashboard/useImagePreview";
 import { createCard } from "@/utils/api/cardsApi";
 import { CreateCardBody } from "@/types/cards";
-import TitleInput from "./inputs/TitleInput";
-import DescriptionInput from "./inputs/DescriptionInput";
-import DateInput from "./inputs/DateInput";
-import TagInput from "./inputs/TagInput";
-import ImageInput from "./inputs/ImageInput";
-import UserInput from "./inputs/UserInput";
+import TitleInput from "../inputs/TitleInput";
+import DescriptionInput from "../inputs/DescriptionInput";
+import DateInput from "../inputs/DateInput";
+import TagInput from "../inputs/TagInput";
+import ImageInput from "../inputs/ImageInput";
+import UserInput from "../inputs/UserInput";
 
 const CreateTodoForm = ({ columnId, onClose, dashboardId }: TodoModalProps) => {
   const [formData, setFormData] = useState<TodoFormProps>(INITIAL_VALUES);
