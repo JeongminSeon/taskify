@@ -5,7 +5,7 @@ import { getRandomColor } from "@/utils/TodoForm";
 import useModal from "@/hooks/modal/useModal";
 import CardDetailModal from "../UI/modal/CardModal/CardDetailModal";
 
-import Card from "./Card";
+import Card from "./components/Card";
 import UpdateTodoModal from "../UI/modal/UpdateTodoModal";
 
 interface CardListProps {
