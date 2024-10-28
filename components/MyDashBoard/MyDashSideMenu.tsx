@@ -2,33 +2,40 @@ import Link from "next/link";
 import Image from "next/image";
 import DashBoardLink from "./DashBoardLink";
 import Pagination from "../UI/pagination/Pagination";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Dashboard } from "@/types/dashboards";
-import { useDashBoardStore } from "@/store/dashBoardStore";
+//import { useDashBoardStore } from "@/store/dashBoardStore";
+import { getDashboards } from "@/utils/api/dashboardsApi";
+import { GetServerSideProps } from "next";
 
 interface MyDashSideMenuProps {
-  initialDashboards: Dashboard[];
+  dashboards: Dashboard[];
 }
 
-const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({
-  initialDashboards,
-}) => {
+export const getServerSideProps: GetServerSideProps = async () => {
+  try {
+    const data = await getDashboards(1, 20); // 대시보드 목록 가져오기
+    return {
+      props: { initialDashboards: data.dashboards },
+    };
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+};
+
+const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
-  const totalPages = initialDashboards
-    ? Math.ceil(initialDashboards.length / itemsPerPage)
+
+  const totalPages = dashboards
+    ? Math.ceil(dashboards.length / itemsPerPage)
     : 0;
-
-  // 인증 관련 상태와 메서드 불러오기
-  const { dashboards, setDashboards } = useDashBoardStore();
-
-  // 컴포넌트가 마운트될 때 초기 대시보드 설정
-  useEffect(() => {
-    // 상태 업데이트: initialDashboards를 Zustand에 저장
-    if (initialDashboards) {
-      setDashboards();
-    }
-  }, [initialDashboards, setDashboards]);
 
   const handleNextPage = () => {
     setCurrentPage((prev) => prev + 1);
@@ -96,7 +103,7 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({
           ))}
         </ul>
       </div>
-      {initialDashboards && initialDashboards.length > 0 && (
+      {dashboards && dashboards.length > 0 && (
         <div className="mt-3">
           <Pagination
             currentPage={currentPage}

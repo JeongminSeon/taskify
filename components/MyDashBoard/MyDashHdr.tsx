@@ -9,7 +9,6 @@ const MyDashHdr = () => {
   const router = useRouter();
   const { dashboardsId } = router.query;
 
-  // 인증 관련 상태와 메서드 불러오기
   const { user } = useAuthStore();
 
   // 대시보드 상세 가져오기
