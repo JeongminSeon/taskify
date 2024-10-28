@@ -105,7 +105,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
   return (
     <DashBoardLayout>
       <div>
-        {user && <p>환영합니다, {user.nickname}님!</p>}
         <div className="columns flex flex-col lg:flex-row">
           {/* 각 칼럼 데이터를 Column 컴포넌트로 렌더링 */}
           {columns.map((item) => (
