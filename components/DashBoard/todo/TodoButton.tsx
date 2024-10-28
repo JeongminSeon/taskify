@@ -1,4 +1,4 @@
-import { todoButtonStyle } from "./styles";
+import { todoButtonStyle } from "../styles";
 
 const TodoButton = ({
   text = "생성",

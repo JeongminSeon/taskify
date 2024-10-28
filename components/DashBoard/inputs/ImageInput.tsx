@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { boxStyle, imageStyle, labelStyle } from "./styles";
+import { boxStyle, imageStyle, labelStyle } from "../styles";
 import { TodoFormProps } from "@/types/dashboards";
 import { createCardImage } from "@/utils/api/columnsApi";
 
