@@ -1,15 +1,38 @@
+// CardList.tsx
 import { useEffect, useState } from "react";
 import { Card as CardType, CardListResponse } from "@/types/cards";
 import { getCards } from "@/utils/api/cardsApi";
+import { getRandomColor } from "@/utils/TodoForm";
+import useModal from "@/hooks/modal/useModal";
+import CardDetailModal from "../UI/modal/CardModal/CardDetailModal";
 import Card from "./Card";
 
 interface CardListProps {
   columnId: number;
-  dashboardId: number;
 }
 
-const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
+const CardList: React.FC<CardListProps> = ({ columnId }) => {
   const [cards, setCards] = useState<CardType[]>([]);
+  const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
+  const { isOpen, openModal, closeModal } = useModal();
+  const [tagColors, setTagColors] = useState<Record<string, string>>({});
+
+  const handleCardClick = (card: CardType) => {
+    setSelectedCard(card);
+    openModal();
+  };
+
+  useEffect(() => {
+    const newTagColors: Record<string, string> = {};
+    cards.forEach((card) => {
+      card.tags.forEach((tag) => {
+        if (!newTagColors[tag]) {
+          newTagColors[tag] = getRandomColor();
+        }
+      });
+    });
+    setTagColors(newTagColors);
+  }, [cards]);
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -27,16 +50,23 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
   }, [columnId]);
 
   return (
-    <ul className="mt-4 flex flex-col gap-4">
+    <div className="mt-[10px]">
       {cards.map((card) => (
         <Card
           key={card.id}
           card={card}
-          id={card.id}
-          dashboardId={dashboardId}
+          tagColors={tagColors}
+          onClick={() => handleCardClick(card)}
         />
       ))}
-    </ul>
+      {selectedCard && (
+        <CardDetailModal
+          card={selectedCard}
+          isOpen={isOpen}
+          onClose={closeModal}
+        />
+      )}
+    </div>
   );
 };
 

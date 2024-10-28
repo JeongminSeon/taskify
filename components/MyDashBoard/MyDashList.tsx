@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import Image from "next/image";
 import CreateDashBoard from "./CreateDashBoard";
-import useModal from "@/hooks/useModal";
+import useModal from "@/hooks/modal/useModal";
 
 const MyDashList: React.FC = () => {
   const router = useRouter();
@@ -111,10 +111,11 @@ const MyDashList: React.FC = () => {
               className="relative w-9 h-9 md:w-10 md:h-10"
             >
               <Image
+                className="object-cover"
                 src={"/images/icons/pagination_left.svg"}
                 fill
-                objectFit="cover"
                 alt="이전"
+                sizes="(max-width: 768px) 50px, (max-width: 1200px) 75px, 100px" // 뷰포트에 따른 이미지 크기 설정
               />
             </button>
             <button
@@ -123,10 +124,11 @@ const MyDashList: React.FC = () => {
               className="relative w-9 h-9 md:w-10 md:h-10"
             >
               <Image
+                className="object-cover"
                 src={"/images/icons/pagination_right.svg"}
                 fill
-                objectFit="cover"
                 alt="다음"
+                sizes="(max-width: 768px) 50px, (max-width: 1200px) 75px, 100px" // 뷰포트에 따른 이미지 크기 설정
               />
             </button>
           </div>

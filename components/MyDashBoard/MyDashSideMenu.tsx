@@ -12,8 +12,8 @@ const MyDashSideMenu: React.FC = () => {
         <Link href="/">
           <Image
             src="/images/logos/logo-small.svg"
-            width={23}
-            height={27}
+            width={24}
+            height={30}
             alt="로고"
           />
         </Link>
@@ -25,6 +25,8 @@ const MyDashSideMenu: React.FC = () => {
             width={109}
             height={33}
             alt="로고"
+            priority
+            style={{ width: "auto", height: "auto" }}
           />
         </Link>
       </h1>

@@ -2,7 +2,7 @@ import Axios from "axios";
 import Cookies from "js-cookie";
 
 const axiosInstance = Axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
   timeout: 5000, // 5초
   withCredentials: false,
   headers: {
