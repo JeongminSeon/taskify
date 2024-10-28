@@ -4,7 +4,6 @@ import DashBoardLink from "./DashBoardLink";
 import Pagination from "../UI/pagination/Pagination";
 import { useState } from "react";
 import { Dashboard } from "@/types/dashboards";
-//import { useDashBoardStore } from "@/store/dashBoardStore";
 import { getDashboards } from "@/utils/api/dashboardsApi";
 import { GetServerSideProps } from "next";
 

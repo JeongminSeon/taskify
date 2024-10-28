@@ -17,6 +17,11 @@ import InputField from "@/components/My/InputField";
 import ColorChip from "@/components/UI/colorchip/ColorChip";
 import InviteeList from "@/components/DashBoardEdit/InviteeList";
 
+/* TO DO 
+HEADER > 관리 클릭 시, 권한 있는 지 없는 지 확인
+없을 경우 /dashboards/${dashboardsId} 
+*/
+
 interface EditDashboardProps {
   dashboardId: number;
   initialMembers: Member[];
@@ -53,7 +58,7 @@ const DashboardEdit: React.FC<EditDashboardProps> = ({
 }) => {
   const router = useRouter();
   const [dashboardDetail, setDashboardDetail] =
-    useState<DashboardDetailResponse | null>(null); // 타입 지정
+    useState<DashboardDetailResponse | null>(null);
   const [title, setTitle] = useState<string>("");
   const [color, setColor] = useState<string>("");
 
@@ -92,7 +97,7 @@ const DashboardEdit: React.FC<EditDashboardProps> = ({
     setColor(selectedColor);
   };
 
-  // 변경 핸들러
+  // 대시보드 변경 핸들러
   const handleUpdate = async () => {
     if (dashboardId) {
       try {
@@ -111,7 +116,7 @@ const DashboardEdit: React.FC<EditDashboardProps> = ({
     }
   };
 
-  // 삭제 핸들러
+  // 대시보드 삭제 핸들러
   const handleDeleteDashboard = async () => {
     if (dashboardId) {
       const confirmDelete = confirm("이 대시보드를 정말 삭제하시겠습니까?");
