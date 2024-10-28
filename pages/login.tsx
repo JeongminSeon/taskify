@@ -5,7 +5,7 @@ import logoImage from "@/public/images/logos/logo-main.svg?url";
 import visibilityOff from "@/public/images/icons/icon_visibility_off.svg?url";
 import visibilityOn from "@/public/images/icons/icon_visibility.svg?url";
 import Input from "@/components/Auth/Input";
-import { isEmailValid, isPWValid } from "@/utils/validation";
+import { isEmailValid, isEntered, isPWValid } from "@/utils/validation";
 import useInput from "@/hooks/useInput";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
@@ -43,6 +43,14 @@ const Login = () => {
   const handleShowPW = () => {
     setIsShowPw((prev) => !prev);
   };
+
+  const allFieldsFilled = isEntered(emailValue) && isEntered(passwordValue);
+
+  const hasErrors = isEmailNotValid || isPWNotValid;
+
+  const isSubmitEnabled = allFieldsFilled && !hasErrors;
+
+  const buttonColor = isSubmitEnabled ? "bg-purple100" : "bg-gray300";
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -110,7 +118,7 @@ const Login = () => {
           onClick={handleShowPW}
         />
         <button
-          className="bg-gray300 py-3 rounded-lg text-white text-lg mt-2"
+          className={`${buttonColor} py-3 rounded-lg text-white text-lg mt-2`}
           type="submit"
         >
           로그인

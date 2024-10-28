@@ -22,6 +22,11 @@ const config: Config = {
         white100: "var(--white100)",
         purple100: "var(--purple100)",
         red100: "var(--red100)",
+        pink100: "var(--pink100)",
+        green100: "var(--green100)",
+        violet100: "var(--purple200)",
+        blue100: "var(--blue100)",
+        orange100: "var(--orange100)",
       },
       screens: {
         sm: "375px",
