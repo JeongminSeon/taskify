@@ -33,8 +33,8 @@ const CardDetailModal: React.FC<CardDetailModalProps> = ({
           onClick={(e) => e.stopPropagation()}
         >
           <CardHeader card={card} onClose={onClose} onEdit={onEdit} />
-          <div className="flex">
-            <div className="flex-grow pr-4">
+          <div className="flex flex-col md:flex-row">
+            <div className="flex-grow pr-0 md:pr-4">
               <CardTagList card={card} columnTitle={columnTitle} />
               <CardBody card={card} />
             </div>
