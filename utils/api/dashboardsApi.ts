@@ -2,8 +2,11 @@ import {
   DashboardResponse,
   DashboardDetailResponse,
   MembersResponse,
+  CreateDashboardResponse,
 } from "@/types/dashboards";
 import axiosInstance from "./axiosInstanceApi";
+import { AxiosError } from "axios";
+import { onError } from "./error";
 
 // 대시보드 목록 가져오기
 export const getDashboards = async (page: number, size: number) => {
@@ -18,6 +21,39 @@ export const getDashboards = async (page: number, size: number) => {
     return response.data;
   } catch (error) {
     console.error("대시보드 목록을 가져오는 데 실패했습니다:", error);
+    throw error;
+  }
+};
+
+// 대시보드 생성하기
+export const createDashboard = async (
+  title: string,
+  color: string
+): Promise<CreateDashboardResponse> => {
+  const formData = {
+    title,
+    color,
+  };
+  try {
+    const response = await axiosInstance.post<CreateDashboardResponse>(
+      "/dashboards",
+      formData
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      const message = error.message;
+      const status = error.response?.status ?? 500;
+
+      switch (status) {
+        case 401:
+          onError(status, "Unauthorizsed");
+          break;
+        default:
+          onError(status, message);
+          break;
+      }
+    }
     throw error;
   }
 };

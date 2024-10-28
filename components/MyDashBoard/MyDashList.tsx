@@ -5,11 +5,14 @@ import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import Image from "next/image";
+import CreateDashBoard from "./CreateDashBoard";
+import useModal from "@/hooks/useModal";
 
 const MyDashList: React.FC = () => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const { data, loading, error } = useGetDashboardList("pagination", 0, 1, 5);
+  const { isOpen, openModal, closeModal } = useModal();
 
   useEffect(() => {
     const accessToken = Cookies.get("accessToken");
@@ -36,6 +39,10 @@ const MyDashList: React.FC = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1)); // 1페이지 이하로는 내리지 않음
   };
 
+  // 새로운 대쉬보드 모달
+  const handleNewDashBoard = () => {
+    openModal();
+  };
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -47,11 +54,16 @@ const MyDashList: React.FC = () => {
     <div>
       <div className="flex flex-col gap-2 md:flex-row md:flex-wrap md:gap-[10px] lg:gap-[13px]">
         <div className={`justify-center ${boardCardBtn}`}>
-          <button type="button" className={`${boardCardBtnBox}`}>
+          <button
+            type="button"
+            className={`${boardCardBtnBox}`}
+            onClick={handleNewDashBoard}
+          >
             <p className="inline-block pr-[34px] bg-[url('/images/icons/icon_add_card.svg')] bg-no-repeat bg-right">
               새로운 대시보드
             </p>
           </button>
+          {isOpen && <CreateDashBoard isOpen={isOpen} onClose={closeModal} />}
         </div>
         {data?.dashboards.map((dashboard) => (
           <div key={dashboard.id} className={`${boardCardBtn}`}>
@@ -86,7 +98,7 @@ const MyDashList: React.FC = () => {
         ))}
       </div>
       {dashboards.length > 0 && (
-        <div className="flex items-center justify-end gap-5 mt-4">
+        <div className="flex items-center justify-end gap-5 mt-4 ">
           <div>
             <span className="text-sm text-black300">
               {currentPage} 페이지 중 {totalPages}
