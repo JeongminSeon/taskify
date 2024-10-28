@@ -6,6 +6,7 @@ import UpdateTodoModal from "../UI/modal/UpdateTodoModal";
 interface CardListLayoutProps {
   cards: CardType[];
   selectedCard: CardType | null;
+  columnTitle: string;
   tagColors: Record<string, string>;
   isDetailOpen: boolean;
   isUpdateOpen: boolean;
@@ -19,6 +20,7 @@ interface CardListLayoutProps {
 const CardListLayout: React.FC<CardListLayoutProps> = ({
   cards,
   selectedCard,
+  columnTitle,
   tagColors,
   isDetailOpen,
   isUpdateOpen,
@@ -46,6 +48,7 @@ const CardListLayout: React.FC<CardListLayoutProps> = ({
             isOpen={isDetailOpen}
             onClose={onCloseDetail}
             onEdit={onEdit}
+            columnTitle={columnTitle}
           />
           <UpdateTodoModal
             cardId={selectedCard.id}

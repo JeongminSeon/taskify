@@ -3,10 +3,15 @@ import CardListLayout from "../Layout/CardListLayout";
 
 interface CardListProps {
   columnId: number;
+  title: string;
   dashboardId: number;
 }
 
-const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
+const CardList: React.FC<CardListProps> = ({
+  columnId,
+  title,
+  dashboardId,
+}) => {
   const {
     cards,
     selectedCard,
@@ -27,6 +32,7 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
       isDetailOpen={isDetailOpen}
       isUpdateOpen={isUpdateOpen}
       dashboardId={dashboardId}
+      columnTitle={title}
       onCardClick={handleCardClick}
       onCloseDetail={closeDetailModal}
       onCloseUpdate={closeUpdateModal}

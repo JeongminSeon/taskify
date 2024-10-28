@@ -10,6 +10,7 @@ import CardCommentList from "./components/CardCommentList";
 
 interface CardDetailModalProps {
   card: Card | null;
+  columnTitle: string;
   isOpen: boolean;
   onClose: () => void;
   onEdit: () => void;
@@ -17,6 +18,7 @@ interface CardDetailModalProps {
 
 const CardDetailModal: React.FC<CardDetailModalProps> = ({
   card,
+  columnTitle,
   isOpen,
   onClose,
   onEdit,
@@ -33,7 +35,7 @@ const CardDetailModal: React.FC<CardDetailModalProps> = ({
           <CardHeader card={card} onClose={onClose} onEdit={onEdit} />
           <div className="flex">
             <div className="flex-grow pr-4">
-              <CardTagList card={card} />
+              <CardTagList card={card} columnTitle={columnTitle} />
               <CardBody card={card} />
             </div>
             <CardSidebar card={card} />

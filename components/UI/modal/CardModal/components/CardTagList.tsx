@@ -2,10 +2,15 @@ import React from "react";
 import { Card } from "@/types/cards";
 import { styles } from ".././styles";
 
-const CardTagList: React.FC<{ card: Card | null }> = ({ card }) => (
+interface CardTagListProps {
+  card: Card | null;
+  columnTitle: string;
+}
+
+const CardTagList: React.FC<CardTagListProps> = ({ card, columnTitle }) => (
   <div className={styles.tagContainer}>
     <span className={`${styles.tagBase} bg-indigo-100 text-indigo-800`}>
-      {card?.columnId}
+      • {columnTitle}
     </span>
     <div className={styles.tagDivider}></div>
     {card?.tags.map((tag) => (
