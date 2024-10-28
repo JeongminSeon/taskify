@@ -1,11 +1,12 @@
-// CardList.tsx
 import { useEffect, useState } from "react";
 import { Card as CardType, CardListResponse } from "@/types/cards";
 import { getCards } from "@/utils/api/cardsApi";
 import { getRandomColor } from "@/utils/TodoForm";
 import useModal from "@/hooks/modal/useModal";
 import CardDetailModal from "../UI/modal/CardModal/CardDetailModal";
+
 import Card from "./Card";
+import UpdateTodoModal from "../UI/modal/UpdateTodoModal";
 
 interface CardListProps {
   columnId: number;
@@ -15,12 +16,26 @@ interface CardListProps {
 const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
   const [cards, setCards] = useState<CardType[]>([]);
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
-  const { isOpen, openModal, closeModal } = useModal();
+  const {
+    isOpen: isDetailOpen,
+    openModal: openDetailModal,
+    closeModal: closeDetailModal,
+  } = useModal();
+  const {
+    isOpen: isUpdateOpen,
+    openModal: openUpdateModal,
+    closeModal: closeUpdateModal,
+  } = useModal();
   const [tagColors, setTagColors] = useState<Record<string, string>>({});
 
   const handleCardClick = (card: CardType) => {
     setSelectedCard(card);
-    openModal();
+    openDetailModal();
+  };
+
+  const handleEditClick = () => {
+    closeDetailModal(); // CardDetailModal을 닫습니다
+    openUpdateModal(); // UpdateTodoModal을 엽니다
   };
 
   useEffect(() => {
@@ -62,11 +77,20 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
         />
       ))}
       {selectedCard && (
-        <CardDetailModal
-          card={selectedCard}
-          isOpen={isOpen}
-          onClose={closeModal}
-        />
+        <>
+          <CardDetailModal
+            card={selectedCard}
+            isOpen={isDetailOpen}
+            onClose={closeDetailModal}
+            onEdit={handleEditClick}
+          />
+          <UpdateTodoModal
+            cardId={selectedCard.id}
+            isOpen={isUpdateOpen}
+            onClose={closeUpdateModal}
+            dashboardId={dashboardId}
+          />
+        </>
       )}
     </div>
   );
