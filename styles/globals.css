@@ -24,6 +24,11 @@
   --white100: #fff;
   --purple100: #5534da;
   --red100: #d6173a;
+  --pink100: #e876ea;
+  --green100: #7ac555;
+  --purple200: #760dde;
+  --blue100: #76a5ea;
+  --orange100: #ffa500;
 }
 
 body {
@@ -46,6 +51,10 @@ a {
   cursor: pointer;
   text-decoration: none;
   color: inherit;
+}
+
+li {
+  list-style: none;
 }
 
 button {
