@@ -11,13 +11,11 @@ import axios from "axios";
 
 // 컬럼 목록 조회
 export const getColumns = async ({
-  teamId,
   dashboardId,
 }: ColoumnsParams): Promise<ColumnsResponse> => {
   try {
     const response = await axiosInstance.get<ColumnsResponse>(`/columns`, {
       params: {
-        teamId,
         dashboardId,
       },
     });
@@ -30,7 +28,6 @@ export const getColumns = async ({
 
 // 컬럼 생성
 export const createColumn = async ({
-  teamId,
   title,
   dashboardId,
 }: ColumnsCreateParams): Promise<ColumnsCreateResponse> => {
@@ -38,7 +35,6 @@ export const createColumn = async ({
     const response = await axiosInstance.post<ColumnsCreateResponse>(
       `/columns`,
       {
-        teamId,
         title,
         dashboardId,
       }

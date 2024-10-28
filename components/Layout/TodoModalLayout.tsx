@@ -4,7 +4,7 @@ const TodoModalLayout = ({
   text,
   children,
 }: {
-  text: string;
+  text?: string;
   children: ReactNode;
 }) => {
   return (
