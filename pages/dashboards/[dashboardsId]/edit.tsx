@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { GetServerSidePropsContext } from "next";
-import { useDashboardContext } from "@/context/DashboardContext";
 import {
   deleteDashboard,
-  getDashboards,
+  getDashboardDetail,
   updateDashboard,
 } from "@/utils/api/dashboardsApi";
 import { getMembers } from "@/utils/api/membersApi";
 import { Member, MemberResponse } from "@/types/members";
+import { useDashBoardStore } from "@/store/dashBoardStore";
+import { DashboardDetailResponse } from "@/types/dashboards";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import MemberList from "@/components/DashBoardEdit/MemberList";
 import EditBox from "@/components/DashBoardEdit/EditBox";
@@ -18,14 +19,14 @@ import InviteeList from "@/components/DashBoardEdit/InviteeList";
 
 interface EditDashboardProps {
   dashboardId: number;
-  initialMembers: Member[]; // 타입 지정
+  initialMembers: Member[];
   totalCount: number;
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { dashboardsId } = context.query;
 
-  let initialMembers: Member[] = []; // Member[] 타입으로 초기화
+  let initialMembers: Member[] = [];
   let totalCount = 0;
 
   try {
@@ -51,17 +52,33 @@ const DashboardEdit: React.FC<EditDashboardProps> = ({
   totalCount,
 }) => {
   const router = useRouter();
-  const { dashboardDetail, setDashboardDetail, setDashboards } =
-    useDashboardContext();
+  const [dashboardDetail, setDashboardDetail] =
+    useState<DashboardDetailResponse | null>(null); // 타입 지정
   const [title, setTitle] = useState<string>("");
   const [color, setColor] = useState<string>("");
+
+  // 대시보드 상세 가져오기
+  useEffect(() => {
+    const fetchDashboardDetail = async () => {
+      try {
+        const detail = await getDashboardDetail(dashboardId);
+        setDashboardDetail(detail);
+        setTitle(detail.title);
+        setColor(detail.color);
+      } catch (error) {
+        console.error("Failed to fetch dashboard detail:", error);
+      }
+    };
+
+    fetchDashboardDetail();
+  }, [dashboardId]);
 
   // 뒤로가기 버튼
   const returnButton = () => {
     router.back();
   };
 
-  // 기본 컬러칩
+  // 컬러칩 정의
   const colorChips = [
     { id: 1, color: "#7AC555" },
     { id: 2, color: "#760DDE" },
@@ -70,12 +87,12 @@ const DashboardEdit: React.FC<EditDashboardProps> = ({
     { id: 5, color: "#E876EA" },
   ];
 
-  // 컬러 변경
+  // 컬러칩 변경
   const handleColorChange = (selectedColor: string) => {
     setColor(selectedColor);
   };
 
-  // 대시보드 변경 사항 업데이트
+  // 변경 핸들러
   const handleUpdate = async () => {
     if (dashboardId) {
       try {
@@ -87,15 +104,14 @@ const DashboardEdit: React.FC<EditDashboardProps> = ({
         setColor(updatedDashboard.color);
         setDashboardDetail(updatedDashboard);
 
-        const updatedDashboards = await getDashboards(1, 10);
-        setDashboards(updatedDashboards);
+        await useDashBoardStore.getState().setDashboards(); // Zustand 스토어에서 대시보드 목록 업데이트
       } catch (error) {
         console.error("Failed to update dashboard:", error);
       }
     }
   };
 
-  // 대시보드 삭제
+  // 삭제 핸들러
   const handleDeleteDashboard = async () => {
     if (dashboardId) {
       const confirmDelete = confirm("이 대시보드를 정말 삭제하시겠습니까?");
@@ -135,8 +151,8 @@ const DashboardEdit: React.FC<EditDashboardProps> = ({
                   <ColorChip
                     key={chip.id}
                     color={chip.color}
-                    onClick={() => handleColorChange(chip.color)} // 클릭 시 색상 변경
-                    isSelected={color === chip.color} // 선택된 색상 확인
+                    onClick={() => handleColorChange(chip.color)}
+                    isSelected={color === chip.color}
                   />
                 ))}
               </div>

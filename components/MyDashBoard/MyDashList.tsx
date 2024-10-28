@@ -1,5 +1,5 @@
-import { useDashboardContext } from "@/context/DashboardContext";
 import { boardCardBtn, boardCardBtnBox } from "./MyDashStyle";
+import { useDashBoardStore } from "@/store/dashBoardStore";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,13 +8,13 @@ import CreateDashBoard from "./CreateDashBoard";
 import useModal from "@/hooks/modal/useModal";
 
 const MyDashList: React.FC = () => {
-  const { dashboards } = useDashboardContext();
   const [currentPage, setCurrentPage] = useState(1);
   const { isOpen, openModal, closeModal } = useModal();
+  const { dashboards } = useDashBoardStore();
 
   const itemsPerPage = 5; // 한 페이지에 보여줄 대시보드 수
   const totalPages = dashboards
-    ? Math.ceil(dashboards.dashboards.length / itemsPerPage)
+    ? Math.ceil(dashboards.length / itemsPerPage)
     : 0;
 
   const handleNextPage = () => {
@@ -25,7 +25,7 @@ const MyDashList: React.FC = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1)); // 1페이지 이하로는 내리지 않음
   };
 
-  const currentDashboards = dashboards?.dashboards.slice(
+  const currentDashboards = dashboards?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -82,7 +82,7 @@ const MyDashList: React.FC = () => {
           </div>
         ))}
       </div>
-      {dashboards && dashboards.dashboards.length > 0 && (
+      {dashboards && dashboards.length > 0 && (
         <div className="mt-3">
           <Pagination
             currentPage={currentPage}
