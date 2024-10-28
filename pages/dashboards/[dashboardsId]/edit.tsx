@@ -23,13 +23,13 @@ interface EditDashboardProps {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { dashboardid } = context.query;
+  const { dashboardsId } = context.query;
 
   let initialMembers: Member[] = []; // Member[] 타입으로 초기화
   let totalCount = 0;
 
   try {
-    const data: MemberResponse = await getMembers(1, 5, Number(dashboardid));
+    const data: MemberResponse = await getMembers(1, 5, Number(dashboardsId));
     initialMembers = data.members;
     totalCount = data.totalCount;
   } catch (error) {
@@ -38,7 +38,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   return {
     props: {
-      dashboardId: Number(dashboardid),
+      dashboardId: Number(dashboardsId),
       initialMembers,
       totalCount,
     },
