@@ -14,7 +14,7 @@ const Dropdown: React.FC<DropdownProps> = ({ isOpen, items }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+    <div className="absolute top-[28px] right-0 w-[93px] bg-white rounded-md shadow-lg z-10">
       {items.map((item, index) => (
         <button
           key={index}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Dropdown from "../../../dropdown/Dropdown";
 import { Card } from "@/types/cards";
@@ -7,18 +7,12 @@ import { styles } from ".././styles";
 interface HeaderProps {
   card: Card | null;
   onClose: () => void;
-  isDropdownOpen: boolean;
-  setIsDropdownOpen: (isOpen: boolean) => void;
   onEdit: () => void;
 }
 
-const CardHeader: React.FC<HeaderProps> = ({
-  card,
-  onClose,
-  isDropdownOpen,
-  setIsDropdownOpen,
-  onEdit,
-}) => {
+const CardHeader: React.FC<HeaderProps> = ({ card, onClose, onEdit }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const dropdownItems = [
     {
       label: "수정하기",
@@ -36,7 +30,7 @@ const CardHeader: React.FC<HeaderProps> = ({
       <div className="flex items-center">
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className={styles.kebabButton}
+          className={`${styles.kebabButton} relative`}
         >
           <Image
             src="/images/icons/icon_kebab.svg"
@@ -44,8 +38,9 @@ const CardHeader: React.FC<HeaderProps> = ({
             height={16}
             alt="더보기"
           />
+          <Dropdown isOpen={isDropdownOpen} items={dropdownItems} />
         </button>
-        <Dropdown isOpen={isDropdownOpen} items={dropdownItems} />
+
         <button className={styles.closeButton} onClick={onClose}>
           <Image
             src="/images/icons/icon_close.svg"
