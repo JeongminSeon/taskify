@@ -11,7 +11,7 @@ import TitleInput from "./inputs/TitleInput";
 import DescriptionInput from "./inputs/DescriptionInput";
 import DateInput from "./inputs/DateInput";
 import TagInput from "./inputs/TagInput";
-import ImageUpload from "./ImageUpload";
+import ImageInput from "./ImageInput";
 import UserInput from "./inputs/UserInput";
 import ColumnInput from "./inputs/ColumnInput";
 
@@ -127,7 +127,7 @@ const UpdateTodoForm = ({ cardId, onClose, dashboardId }: TodoModalProps) => {
       />
 
       {formData.columnId && (
-        <ImageUpload
+        <ImageInput
           setFormData={setFormData}
           preview={preview}
           columnId={formData.columnId}

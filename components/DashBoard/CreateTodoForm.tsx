@@ -10,7 +10,7 @@ import TitleInput from "./inputs/TitleInput";
 import DescriptionInput from "./inputs/DescriptionInput";
 import DateInput from "./inputs/DateInput";
 import TagInput from "./inputs/TagInput";
-import ImageUpload from "./ImageUpload";
+import ImageInput from "./ImageInput";
 import UserInput from "./inputs/UserInput";
 
 const CreateTodoForm = ({ columnId, onClose, dashboardId }: TodoModalProps) => {
@@ -93,7 +93,7 @@ const CreateTodoForm = ({ columnId, onClose, dashboardId }: TodoModalProps) => {
       />
 
       {columnId && (
-        <ImageUpload
+        <ImageInput
           setFormData={setFormData}
           preview={preview}
           columnId={columnId}

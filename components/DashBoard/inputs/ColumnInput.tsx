@@ -29,7 +29,7 @@ const ColumnInput = ({ value, onChange, dashboardId }: ColumnInputProps) => {
     <div className={`${boxStyle}`}>
       <span className={`${labelStyle}`}>상태</span>
       <select
-        className={`${inputStyle}`}
+        className={`${inputStyle} text-purple100`}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
       >

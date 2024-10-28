@@ -10,7 +10,7 @@ interface ImageUploadProps {
   columnId: number;
 }
 
-const ImageUpload = ({ setFormData, preview, columnId }: ImageUploadProps) => {
+const ImageInput = ({ setFormData, preview, columnId }: ImageUploadProps) => {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
@@ -66,4 +66,4 @@ const ImageUpload = ({ setFormData, preview, columnId }: ImageUploadProps) => {
   );
 };
 
-export default ImageUpload;
+export default ImageInput;
