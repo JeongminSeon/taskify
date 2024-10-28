@@ -1,5 +1,5 @@
 import axiosInstance from "./axiosInstanceApi";
-import { CardListResponse, CreateCardBody } from "@/types/cards";
+import { CardResponse, CardListResponse, CreateCardBody } from "@/types/cards";
 
 interface CardsParams {
   columnId?: number;
@@ -34,6 +34,38 @@ export const getCards = async ({
     return response.data;
   } catch (error) {
     console.error("카드 목록을 가져오는 중 오류가 발생했습니다:", error);
+    throw error;
+  }
+};
+
+// 카드 상세 조회
+export const getCard = async ({
+  cardId,
+}: {
+  cardId: number;
+}): Promise<CardResponse> => {
+  try {
+    const response = await axiosInstance.get(`/cards/${cardId}`);
+    return response.data;
+  } catch (error) {
+    console.error("카드를 조회하는 중 오류가 발생했습니다:", error);
+    throw error;
+  }
+};
+
+// 카드 상세 수정
+export const UpdateCard = async ({
+  cardId,
+  formData,
+}: {
+  cardId: number;
+  formData: CreateCardBody;
+}): Promise<CardResponse> => {
+  try {
+    const response = await axiosInstance.put(`/cards/${cardId}`, formData);
+    return response.data;
+  } catch (error) {
+    console.error("카드를 조회하는 중 오류가 발생했습니다:", error);
     throw error;
   }
 };

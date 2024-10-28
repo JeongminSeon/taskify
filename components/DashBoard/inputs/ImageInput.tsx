@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { boxStyle, imageStyle, labelStyle } from "./styles";
+import { boxStyle, imageStyle, labelStyle } from "../styles";
 import { TodoFormProps } from "@/types/dashboards";
 import { createCardImage } from "@/utils/api/columnsApi";
 
@@ -10,18 +10,19 @@ interface ImageUploadProps {
   columnId: number;
 }
 
-const ImageUpload = ({ setFormData, preview, columnId }: ImageUploadProps) => {
+const ImageInput = ({ setFormData, preview, columnId }: ImageUploadProps) => {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (file) {
-      setFormData((prevData) => ({
-        ...prevData,
-        imageUrl: [file],
-      }));
-
       try {
         const response = await createCardImage({ columnId, image: file });
+        if (response?.imageUrl) {
+          setFormData((prevData) => ({
+            ...prevData,
+            imageUrl: response.imageUrl,
+          }));
+        }
         console.log("이미지 생성 성공:", response);
       } catch (error) {
         console.error("이미지 생성 실패:", error);
@@ -65,4 +66,4 @@ const ImageUpload = ({ setFormData, preview, columnId }: ImageUploadProps) => {
   );
 };
 
-export default ImageUpload;
+export default ImageInput;

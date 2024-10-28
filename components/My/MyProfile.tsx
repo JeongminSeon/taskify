@@ -2,7 +2,7 @@ import Image from "next/image";
 import InputField from "./InputField";
 import MyButton from "./MyButton";
 import { useState } from "react";
-import useModal from "@/hooks/useModal";
+import useModal from "@/hooks/modal/useModal";
 import ModalAlert from "../UI/modal/ModalAlert";
 
 const MyProfile: React.FC = () => {

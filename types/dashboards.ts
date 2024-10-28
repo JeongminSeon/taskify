@@ -50,20 +50,20 @@ export interface MembersResponse {
 }
 
 export interface TodoFormProps {
+  dashboardId?: number;
+  columnId: number;
   assigneeUserId: number;
   title: string;
   description: string;
-  dueDate: Date | null;
-  tags: {
-    text: string;
-    id: number;
-  }[];
-  imageUrl: File[] | null;
+  dueDate: string;
+  tags: string[];
+  imageUrl: string;
 }
 
 export interface TodoModalProps {
-  columnId: number;
+  cardId?: number;
+  columnId?: number;
   isOpen?: boolean;
   onClose: () => void;
-  data?: TodoFormProps;
+  dashboardId?: number;
 }

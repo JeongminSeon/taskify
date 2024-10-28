@@ -1,19 +1,19 @@
+// useImagePreview.ts
 import { useEffect, useState } from "react";
 
-const useImagePreview = (imageFile: File | null) => {
+const useImagePreview = (imageUrl: string | null) => {
   const [preview, setPreview] = useState<string>("");
 
   useEffect(() => {
-    if (!imageFile) return;
-
-    const nextPreview = URL.createObjectURL(imageFile);
-    setPreview(nextPreview);
-
-    return () => {
-      URL.revokeObjectURL(nextPreview);
+    if (!imageUrl) {
       setPreview("");
-    };
-  }, [imageFile]);
+      return;
+    }
+
+    setPreview(imageUrl);
+
+    return () => setPreview("");
+  }, [imageUrl]);
 
   return preview;
 };

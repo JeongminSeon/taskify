@@ -3,10 +3,11 @@ import DatePicker from "react-datepicker";
 import Image from "next/image";
 import { ko } from "date-fns/locale";
 import { boxStyle, inputStyle } from "../styles";
+import { format } from "date-fns";
 
 interface DateInputProps {
-  value: Date | null;
-  onChange: (date: Date | null) => void;
+  value: string; // value를 string 또는 null로 설정
+  onChange: (date: string) => void;
 }
 
 const DateInput = ({ value, onChange }: DateInputProps) => {
@@ -21,8 +22,10 @@ const DateInput = ({ value, onChange }: DateInputProps) => {
           height="22"
         />
         <DatePicker
-          selected={value}
-          onChange={onChange}
+          selected={value ? new Date(value) : null} // value를 Date로 변환
+          onChange={
+            (date) => onChange(date ? format(date, "yyyy-MM-dd HH:mm") : "") // string으로 변환하여 전달
+          }
           showTimeSelect
           dateFormat="yyyy-MM-dd HH:mm"
           placeholderText="날짜를 입력해 주세요"
