@@ -1,38 +1,49 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { boxStyle, inputStyle, labelStyle } from "../styles";
-import TodoTagList from "../TodoTagList";
-import { TodoFormProps } from "@/types/dashboards";
+import TodoTagList from "../todo/TodoTagList";
 
 interface TagInputProps {
-  formData: TodoFormProps;
-  setFormData: React.Dispatch<React.SetStateAction<TodoFormProps>>;
+  value: string[];
+  onChange: (tags: TempTagsProps[]) => void;
 }
 
-const TagInput = ({ formData, setFormData }: TagInputProps) => {
+export interface TempTagsProps {
+  text: string;
+  id: string;
+}
+
+const TagInput = ({ value, onChange }: TagInputProps) => {
   const [tag, setTag] = useState<string>("");
-  const idRef = useRef<number>(0);
+  const [tempTags, setTempTags] = useState<TempTagsProps[]>([]);
+
+  useEffect(() => {
+    setTempTags(
+      value.map((item) => ({
+        text: item,
+        id: uuidv4(),
+      }))
+    );
+  }, [value]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && tag.length > 0) {
+    if (e.key === "Enter" && tag.trim().length > 0) {
       e.preventDefault();
       const newTag = {
         text: tag,
-        id: idRef.current++,
+        id: uuidv4(),
       };
-      setFormData((prevData) => ({
-        ...prevData,
-        tags: [...prevData.tags, newTag],
-      }));
+      const updatedTags = [...tempTags, newTag];
+      setTempTags(updatedTags);
+      onChange(updatedTags);
       setTag("");
     }
   };
 
-  const handleDelete = (id: number) => {
-    const nextTags = formData.tags.filter((item) => item.id !== id);
-    setFormData((prevData) => ({
-      ...prevData,
-      tags: nextTags,
-    }));
+  const handleDelete = (id: string) => {
+    const nextTags = tempTags.filter((item) => item.id !== id);
+    setTempTags(nextTags);
+    onChange(nextTags);
   };
 
   return (
@@ -50,7 +61,7 @@ const TagInput = ({ formData, setFormData }: TagInputProps) => {
         onChange={(e) => setTag(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      <TodoTagList formData={formData} onDelete={handleDelete} />
+      <TodoTagList tags={tempTags} onDelete={handleDelete} />
     </div>
   );
 };

@@ -1,6 +1,5 @@
 // 컬럼 목록 조회 파라미터 타입
 export interface ColoumnsParams {
-  teamId: string;
   dashboardId: number;
 }
 
@@ -8,7 +7,6 @@ export interface ColoumnsParams {
 export interface Columns {
   id: number;
   title: string;
-  teamId: string;
   dashboardId: number;
   createdAt: string;
   updatedAt: string;
@@ -22,7 +20,6 @@ export interface ColumnsResponse {
 
 // 컬럼 생성 파라미터 타입
 export interface ColumnsCreateParams {
-  teamId: string;
   title: string;
   dashboardId: number;
 }
@@ -38,7 +35,7 @@ export interface ColumnsCreateResponse {
 // 이미지 생성 파라미터 타입
 export interface ImageCreateParams {
   columnId: number;
-  image: File | null;
+  image: File;
 }
 
 // 이미지 생성 응답 타입

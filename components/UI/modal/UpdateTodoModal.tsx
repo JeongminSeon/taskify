@@ -1,9 +1,9 @@
-import CreateTodoForm from "@/components/DashBoard/todo/CreateTodoForm";
+import UpdateTodoForm from "@/components/DashBoard/todo/UpdateTodoForm";
 import TodoModalLayout from "@/components/Layout/TodoModalLayout";
 import { TodoModalProps } from "@/types/dashboards";
 
-const CreateTodoModal = ({
-  columnId,
+const UpdateTodoModal = ({
+  cardId,
   isOpen,
   onClose,
   dashboardId,
@@ -11,9 +11,9 @@ const CreateTodoModal = ({
   if (!isOpen) return null;
 
   return (
-    <TodoModalLayout text="할 일 생성">
-      <CreateTodoForm
-        columnId={columnId}
+    <TodoModalLayout text="할 일 수정">
+      <UpdateTodoForm
+        cardId={cardId}
         onClose={onClose}
         dashboardId={dashboardId}
       />
@@ -21,4 +21,4 @@ const CreateTodoModal = ({
   );
 };
 
-export default CreateTodoModal;
+export default UpdateTodoModal;

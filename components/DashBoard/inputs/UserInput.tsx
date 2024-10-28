@@ -6,27 +6,27 @@ import { MemberProps } from "@/types/dashboards";
 interface UserInputProps {
   value: number;
   onChange: (value: number) => void;
+  dashboardId: number;
 }
 
-const DASHBOARD_ID = 12060;
-
-const UserInput = ({ value, onChange }: UserInputProps) => {
+const UserInput = ({ value, onChange, dashboardId }: UserInputProps) => {
   const [members, setMembers] = useState<MemberProps[]>([]);
-  const fetchMembers = async () => {
-    try {
-      const { members } = await getMembers(DASHBOARD_ID);
-      setMembers(members);
-    } catch (error) {
-      console.error("Failed to fetch members:", error);
-    }
-  };
+
   useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const { members } = await getMembers(Number(dashboardId));
+        setMembers(members);
+      } catch (error) {
+        console.error("Failed to fetch members:", error);
+      }
+    };
     fetchMembers();
-  }, []);
+  }, [dashboardId]);
 
   return (
     <div className={`${boxStyle}`}>
-      <span className={`${labelStyle}`}>관리자</span>
+      <span className={`${labelStyle}`}>담당자</span>
       <select
         className={`${inputStyle} text-gray300`}
         name="assigneeUserId"
