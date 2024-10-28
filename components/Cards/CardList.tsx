@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card as CardType, CardListResponse } from "@/types/cards";
-import { getCards } from "@/utils/api/cardsApi";
+import { DeleteCard, getCards } from "@/utils/api/cardsApi";
 import { getRandomColor } from "@/utils/TodoForm";
 import useModal from "@/hooks/modal/useModal";
 import CardDetailModal from "../UI/modal/CardModal/CardDetailModal";
@@ -38,10 +38,12 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
     openUpdateModal();
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async () => {
     closeDetailModal();
 
-    // 카드 삭제 로직 구현
+    if (!selectedCard) return;
+    const id = selectedCard.id;
+    await DeleteCard(id);
   };
 
   useEffect(() => {

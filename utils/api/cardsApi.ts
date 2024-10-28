@@ -72,9 +72,9 @@ export const UpdateCard = async ({
 
 //카드 삭제
 
-export const DeleteCard = async ({ cardId }: { cardId: number }) => {
+export const DeleteCard = async (id: number) => {
   try {
-    const response = await axiosInstance.delete(`/cards/${cardId}`);
+    const response = await axiosInstance.delete(`/cards/${id}`);
     return response.data;
   } catch (error) {
     console.error("카드를 삭제하는 중 오류가 발생했습니다:", error);
