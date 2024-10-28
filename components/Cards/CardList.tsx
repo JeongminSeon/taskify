@@ -9,9 +9,10 @@ import Card from "./Card";
 
 interface CardListProps {
   columnId: number;
+  dashboardId: number;
 }
 
-const CardList: React.FC<CardListProps> = ({ columnId }) => {
+const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
   const [cards, setCards] = useState<CardType[]>([]);
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
   const { isOpen, openModal, closeModal } = useModal();
@@ -57,6 +58,7 @@ const CardList: React.FC<CardListProps> = ({ columnId }) => {
           card={card}
           tagColors={tagColors}
           onClick={() => handleCardClick(card)}
+          dashboardId={dashboardId}
         />
       ))}
       {selectedCard && (

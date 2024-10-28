@@ -8,9 +8,15 @@ interface CardProps {
   card: CardType;
   tagColors: Record<string, string>;
   onClick: () => void;
+  dashboardId: number;
 }
 
-const Card: React.FC<CardProps> = ({ card, tagColors, onClick }) => (
+const Card: React.FC<CardProps> = ({
+  card,
+  tagColors,
+  onClick,
+  dashboardId,
+}) => (
   <button
     className="w-full md:flex md:gap-5 lg:block p-3 border border-gray400 rounded-md bg-white100"
     onClick={onClick}

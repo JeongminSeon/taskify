@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { Card, CardProps } from "@/types/cards";
+import { Card } from "@/types/cards";
 import { styles } from "./styles";
 import Dropdown from "../../dropdown/Dropdown";
 
