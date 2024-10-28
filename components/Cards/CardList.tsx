@@ -34,8 +34,14 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
   };
 
   const handleEditClick = () => {
-    closeDetailModal(); // CardDetailModal을 닫습니다
-    openUpdateModal(); // UpdateTodoModal을 엽니다
+    closeDetailModal();
+    openUpdateModal();
+  };
+
+  const handleDeleteClick = () => {
+    closeDetailModal();
+
+    // 카드 삭제 로직 구현
   };
 
   useEffect(() => {
@@ -83,6 +89,7 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
             isOpen={isDetailOpen}
             onClose={closeDetailModal}
             onEdit={handleEditClick}
+            onDelete={handleDeleteClick}
           />
           <UpdateTodoModal
             cardId={selectedCard.id}

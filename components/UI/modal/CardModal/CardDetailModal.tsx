@@ -13,6 +13,7 @@ interface CardDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   onEdit: () => void;
+  onDelete: () => void;
 }
 
 const CardDetailModal: React.FC<CardDetailModalProps> = ({
@@ -20,6 +21,7 @@ const CardDetailModal: React.FC<CardDetailModalProps> = ({
   isOpen,
   onClose,
   onEdit,
+  onDelete,
 }) => {
   if (!isOpen) return null;
 
@@ -30,7 +32,12 @@ const CardDetailModal: React.FC<CardDetailModalProps> = ({
           className={styles.modalContainer}
           onClick={(e) => e.stopPropagation()}
         >
-          <CardHeader card={card} onClose={onClose} onEdit={onEdit} />
+          <CardHeader
+            card={card}
+            onClose={onClose}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
           <div className="flex">
             <div className="flex-grow pr-4">
               <CardTagList card={card} />

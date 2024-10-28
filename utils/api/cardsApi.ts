@@ -69,3 +69,15 @@ export const UpdateCard = async ({
     throw error;
   }
 };
+
+//카드 삭제
+
+export const DeleteCard = async ({ cardId }: { cardId: number }) => {
+  try {
+    const response = await axiosInstance.delete(`/cards/${cardId}`);
+    return response.data;
+  } catch (error) {
+    console.error("카드를 삭제하는 중 오류가 발생했습니다:", error);
+    throw error;
+  }
+};
