@@ -14,6 +14,7 @@ interface CardDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   onEdit: () => void;
+  tagColors: Record<string, string>; // 추가
 }
 
 const CardDetailModal: React.FC<CardDetailModalProps> = ({
@@ -22,6 +23,7 @@ const CardDetailModal: React.FC<CardDetailModalProps> = ({
   isOpen,
   onClose,
   onEdit,
+  tagColors, // 추가
 }) => {
   if (!isOpen) return null;
 
@@ -35,7 +37,11 @@ const CardDetailModal: React.FC<CardDetailModalProps> = ({
           <CardHeader card={card} onClose={onClose} onEdit={onEdit} />
           <div className="flex flex-col md:flex-row">
             <div className="flex-grow pr-0 md:pr-4">
-              <CardTagList card={card} columnTitle={columnTitle} />
+              <CardTagList
+                card={card}
+                columnTitle={columnTitle}
+                tagColors={tagColors} // 추가
+              />
               <CardBody card={card} />
             </div>
             <CardSidebar card={card} />

@@ -45,10 +45,11 @@ const CardListLayout: React.FC<CardListLayoutProps> = ({
         <>
           <CardDetailModal
             card={selectedCard}
+            columnTitle={columnTitle}
+            tagColors={tagColors}
             isOpen={isDetailOpen}
             onClose={onCloseDetail}
             onEdit={onEdit}
-            columnTitle={columnTitle}
           />
           <UpdateTodoModal
             cardId={selectedCard.id}
