@@ -11,7 +11,7 @@ import TitleInput from "./inputs/TitleInput";
 import DescriptionInput from "./inputs/DescriptionInput";
 import DateInput from "./inputs/DateInput";
 import TagInput from "./inputs/TagInput";
-import ImageInput from "./ImageInput";
+import ImageInput from "./inputs/ImageInput";
 import UserInput from "./inputs/UserInput";
 import ColumnInput from "./inputs/ColumnInput";
 
