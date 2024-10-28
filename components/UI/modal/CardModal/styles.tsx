@@ -2,9 +2,9 @@ export const styles = {
   modalOverlay:
     "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50",
   modalContainer:
-    "w-[730px] h-[763px] bg-white shadow-lg rounded-xl overflow-hidden",
+    "w-[730px] h-[763px] bg-white shadow-lg rounded-xl  px-4 overflow-hidden",
   modalContent: "h-full overflow-y-auto pt-6 pl-4 pr-5",
-  modalHeader: "bg-white p-4 flex justify-between items-center",
+  modalHeader: "bg-white pt-8 p-4 flex justify-between items-center",
   kebabButton: "flex text-gray-500 hover:text-gray-700 mr-6",
   closeButton: "text-gray-500 hover:text-gray-700",
   tagContainer: "flex flex-wrap items-center gap-2 p-4",
