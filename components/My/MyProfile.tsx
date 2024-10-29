@@ -61,6 +61,10 @@ const MyProfile: React.FC = () => {
               width="182"
               height="182"
             />
+            <p className="text-[18px] text-gray200 text-center mt-6">
+              이미지를 클릭하여 <br />
+              프로필을 변경하세요😎
+            </p>
           </label>
           <input
             type="file"
