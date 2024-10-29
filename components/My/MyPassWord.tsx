@@ -5,23 +5,20 @@ import ModalAlert from "../UI/modal/ModalAlert";
 import { isPWValid, isSame, isEntered } from "@/utils/validation";
 import { updatePassword } from "@/utils/api/authApi";
 import useModal from "@/hooks/modal/useModal";
+import { PasswordProps } from "@/types/my";
 
-interface PasswordFields {
-  current: string;
-  new: string;
-  confirm: string;
-}
+const INITIAL_PASSWORDS = {
+  current: "",
+  new: "",
+  confirm: "",
+};
 
 const MyPassWord: React.FC = () => {
   const { isOpen, openModal, closeModal } = useModal();
   const [passwordLenError, setPasswordLenError] = useState<boolean>(false);
   const [passwordMatchError, setPasswordMatchError] = useState<boolean>(false);
   const [modalMessage, setModalMessage] = useState<string>("");
-  const [passwords, setPasswords] = useState<PasswordFields>({
-    current: "",
-    new: "",
-    confirm: "",
-  });
+  const [passwords, setPasswords] = useState<PasswordProps>(INITIAL_PASSWORDS);
 
   const handlePasswordChange = async () => {
     try {
@@ -30,6 +27,7 @@ const MyPassWord: React.FC = () => {
         newPassword: passwords.new,
       });
       setModalMessage("비밀번호가 성공적으로 변경되었습니다.");
+      setPasswords(INITIAL_PASSWORDS);
       openModal();
     } catch (error) {
       console.error(error);

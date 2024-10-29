@@ -17,6 +17,12 @@ export interface ButtonProps {
   disabled?: boolean;
 }
 
+export interface PasswordProps {
+  current: string;
+  new: string;
+  confirm: string;
+}
+
 // 프로필 이미지 생성 파라미터 타입
 export interface ProfileImageParams {
   image: File | null;
