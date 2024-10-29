@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { MyInviteList } from "@/types/invitedList";
-import { tableHd, tableBox, acceptBtn } from "./MyDashStyle";
+import { tableHd } from "./MyDashStyle";
 import { getMyInvitations } from "@/utils/api/invitationsApi";
 import axiosInstance from "@/utils/api/axiosInstanceApi";
 import UnInvited from "./UnInvited";
 import SearchBox from "../UI/search/SearchBox";
+import InviteItem from "./components/InviteItem";
 
 const InvitedList = () => {
   const size = 10;
@@ -38,6 +39,10 @@ const InvitedList = () => {
       await axiosInstance.put(`/invitations/${invitationId}`, {
         inviteAccepted: accepted,
       });
+      const message = accepted
+        ? "초대를 수락했습니다."
+        : "초대를 거절했습니다.";
+      alert(message);
     } catch (err) {
       console.error("Error updating invitation status:", err);
     }
@@ -96,39 +101,11 @@ const InvitedList = () => {
                 <div className={`${tableHd}`}>수락 여부</div>
               </div>
               {filteredInvitations.map((invite) => (
-                <div
+                <InviteItem
                   key={invite.id}
-                  className="tableList sm:block md:flex md:flex-row md:items-center gap-1 md:gap-0  py-[14px] md:py-[22px] px-4 md:px-7 lg:px-20 border-b"
-                >
-                  <div className={`${tableBox}`}>
-                    <span className="w-12 md:hidden text-sm text-gray300">
-                      이름
-                    </span>
-                    {invite.dashboard.title}
-                  </div>
-                  <div className={`${tableBox}`}>
-                    <span className="w-12 md:hidden text-sm text-gray300">
-                      초대자
-                    </span>
-                    {invite.inviter.nickname}
-                  </div>
-                  <div className="flex gap-[10px] flex-1 mt-[10px] md:mt-0">
-                    <button
-                      type="button"
-                      onClick={() => handleInviteResponse(invite.id, true)}
-                      className={`${acceptBtn} border-purple-100 bg-purple100 text-white100`}
-                    >
-                      수락
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleInviteResponse(invite.id, false)}
-                      className={`${acceptBtn} border-gray400 text-purple100`}
-                    >
-                      거절
-                    </button>
-                  </div>
-                </div>
+                  invite={invite}
+                  handleInviteResponse={handleInviteResponse}
+                />
               ))}
             </div>
           )}
