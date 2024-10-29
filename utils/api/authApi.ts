@@ -1,6 +1,8 @@
 import axiosInstance from "./axiosInstanceApi";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { onError } from "./error";
+import { ImageCreateResponse } from "@/types/columns";
+import { ProfileImageParams } from "@/types/my";
 
 interface formData {
   email: string;
@@ -82,5 +84,37 @@ export const UpdateUserInfo = async ({
   } catch (error) {
     console.error("Failed to update user info:", error);
     throw error;
+  }
+};
+
+// 프로필 이미지 업로드
+export const createCardImage = async ({
+  image,
+}: ProfileImageParams): Promise<ImageCreateResponse> => {
+  const formData = new FormData();
+  if (!image) throw new Error("이미지가 없습니다.");
+  formData.append("image", image);
+  try {
+    const response = await axiosInstance.post(`/users/me/image`, formData, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response && error.response.status === 413) {
+        console.error("이미지 파일이 너무 큽니다. 업로드할 수 없습니다.");
+        throw new Error(
+          "이미지 파일이 너무 큽니다. 최대 파일 크기를 확인해주세요."
+        );
+      }
+      console.error("이미지를 생성하는 중 오류가 발생했습니다:", error.message);
+      throw error;
+    } else {
+      console.error("예상치 못한 오류가 발생했습니다:", error);
+      throw new Error("예상치 못한 오류가 발생했습니다.");
+    }
   }
 };

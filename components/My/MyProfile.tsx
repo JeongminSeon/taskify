@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import useModal from "@/hooks/modal/useModal";
 import ModalAlert from "../UI/modal/ModalAlert";
 import { getUserInfo } from "@/utils/api/authApi";
+import { createCardImage } from "@/utils/api/columnsApi";
 
 interface Profile {
   email: string;
@@ -20,11 +21,23 @@ const MyProfile: React.FC = () => {
   });
   const { isOpen, openModal, closeModal } = useModal();
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      console.log("이미지 수정");
-    }
-  };
+  // const handleFileChange = async(e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     try {
+  //       const response = await createCardImage({ columnId, image: file });
+  //       if (response?.imageUrl) {
+  //         setProfile((prevData) => ({
+  //           ...prevData,
+  //           profileImageUrl: response.imageUrl,
+  //         }));
+  //       }
+  //       console.log("이미지 생성 성공:", response);
+  //     } catch (error) {
+  //       console.error("이미지 생성 실패:", error);
+  //     }
+  //   }
+  // };
 
   const handleSave = () => {
     openModal();
