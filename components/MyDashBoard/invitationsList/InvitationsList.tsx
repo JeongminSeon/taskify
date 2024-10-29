@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { MyInviteList } from "@/types/invitedList";
 import { tableHd } from "../MyDashStyle";
-import InvitationItem from "../components/InvitationItem";
+import InvitationItem from "./InvitationItem";
 
 interface InvitationsListProps {
   filteredInvitations: MyInviteList[];

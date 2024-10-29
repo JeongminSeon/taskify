@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MyInviteList } from "@/types/invitedList";
 import { getMyInvitations } from "@/utils/api/invitationsApi";
 import axiosInstance from "@/utils/api/axiosInstanceApi";
 import UnInvited from "./UnInvited";
 import SearchBox from "../UI/search/SearchBox";
-import InvitationsList from "./invitations/InvitationsList";
+import InvitationsList from "./invitationsList/InvitationsList";
 import Loading from "../UI/loading/Loading";
 import NoResults from "../UI/search/NoResults";
 
@@ -16,20 +16,16 @@ const InvitedList = () => {
     MyInviteList[]
   >([]);
   const [displayCount, setDisplayCount] = useState(size);
-  const [loading, setLoading] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   // 초대 목록 조회
   const fetchInvitations = async () => {
-    setLoading(true);
     try {
       const data = await getMyInvitations();
       setInvitations(data.invitations);
       setFilteredInvitations(data.invitations);
     } catch (err) {
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -53,7 +49,7 @@ const InvitedList = () => {
   };
 
   // 검색 기능
-  const performSearch = () => {
+  const performSearch = useCallback(() => {
     const filtered = searchTerm
       ? invitations.filter(
           (invite) =>
@@ -71,7 +67,7 @@ const InvitedList = () => {
 
     setFilteredInvitations(filtered);
     setDisplayCount(size);
-  };
+  }, [invitations, searchTerm, size]);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") performSearch();
@@ -79,7 +75,7 @@ const InvitedList = () => {
 
   useEffect(() => {
     performSearch();
-  }, [searchTerm]);
+  }, [performSearch]);
 
   return (
     <div className="invitedList mt-6 p md:mt-12 lg:mt-10 bg-white rounded-lg">
@@ -104,9 +100,9 @@ const InvitedList = () => {
               filteredInvitations={filteredInvitations}
               displayCount={displayCount}
               setDisplayCount={setDisplayCount}
+              handleInviteResponse={handleInviteResponse}
               isLoadingMore={isLoadingMore}
               setIsLoadingMore={setIsLoadingMore}
-              handleInviteResponse={handleInviteResponse}
             />
           )}
         </>

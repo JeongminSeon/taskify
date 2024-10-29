@@ -1,4 +1,3 @@
-import React from "react";
 import { MyInviteList } from "@/types/invitedList";
 import { tableBox, acceptBtn } from "../MyDashStyle";
 
