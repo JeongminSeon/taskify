@@ -15,6 +15,11 @@ interface loginData {
   password: string;
 }
 
+interface PasswordData {
+  password: string;
+  newPassword: string;
+}
+
 // 회원가입
 export const createUser = async (formData: formData) => {
   try {
@@ -83,6 +88,22 @@ export const UpdateUserInfo = async ({
     return response.data;
   } catch (error) {
     console.error("Failed to update user info:", error);
+    throw error;
+  }
+};
+
+// 비밀번호 변경
+
+export const updatePassword = async (PasswordData: PasswordData) => {
+  try {
+    const response = await axiosInstance.put("/auth/password", PasswordData);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      const message = error.response?.data?.message || error.message;
+      const status = error.response?.status ?? 500;
+      onError(status, message);
+    }
     throw error;
   }
 };
