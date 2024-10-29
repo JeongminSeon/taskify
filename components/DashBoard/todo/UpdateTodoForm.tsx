@@ -76,7 +76,7 @@ const UpdateTodoForm = ({ cardId, onClose, dashboardId }: TodoModalProps) => {
 
   return (
     <form className="flex flex-col w-full text-[16px]" onSubmit={handleSubmit}>
-      <div className="flex gap-8">
+      <div className="flex md:flex-row md:gap-8 sm:flex-col sm:gap-0">
         <ColumnInput
           value={formData.columnId}
           onChange={(value) =>
