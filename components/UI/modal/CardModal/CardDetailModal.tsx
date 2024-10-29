@@ -9,12 +9,12 @@ import CardSidebar from "./components/CardSidebar";
 import CardCommentList from "./components/CardCommentList";
 
 interface CardDetailModalProps {
-  card: Card | null;
+  card: Card;
   columnTitle: string;
   isOpen: boolean;
   onClose: () => void;
   onEdit: () => void;
-  tagColors: Record<string, string>; // 추가
+  tagColors: Record<string, string>;
 }
 
 const CardDetailModal: React.FC<CardDetailModalProps> = ({
@@ -23,7 +23,7 @@ const CardDetailModal: React.FC<CardDetailModalProps> = ({
   isOpen,
   onClose,
   onEdit,
-  tagColors, // 추가
+  tagColors,
 }) => {
   if (!isOpen) return null;
 
@@ -40,13 +40,13 @@ const CardDetailModal: React.FC<CardDetailModalProps> = ({
               <CardTagList
                 card={card}
                 columnTitle={columnTitle}
-                tagColors={tagColors} // 추가
+                tagColors={tagColors}
               />
               <CardBody card={card} />
             </div>
             <CardSidebar card={card} />
           </div>
-          <CardCommentList />
+          <CardCommentList card={card} />
         </div>
       </div>
     </>

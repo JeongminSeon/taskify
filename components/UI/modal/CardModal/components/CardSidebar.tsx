@@ -1,6 +1,7 @@
 import React from "react";
 import { Card } from "@/types/cards";
 import { styles } from ".././styles";
+import { format } from "date-fns";
 
 const CardSidebar: React.FC<{ card: Card | null }> = ({ card }) => (
   <div className={styles.sidebarContainer}>
@@ -14,13 +15,9 @@ const CardSidebar: React.FC<{ card: Card | null }> = ({ card }) => (
       </div>
       <h3 className={`${styles.sidebarTitle} mt-4`}>마감일</h3>
       <p className="text-sm">
-        {new Date(card?.dueDate || "").toLocaleDateString("ko-KR", {
-          year: "numeric",
-          month: "numeric",
-          day: "numeric",
-          hour: "numeric",
-          minute: "numeric",
-        })}
+        {card?.dueDate
+          ? format(new Date(card.dueDate), "yyyy.MM.dd HH:mm")
+          : ""}
       </p>
     </div>
   </div>
