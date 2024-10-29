@@ -104,9 +104,7 @@ export const updatePassword = async (PasswordData: PasswordData) => {
       const status = error.response?.status ?? 500;
 
       console.error(`Error: ${status} - ${message}`);
-      alert(`Error: ${message}`); // 사용자에게 알림으로 표시
-
-      throw new Error(message); // 에러를 다시 던져서 호출한 곳에서 처리
+      throw new Error(message);
     }
     throw error;
   }
