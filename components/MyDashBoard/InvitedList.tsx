@@ -1,13 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { MyInviteList } from "@/types/invitedList";
 import { getMyInvitations } from "@/utils/api/invitationsApi";
 import axiosInstance from "@/utils/api/axiosInstanceApi";
 import UnInvited from "./UnInvited";
 import SearchBox from "../UI/search/SearchBox";
 import InvitationsList from "./invitations/InvitationsList";
+import Loading from "../UI/loading/Loading";
+import NoResults from "../UI/search/NoResults";
 
 const InvitedList = () => {
-  const size = 6;
+  const size = 7;
   const [searchTerm, setSearchTerm] = useState("");
   const [invitations, setInvitations] = useState<MyInviteList[]>([]);
   const [filteredInvitations, setFilteredInvitations] = useState<
@@ -16,7 +18,6 @@ const InvitedList = () => {
   const [displayCount, setDisplayCount] = useState(size);
   const [loading, setLoading] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const observerRef = useRef<IntersectionObserver | null>(null);
 
   // 초대 목록 조회
   const fetchInvitations = async () => {
@@ -76,34 +77,6 @@ const InvitedList = () => {
     if (e.key === "Enter") performSearch();
   };
 
-  // Intersection Observer 설정
-  useEffect(() => {
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      const entry = entries[0];
-      if (
-        entry.isIntersecting &&
-        !isLoadingMore &&
-        displayCount < filteredInvitations.length
-      ) {
-        setIsLoadingMore(true);
-        setTimeout(() => {
-          setDisplayCount((prev) =>
-            Math.min(prev + size, filteredInvitations.length)
-          );
-          setIsLoadingMore(false);
-        }, 500);
-      }
-    };
-
-    observerRef.current = new IntersectionObserver(observerCallback);
-    const target = document.querySelector("#loadMore");
-    if (target) observerRef.current.observe(target);
-
-    return () => {
-      observerRef.current?.disconnect();
-    };
-  }, [filteredInvitations, isLoadingMore, displayCount]);
-
   useEffect(() => {
     performSearch();
   }, [searchTerm]);
@@ -125,9 +98,7 @@ const InvitedList = () => {
             placeholder="대시보드 명으로 검색"
           />
           {filteredInvitations.length === 0 ? (
-            <div className="mt-4 text-center text-gray-500">
-              검색 결과가 없습니다.
-            </div>
+            <NoResults />
           ) : (
             <InvitationsList
               filteredInvitations={filteredInvitations}
@@ -141,7 +112,7 @@ const InvitedList = () => {
         </>
       )}
       {isLoadingMore && displayCount < filteredInvitations.length && (
-        <div>로딩 중...</div>
+        <Loading />
       )}
     </div>
   );
