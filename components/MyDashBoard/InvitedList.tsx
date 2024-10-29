@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { MyInviteList } from "@/types/invitedList";
-import { tableHd } from "./MyDashStyle";
 import { getMyInvitations } from "@/utils/api/invitationsApi";
 import axiosInstance from "@/utils/api/axiosInstanceApi";
 import UnInvited from "./UnInvited";
 import SearchBox from "../UI/search/SearchBox";
-import InviteItem from "./components/InviteItem";
+import InvitationsList from "./invitations/InvitationsList";
 
 const InvitedList = () => {
   const size = 6;
@@ -19,23 +18,23 @@ const InvitedList = () => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // 초기 렌더링 시 초대 목록 조회
-  useEffect(() => {
-    const fetchInvitations = async () => {
-      setLoading(true);
-      try {
-        const data = await getMyInvitations();
-        setInvitations(data.invitations);
-        setFilteredInvitations(data.invitations);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // 초대 목록 조회
+  const fetchInvitations = async () => {
+    setLoading(true);
+    try {
+      const data = await getMyInvitations();
+      setInvitations(data.invitations);
+      setFilteredInvitations(data.invitations);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchInvitations();
-  }, [size]);
+  }, []);
 
   // 초대 수락 및 거절 처리
   const handleInviteResponse = async (
@@ -46,10 +45,7 @@ const InvitedList = () => {
       await axiosInstance.put(`/invitations/${invitationId}`, {
         inviteAccepted: accepted,
       });
-      const message = accepted
-        ? "초대를 수락했습니다."
-        : "초대를 거절했습니다.";
-      alert(message);
+      alert(accepted ? "초대를 수락했습니다." : "초대를 거절했습니다.");
     } catch (err) {
       console.error("초대 상태 업데이트 중 오류 발생:", err);
     }
@@ -57,62 +53,54 @@ const InvitedList = () => {
 
   // 검색 기능
   const performSearch = () => {
-    if (!searchTerm) {
-      setFilteredInvitations(invitations);
-      setDisplayCount(size);
-      return;
-    }
-
-    const filtered = invitations.filter(
-      (invite) =>
-        invite.invitee.nickname
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()) ||
-        invite.inviter.nickname
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()) ||
-        invite.dashboard.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filtered = searchTerm
+      ? invitations.filter(
+          (invite) =>
+            invite.invitee.nickname
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase()) ||
+            invite.inviter.nickname
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase()) ||
+            invite.dashboard.title
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+        )
+      : invitations;
 
     setFilteredInvitations(filtered);
+    setDisplayCount(size);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      performSearch();
-    }
+    if (e.key === "Enter") performSearch();
   };
 
   // Intersection Observer 설정
   useEffect(() => {
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
-
-    observerRef.current = new IntersectionObserver((entries) => {
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
       const entry = entries[0];
-      if (entry.isIntersecting && !isLoadingMore) {
-        if (displayCount < filteredInvitations.length) {
-          setIsLoadingMore(true); // 추가 로딩 시작
-          setTimeout(() => {
-            setDisplayCount((prev) =>
-              Math.min(prev + size, filteredInvitations.length)
-            );
-            setIsLoadingMore(false); // 추가 로딩 끝
-          }, 500);
-        }
+      if (
+        entry.isIntersecting &&
+        !isLoadingMore &&
+        displayCount < filteredInvitations.length
+      ) {
+        setIsLoadingMore(true);
+        setTimeout(() => {
+          setDisplayCount((prev) =>
+            Math.min(prev + size, filteredInvitations.length)
+          );
+          setIsLoadingMore(false);
+        }, 500);
       }
-    });
+    };
 
+    observerRef.current = new IntersectionObserver(observerCallback);
     const target = document.querySelector("#loadMore");
-    if (target) {
-      observerRef.current.observe(target);
-    }
+    if (target) observerRef.current.observe(target);
 
     return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
+      observerRef.current?.disconnect();
     };
   }, [filteredInvitations, isLoadingMore, displayCount]);
 
@@ -141,26 +129,19 @@ const InvitedList = () => {
               검색 결과가 없습니다.
             </div>
           ) : (
-            <div className="py-3 md:py-6">
-              <div className="hidden px-4 md:px-7 md:flex lg:px-20">
-                <div className={`${tableHd}`}>이름</div>
-                <div className={`${tableHd}`}>초대자</div>
-                <div className={`${tableHd}`}>수락 여부</div>
-              </div>
-              {filteredInvitations.slice(0, displayCount).map((invite) => (
-                <InviteItem
-                  key={invite.id}
-                  invite={invite}
-                  handleInviteResponse={handleInviteResponse}
-                />
-              ))}
-              {isLoadingMore && displayCount < filteredInvitations.length && (
-                <div>로딩 중...</div>
-              )}
-              <div id="loadMore" className="h-5" />
-            </div>
+            <InvitationsList
+              filteredInvitations={filteredInvitations}
+              displayCount={displayCount}
+              setDisplayCount={setDisplayCount}
+              isLoadingMore={isLoadingMore}
+              setIsLoadingMore={setIsLoadingMore}
+              handleInviteResponse={handleInviteResponse}
+            />
           )}
         </>
+      )}
+      {isLoadingMore && displayCount < filteredInvitations.length && (
+        <div>로딩 중...</div>
       )}
     </div>
   );
