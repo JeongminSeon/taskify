@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { INITIAL_VALUES, validateForm } from "@/utils/TodoForm";
 import useImagePreview from "@/hooks/dashboard/useImagePreview";
 
-import { getCard, UpdateCard } from "@/utils/api/cardsApi";
+import { getCard, updateCard } from "@/utils/api/cardsApi";
 import { CreateCardBody } from "@/types/cards";
 import TitleInput from "../inputs/TitleInput";
 import DescriptionInput from "../inputs/DescriptionInput";
@@ -64,7 +64,7 @@ const UpdateTodoForm = ({ cardId, onClose, dashboardId }: TodoModalProps) => {
 
       try {
         if (!cardId) return;
-        await UpdateCard({ cardId, formData: outputData });
+        await updateCard({ cardId, formData: outputData });
         onClose();
       } catch (error) {
         console.error(error);

@@ -8,9 +8,15 @@ interface HeaderProps {
   card: Card | null;
   onClose: () => void;
   onEdit: () => void;
+  onDelete: () => void;
 }
 
-const CardHeader: React.FC<HeaderProps> = ({ card, onClose, onEdit }) => {
+const CardHeader: React.FC<HeaderProps> = ({
+  card,
+  onClose,
+  onEdit,
+  onDelete,
+}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const dropdownItems = [
@@ -21,7 +27,13 @@ const CardHeader: React.FC<HeaderProps> = ({ card, onClose, onEdit }) => {
         onClose();
       },
     },
-    { label: "삭제하기", onClick: () => console.log("삭제하기 클릭") },
+    {
+      label: "삭제하기",
+      onClick: () => {
+        onDelete();
+        onClose();
+      },
+    },
   ];
 
   return (

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Card as CardType, CardListResponse } from "@/types/cards";
-import { getCards } from "@/utils/api/cardsApi";
+import { deleteCard, getCards } from "@/utils/api/cardsApi";
 import { getRandomColor } from "@/utils/TodoForm";
 import useModal from "@/hooks/modal/useModal";
 import CardDetailModal from "../UI/modal/CardModal/CardDetailModal";
 
-import Card from "./Card";
+import Card from "./components/Card";
 import UpdateTodoModal from "../UI/modal/UpdateTodoModal";
 
 interface CardListProps {
@@ -34,8 +34,16 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
   };
 
   const handleEditClick = () => {
-    closeDetailModal(); // CardDetailModal을 닫습니다
-    openUpdateModal(); // UpdateTodoModal을 엽니다
+    closeDetailModal();
+    openUpdateModal();
+  };
+
+  const handleDeleteClick = async () => {
+    closeDetailModal();
+
+    if (!selectedCard) return;
+    const id = selectedCard.id;
+    await deleteCard(id);
   };
 
   useEffect(() => {
@@ -83,6 +91,7 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
             isOpen={isDetailOpen}
             onClose={closeDetailModal}
             onEdit={handleEditClick}
+            onDelete={handleDeleteClick}
           />
           <UpdateTodoModal
             cardId={selectedCard.id}
