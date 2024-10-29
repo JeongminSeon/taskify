@@ -1,4 +1,4 @@
-export interface InviteList {
+export interface MyInviteList {
   id: number;
   inviter: {
     id: number;
@@ -20,9 +20,7 @@ export interface InviteList {
   updatedAt: string;
 }
 
-export interface InviteListResponse {
-  invitations: InviteList[];
+export interface MyInviteListResponse {
+  invitations: MyInviteList[];
   cursorId: string;
-  nextCursor?: number; // 다음 페이지의 커서 ID (선택적)
-  totalInvitations?: number; // 전체 초대 수 (선택적)
 }

@@ -1,4 +1,4 @@
-import Cookies from "js-cookie"; // 클라이언트에서 쿠키를 다루기 위해 널리 사용되는 JavaScript 라이브러리
+import Cookies from "js-cookie";
 
 // Access Token 설정 함수
 export const setAccessToken = (token: string) => {
