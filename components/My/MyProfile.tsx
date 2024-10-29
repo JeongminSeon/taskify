@@ -12,21 +12,26 @@ import {
 import { ProfileProps } from "@/types/my";
 
 const MyProfile: React.FC = () => {
+  // profile 상태는 사용자 이메일, 닉네임, 프로필 이미지를 관리
   const [profile, setProfile] = useState<ProfileProps>({
     email: "",
     nickname: "",
     profileImageUrl: null,
   });
+
+  // 모달 상태 관리
   const { isOpen, openModal, closeModal } = useModal();
 
-  // 파일 선택 시 이미지 업로드
+  // 파일 선택 시 이미지 업로드 함수
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file) return; // 파일이 없는 경우 함수 종료
 
     try {
+      // API를 호출해 서버에 이미지 업로드
       const response = await createCardImage({ image: file });
       if (response?.profileImageUrl) {
+        // 프로필 상태 업데이트
         setProfile((prevData) => ({
           ...prevData,
           profileImageUrl: response.profileImageUrl,
@@ -43,6 +48,7 @@ const MyProfile: React.FC = () => {
     const { nickname, profileImageUrl } = profile;
 
     try {
+      // API를 호출해 사용자 정보를 업데이트
       await UpdateUserInfo({
         nickname,
         profileImageUrl: profileImageUrl ?? undefined,
@@ -53,9 +59,10 @@ const MyProfile: React.FC = () => {
     }
   };
 
-  // 초기 프로필 정보 불러오기
+  // 초기 프로필 정보 불러오기 함수
   const getMe = async () => {
     try {
+      // API를 호출해 사용자 프로필 정보를 가져옴
       const res = await getUserInfo();
       setProfile({
         email: res.email,
@@ -67,6 +74,7 @@ const MyProfile: React.FC = () => {
     }
   };
 
+  // 컴포넌트가 마운트될 때 초기 프로필 정보를 불러옴
   useEffect(() => {
     getMe();
   }, []);
@@ -91,6 +99,8 @@ const MyProfile: React.FC = () => {
               height="182"
             />
           </label>
+
+          {/* 이미지 파일 업로드 입력 */}
           <input
             type="file"
             id="inputFile"
@@ -102,6 +112,7 @@ const MyProfile: React.FC = () => {
         {/* 이메일 및 닉네임 수정 영역 */}
         <div className="md:w-[400px] sm:w-[252px]">
           <div className="flex flex-col gap-4">
+            {/* 이메일 입력 필드 (읽기 전용) */}
             <InputField
               label="이메일"
               name="email"
@@ -109,6 +120,8 @@ const MyProfile: React.FC = () => {
               value={profile.email}
               readOnly
             />
+
+            {/* 닉네임 입력 필드 */}
             <InputField
               label="닉네임"
               name="nickname"
@@ -119,6 +132,8 @@ const MyProfile: React.FC = () => {
               }
             />
           </div>
+
+          {/* 저장 버튼 */}
           <MyButton onClick={handleSave}>저장</MyButton>
         </div>
       </div>
