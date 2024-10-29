@@ -23,11 +23,12 @@ const InvitationsList: React.FC<InvitationsListProps> = ({
   setIsLoadingMore,
   handleInviteResponse,
 }) => {
-  const observerRef = useRef<IntersectionObserver | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null); // Intersection Observer 생성
 
   useEffect(() => {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       const entry = entries[0];
+      // 요소가 뷰포트에 들어오고, 로딩 중이 아니며, 추가 초대가 남아있을 때
       if (
         entry.isIntersecting &&
         !isLoadingMore &&
@@ -35,22 +36,30 @@ const InvitationsList: React.FC<InvitationsListProps> = ({
       ) {
         setIsLoadingMore(true);
         setTimeout(() => {
-          setDisplayCount((prev) =>
-            Math.min(prev + 6, filteredInvitations.length)
+          setDisplayCount(
+            (prev) => Math.min(prev + 6, filteredInvitations.length) // 표시할 초대 수를 증가
           );
           setIsLoadingMore(false);
         }, 500);
       }
     };
 
+    // Intersection Observer 인스턴스 생성
     observerRef.current = new IntersectionObserver(observerCallback);
     const target = document.querySelector("#loadMore");
     if (target) observerRef.current.observe(target);
 
+    // 클린업 함수: 컴포넌트 언마운트 시 Observer 해제
     return () => {
       observerRef.current?.disconnect();
     };
-  }, [filteredInvitations, isLoadingMore, displayCount]);
+  }, [
+    filteredInvitations,
+    isLoadingMore,
+    displayCount,
+    setDisplayCount,
+    setIsLoadingMore,
+  ]);
 
   return (
     <div className="py-3 md:py-6">
