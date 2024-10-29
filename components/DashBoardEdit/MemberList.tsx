@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Pagination from "../UI/pagination/Pagination";
 import { deleteMember, getMembers } from "@/utils/api/membersApi";
 import { Member, MemberResponse } from "@/types/members";
+import MemberItem from "./components/MemberItem";
 
 interface MemberListProps {
   dashboardId: number;
@@ -76,22 +77,11 @@ const MemberList: React.FC<MemberListProps> = ({
       <p className="px-4 md:px-7 text-xs md:text-sm text-gray300">이름</p>
       <ul>
         {members.map((member) => (
-          <li
+          <MemberItem
             key={member.id}
-            className="flex items-center gap-2 md:gap-3 py-3 md:py-4 px-4 md:px-7 border-b border-gray500"
-          >
-            <span className="overflow-hidden relative w-[34px] h-[34px] rounded-full bg-slate-500"></span>
-            <p className="flex-1 text-sm md:text-[16px] text-">
-              {member.nickname}
-            </p>
-            <button
-              type="button"
-              className="sm:w-[52px] md:w-[84px] h-8 border borer-gray400 rounded-[4px] text-xs md:text-sm text-purple100 font-medium leading-8"
-              onClick={() => handleDeleteMember(member.id)}
-            >
-              삭제하기
-            </button>
-          </li>
+            member={member}
+            handleDeleteMember={handleDeleteMember}
+          />
         ))}
       </ul>
     </>
