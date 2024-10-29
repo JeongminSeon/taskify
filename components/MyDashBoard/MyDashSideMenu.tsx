@@ -52,7 +52,7 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
   return (
     <div className="sticky top-0 h-screen py-5 px-[14px] border-r border-gray400 bg-white lg:px-2 ">
       <h1 className="md:hidden">
-        <Link href="#">
+        <Link href="/mydashboard">
           <Image
             src="/images/logos/logo-small.svg"
             width={24}
@@ -62,7 +62,7 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
         </Link>
       </h1>
       <h1 className="hidden md:block">
-        <Link href="#">
+        <Link href="/mydashboard">
           <Image
             src="/images/logos/logo-large.svg"
             width={109}
