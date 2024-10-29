@@ -102,7 +102,11 @@ export const updatePassword = async (PasswordData: PasswordData) => {
     if (error instanceof AxiosError) {
       const message = error.response?.data?.message || error.message;
       const status = error.response?.status ?? 500;
-      onError(status, message);
+
+      console.error(`Error: ${status} - ${message}`);
+      alert(`Error: ${message}`); // 사용자에게 알림으로 표시
+
+      throw new Error(message); // 에러를 다시 던져서 호출한 곳에서 처리
     }
     throw error;
   }
