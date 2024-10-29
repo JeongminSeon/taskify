@@ -4,8 +4,11 @@ import MyButton from "./MyButton";
 import { useEffect, useState } from "react";
 import useModal from "@/hooks/modal/useModal";
 import ModalAlert from "../UI/modal/ModalAlert";
-import { getUserInfo } from "@/utils/api/authApi";
-import { createCardImage } from "@/utils/api/columnsApi";
+import {
+  createCardImage,
+  getUserInfo,
+  UpdateUserInfo,
+} from "@/utils/api/authApi";
 
 interface Profile {
   email: string;
@@ -21,28 +24,41 @@ const MyProfile: React.FC = () => {
   });
   const { isOpen, openModal, closeModal } = useModal();
 
-  // const handleFileChange = async(e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   if (file) {
-  //     try {
-  //       const response = await createCardImage({ columnId, image: file });
-  //       if (response?.imageUrl) {
-  //         setProfile((prevData) => ({
-  //           ...prevData,
-  //           profileImageUrl: response.imageUrl,
-  //         }));
-  //       }
-  //       console.log("이미지 생성 성공:", response);
-  //     } catch (error) {
-  //       console.error("이미지 생성 실패:", error);
-  //     }
-  //   }
-  // };
+  // 파일 선택 시 이미지 업로드
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  const handleSave = () => {
-    openModal();
+    try {
+      const response = await createCardImage({ image: file });
+      if (response?.profileImageUrl) {
+        setProfile((prevData) => ({
+          ...prevData,
+          profileImageUrl: response.profileImageUrl,
+        }));
+      }
+      console.log("이미지 생성 성공:", response);
+    } catch (error) {
+      console.error("이미지 생성 실패:", error);
+    }
   };
 
+  // 저장 버튼 클릭 시 닉네임 및 프로필 이미지 업데이트
+  const handleSave = async () => {
+    const { nickname, profileImageUrl } = profile;
+
+    try {
+      await UpdateUserInfo({
+        nickname,
+        profileImageUrl: profileImageUrl ?? undefined,
+      });
+      openModal();
+    } catch (error) {
+      console.error("유저 정보를 업데이트하는 중 오류가 발생했습니다:", error);
+    }
+  };
+
+  // 초기 프로필 정보 불러오기
   const getMe = async () => {
     try {
       const res = await getUserInfo();
@@ -65,7 +81,9 @@ const MyProfile: React.FC = () => {
       <h2 className="md:text-[24px] sm:text-[18px] md:mb-6 sm:mb-10 font-bold">
         프로필
       </h2>
+
       <div className="flex md:gap-[42px] sm:gap-10 md:flex-row sm:flex-col">
+        {/* 프로필 이미지 영역 */}
         <div className="md:w-[182px] sm:w-[100px]">
           <label htmlFor="inputFile">
             <Image
@@ -79,12 +97,14 @@ const MyProfile: React.FC = () => {
             />
           </label>
           <input
-            className="hidden"
             type="file"
             id="inputFile"
+            className="hidden"
             onChange={handleFileChange}
           />
         </div>
+
+        {/* 이메일 및 닉네임 수정 영역 */}
         <div className="md:w-[400px] sm:w-[252px]">
           <div className="flex flex-col gap-4">
             <InputField
@@ -107,6 +127,8 @@ const MyProfile: React.FC = () => {
           <MyButton onClick={handleSave}>저장</MyButton>
         </div>
       </div>
+
+      {/* 변경 완료 모달 */}
       {isOpen && (
         <ModalAlert
           isOpen={isOpen}

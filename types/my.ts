@@ -22,6 +22,6 @@ export interface ProfileImageParams {
   image: File | null;
 }
 // 프로필 이미지 생성 응답 타입
-export interface ImageCreateResponse {
+export interface ProfileImageResponse {
   profileImageUrl: string;
 }
