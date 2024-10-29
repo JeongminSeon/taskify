@@ -31,7 +31,7 @@ const MyPassWord: React.FC = () => {
       openModal();
     } catch (error) {
       console.error(error);
-      setModalMessage("현재 비밀번호가 틀립니다.");
+      setModalMessage((error as Error).message);
       openModal();
     }
   };
