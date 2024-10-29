@@ -22,7 +22,6 @@ interface DashboardDetailProps {
 
 // DashboardDetail 컴포넌트 정의, initialUser라는 props를 받아 사용
 const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
-  const teamId: string = "9-1"; // 팀 ID 설정
   const router = useRouter(); // Next.js의 useRouter 훅 사용
   const { dashboardsId } = router.query; // 쿼리 파라미터에서 dashboard ID 추출
   const [columns, setColumns] = useState<Columns[]>([]); // 칼럼 데이터 상태
@@ -57,7 +56,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
   // 칼럼 데이터를 가져오는 함수 - 비동기로 getColumns API 호출
   const fetchColumns = useCallback(async () => {
     const dashboardId = Number(dashboardsId); // dashboard ID를 숫자로 변환
-    const params: ColoumnsParams = { teamId, dashboardId }; // API 호출에 필요한 파라미터 설정
+    const params: ColoumnsParams = { dashboardId }; // API 호출에 필요한 파라미터 설정
 
     try {
       const columnsData: ColumnsResponse = await getColumns(params); // 칼럼 데이터 API 호출
@@ -68,27 +67,26 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
     } finally {
       setLoading(false); // 로딩 상태 업데이트
     }
-  }, [teamId, dashboardsId]);
+  }, [dashboardsId]);
 
   // 새로운 칼럼을 생성하는 함수, 모달의 확인 버튼을 클릭 시 실행
   const handleConfirm = useCallback(
     (inputValue: string) => {
       alert("새로운 칼럼이 생성되었습니다.");
       createColumn({
-        teamId,
         title: inputValue,
         dashboardId: Number(dashboardsId),
       }).then((newColumn) => {
         if (newColumn) {
           setColumns((prev) => [
             ...prev,
-            { ...newColumn, teamId, dashboardId: Number(dashboardsId) },
+            { ...newColumn, dashboardId: Number(dashboardsId) },
           ]);
         }
         fetchColumns(); // 새로 생성한 칼럼을 가져와 화면에 업데이트
       });
     },
-    [teamId, dashboardsId, fetchColumns]
+    [dashboardsId, fetchColumns]
   );
 
   // 컴포넌트가 마운트되거나 dashboardsId가 변경될 때 칼럼 데이터 가져오기
@@ -110,7 +108,12 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
         <div className="columns flex flex-col lg:flex-row">
           {/* 각 칼럼 데이터를 Column 컴포넌트로 렌더링 */}
           {columns.map((item) => (
-            <Column key={item.id} id={item.id} title={item.title} />
+            <Column
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              dashboardId={Number(dashboardsId)}
+            />
           ))}
           <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 border-r border-[gray600]">
             <button
