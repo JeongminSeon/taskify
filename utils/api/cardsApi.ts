@@ -72,7 +72,7 @@ export const updateCard = async ({
 
 //카드 삭제
 
-export const DeleteCard = async (id: number) => {
+export const deleteCard = async (id: number) => {
   try {
     const response = await axiosInstance.delete(`/cards/${id}`);
     return response.data;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card as CardType, CardListResponse } from "@/types/cards";
-import { DeleteCard, getCards } from "@/utils/api/cardsApi";
+import { deleteCard, getCards } from "@/utils/api/cardsApi";
 import { getRandomColor } from "@/utils/TodoForm";
 import useModal from "@/hooks/modal/useModal";
 import CardDetailModal from "../UI/modal/CardModal/CardDetailModal";
@@ -43,7 +43,7 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
 
     if (!selectedCard) return;
     const id = selectedCard.id;
-    await DeleteCard(id);
+    await deleteCard(id);
   };
 
   useEffect(() => {
