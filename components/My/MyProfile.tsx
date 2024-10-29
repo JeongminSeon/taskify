@@ -14,6 +14,9 @@ const MyProfile: React.FC = () => {
   const [newProfileImage, setNewProfileImage] = useState<File | undefined>(
     undefined
   );
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    profileImageUrl
+  ); // 이미지 프리뷰 상태
   const { isOpen, openModal, closeModal } = useModal();
 
   // 파일 선택 시 이미지 업로드 처리
@@ -21,6 +24,11 @@ const MyProfile: React.FC = () => {
     const file = e.target.files?.[0];
     if (file) {
       setNewProfileImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string); // 파일이 로드되면 프리뷰 업데이트
+      };
+      reader.readAsDataURL(file); // 파일을 Data URL로 변환
     }
   };
 
@@ -34,7 +42,8 @@ const MyProfile: React.FC = () => {
   useEffect(() => {
     loadProfile();
     setNewNickname(nickname);
-  }, [nickname, loadProfile]);
+    setImagePreview(profileImageUrl);
+  }, [nickname, profileImageUrl, loadProfile]);
 
   return (
     <div className="lg:w-[672px] md:w-[548px] sm:w-[284px] md:p-6 sm:p-4 md:mb-6 sm:mb-4 rounded-2xl bg-white100">
@@ -47,7 +56,7 @@ const MyProfile: React.FC = () => {
           <label htmlFor="inputFile">
             <Image
               className="cursor-pointer"
-              src={profileImageUrl || "/images/icons/profile_add_box.svg"}
+              src={imagePreview || "/images/icons/profile_add_box.svg"}
               alt="프로필 이미지"
               width="182"
               height="182"
