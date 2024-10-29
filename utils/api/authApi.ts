@@ -52,6 +52,7 @@ export const getLogin = async (loginData: loginData) => {
   }
 };
 
+// 내 정보 조회
 export const getUserInfo = async (token?: string) => {
   try {
     const response = await axiosInstance.get("/users/me", {
@@ -60,6 +61,26 @@ export const getUserInfo = async (token?: string) => {
     return response.data;
   } catch (error) {
     console.error("Failed to fetch user info:", error);
+    throw error;
+  }
+};
+
+//내 정보 수정
+export const UpdateUserInfo = async ({
+  nickname,
+  profileImageUrl,
+}: {
+  nickname: string;
+  profileImageUrl?: string;
+}) => {
+  try {
+    const response = await axiosInstance.put("/users/me", {
+      nickname,
+      profileImageUrl,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Failed to update user info:", error);
     throw error;
   }
 };
