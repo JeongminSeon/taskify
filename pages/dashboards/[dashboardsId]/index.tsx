@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { parse } from "cookie";
-import { getColumns, createColumn } from "../../utils/api/columnsApi";
+import { getColumns, createColumn } from "@/utils/api/columnsApi";
 import { getUserInfo } from "@/utils/api/authApi";
 import { ColoumnsParams, Columns, ColumnsResponse } from "@/types/columns";
 import { UserResponse } from "@/types/users";
@@ -99,7 +99,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
   // 로딩 상태나 에러가 있을 때 로딩 및 에러 메시지 렌더링
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
-  if (columns.length === 0) return <div>No columns available.</div>;
 
   // 실제 렌더링 부분
   return (

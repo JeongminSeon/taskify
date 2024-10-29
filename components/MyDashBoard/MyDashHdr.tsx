@@ -1,21 +1,38 @@
 import { hdMenuBtn, hdMenuBtnIcon } from "./MyDashStyle";
-import { UserResponse } from "@/types/users";
-import useGetUser from "@/hooks/useGetUser";
+import { useRouter } from "next/router";
+//import { getDashboardDetail } from "@/utils/api/dashboardsApi";
 import Image from "next/image";
+import Link from "next/link";
+import { useAuthStore } from "@/store/authStore";
+import { useDashBoardStore } from "@/store/dashBoardStore";
 
 const MyDashHdr = () => {
-  const { data } = useGetUser();
-  const userData = data as UserResponse;
+  const router = useRouter();
+  const { dashboardsId } = router.query;
+
+  const { user } = useAuthStore();
+  const { dashboards } = useDashBoardStore();
+
+  // 대시보드 제목 : 쿼리에 id 값과 dashboards의 id 값 비교
+  const currentDashboard = dashboards.find(
+    (dashboard) => dashboard.id === Number(dashboardsId)
+  );
+  const dashboardTitle = currentDashboard
+    ? currentDashboard.title
+    : "내 대시보드";
 
   return (
     <div className="border-b border-gray400 bg-white">
       <div className="headerWrap flex justify-between items-center w-full p-[13px_8px_13px_18px] md:px-10 md:py-[15px]">
         <h2 className="pageTitle flex-1 text-x font-bold md:text-xl lg:text-[2rem]">
-          내 대시보드
+          {dashboardTitle}
         </h2>
         <ul className="flex gap-[6px] md:gap-4">
           <li>
-            <button type="button" className={`${hdMenuBtn}`}>
+            <Link
+              href={`/dashboards/${dashboardsId}/edit`}
+              className={`${hdMenuBtn}`}
+            >
               <span className={`${hdMenuBtnIcon}`}>
                 <Image
                   src="/images/icons/icon_settings.svg"
@@ -25,7 +42,7 @@ const MyDashHdr = () => {
                 />
               </span>
               관리
-            </button>
+            </Link>
           </li>
           <li>
             <button type="button" className={`${hdMenuBtn}`}>
@@ -43,10 +60,10 @@ const MyDashHdr = () => {
         </ul>
         <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray400 md:ml-8 md:pl-8 lg:ml-9 lg:pl-9">
           <span className="overflow-hidden relative w-[34px] h-[34px] rounded-full bg-slate-500">
-            {userData?.profileImageUrl ? (
+            {user?.profileImageUrl ? (
               <Image
                 className="object-cover"
-                src={userData.profileImageUrl}
+                src={user.profileImageUrl}
                 fill
                 alt="Profile Image"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // 뷰포트에 따른 이미지 크기 설정
@@ -61,7 +78,7 @@ const MyDashHdr = () => {
               />
             )}
           </span>
-          <p className="hidden md:block">{userData?.nickname || ""}</p>
+          <p className="hidden md:block">{user?.nickname || ""}</p>
         </div>
       </div>
     </div>

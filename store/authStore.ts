@@ -20,8 +20,11 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  isAuthenticated: false,
-  user: null,
+  //  스토어의 초기 상태를 정의
+  isAuthenticated: false, //사용자가 인증되었는지를 나타내는 boolean 값
+  user: null, // 현재 로그인한 사용자에 대한 정보를 담고 있는 객체
+
+  // setUser : 사용자 정보와 인증 상태를 업데이트합니다
   setUser: (user: User) => {
     console.log("setUser 호출됨:", user);
     set({ user, isAuthenticated: true });
