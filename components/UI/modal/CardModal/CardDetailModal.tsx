@@ -1,7 +1,6 @@
 import React from "react";
 import { Card } from "@/types/cards";
 import { styles } from "./styles";
-
 import CardHeader from "./components/CardHeader";
 import CardTagList from "./components/CardTagList";
 import CardBody from "./components/CardBody";

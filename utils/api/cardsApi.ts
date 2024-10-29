@@ -54,7 +54,7 @@ export const getCard = async ({
 };
 
 // 카드 상세 수정
-export const UpdateCard = async ({
+export const updateCard = async ({
   cardId,
   formData,
 }: {
