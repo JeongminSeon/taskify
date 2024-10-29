@@ -3,6 +3,7 @@ import { Invitation, InvitationsResponse } from "@/types/dashboards";
 import { useEffect, useState } from "react";
 import Pagination from "../UI/pagination/Pagination";
 import UnInvited from "../MyDashBoard/UnInvited";
+import InviteeItem from "./components/InviteeItem";
 
 interface InviteeListProps {
   dashboardId: number; // dashboardId의 타입 정의
@@ -92,19 +93,11 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
       ) : (
         <ul className="pt-[26px] md:pt-4">
           {invitations.map((invitation) => (
-            <li
+            <InviteeItem
               key={invitation.id}
-              className="flex justify-between py-3 md:py-4 px-4 md:px-7 border-b border-gray500"
-            >
-              <p>{invitation.invitee.email}</p>
-              <button
-                type="button"
-                className="sm:w-[52px] md:w-[84px] h-8 border border-gray400 rounded-[4px] text-xs md:text-sm text-purple100 font-medium leading-8"
-                onClick={() => handleDeleteInvitation(invitation.id)}
-              >
-                삭제하기
-              </button>
-            </li>
+              invitation={invitation}
+              handleDeleteInvitation={handleDeleteInvitation}
+            />
           ))}
         </ul>
       )}
