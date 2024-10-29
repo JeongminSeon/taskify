@@ -39,7 +39,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
   } = useModal();
 
   // 인증 관련 상태와 메서드 불러오기
-  const { user, setUser, checkAuth } = useAuthStore();
+  const { setUser, checkAuth } = useAuthStore();
 
   // 컴포넌트가 마운트될 때 initialUser가 있으면 유저 정보 설정, 없으면 인증 체크
   useEffect(() => {
