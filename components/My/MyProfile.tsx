@@ -9,15 +9,10 @@ import {
   getUserInfo,
   UpdateUserInfo,
 } from "@/utils/api/authApi";
-
-interface Profile {
-  email: string;
-  nickname: string;
-  profileImageUrl: string | null;
-}
+import { ProfileProps } from "@/types/my";
 
 const MyProfile: React.FC = () => {
-  const [profile, setProfile] = useState<Profile>({
+  const [profile, setProfile] = useState<ProfileProps>({
     email: "",
     nickname: "",
     profileImageUrl: null,

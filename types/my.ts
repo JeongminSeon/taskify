@@ -25,3 +25,10 @@ export interface ProfileImageParams {
 export interface ProfileImageResponse {
   profileImageUrl: string;
 }
+
+// 프로필 타입
+export interface ProfileProps {
+  email: string;
+  nickname: string;
+  profileImageUrl: string | null;
+}
