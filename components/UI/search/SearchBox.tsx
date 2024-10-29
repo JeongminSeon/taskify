@@ -5,6 +5,7 @@ interface SearchBoxProps {
   setSearchTerm: (term: string) => void;
   performSearch: () => void;
   handleKeyPress: (e: React.KeyboardEvent) => void;
+  placeholder: string;
 }
 
 const SearchBox: React.FC<SearchBoxProps> = ({
@@ -12,6 +13,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   setSearchTerm,
   performSearch,
   handleKeyPress,
+  placeholder,
 }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -32,7 +34,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
       </button>
       <input
         type="text"
-        placeholder="검색"
+        placeholder={placeholder}
         value={searchTerm}
         onChange={handleInputChange}
         onKeyDown={handleKeyPress}
