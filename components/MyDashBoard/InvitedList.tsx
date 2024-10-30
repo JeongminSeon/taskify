@@ -4,7 +4,7 @@ import { getMyInvitations } from "@/utils/api/invitationsApi";
 import axiosInstance from "@/utils/api/axiosInstanceApi";
 import UnInvited from "./UnInvited";
 import SearchBox from "../UI/search/SearchBox";
-import InvitationsList from "./invitationsList/InvitationsList";
+import InvitationList from "./invitationsList/InvitationList";
 import Loading from "../UI/loading/Loading";
 import NoResults from "../UI/search/NoResults";
 import useDebounce from "@/hooks/dashboard/useDebounce";
@@ -73,7 +73,7 @@ const InvitedList = () => {
           {filteredInvitations.length === 0 ? (
             <NoResults />
           ) : (
-            <InvitationsList
+            <InvitationList
               filteredInvitations={filteredInvitations}
               displayCount={displayCount}
               setDisplayCount={setDisplayCount}
