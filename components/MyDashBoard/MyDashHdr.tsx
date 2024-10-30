@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
 import { useDashBoardStore } from "@/store/dashBoardStore";
+import AvatarGroup from "./AvatarGroup";
 
 const MyDashHdr = () => {
   const router = useRouter();
@@ -27,7 +28,7 @@ const MyDashHdr = () => {
         <h2 className="pageTitle flex-1 text-x font-bold md:text-xl lg:text-[2rem]">
           {dashboardTitle}
         </h2>
-        <ul className="flex gap-[6px] md:gap-4">
+        <ul className="flex gap-[6px] md:gap-4 items-center">
           <li>
             <Link
               href={`/dashboards/${dashboardsId}/edit`}
@@ -56,6 +57,9 @@ const MyDashHdr = () => {
               </span>
               초대하기
             </button>
+          </li>
+          <li>
+            <AvatarGroup />
           </li>
         </ul>
         <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray400 md:ml-8 md:pl-8 lg:ml-9 lg:pl-9">
