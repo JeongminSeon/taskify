@@ -6,12 +6,9 @@ import { useDashBoardStore } from "@/store/dashBoardStore";
 const DashBoardLayout = ({ children }: { children: ReactNode }) => {
   const { dashboards, setDashboards } = useDashBoardStore();
 
+  // setDashboards() 호출되고, 상태 업데이트
   useEffect(() => {
-    const fetchDashboards = async () => {
-      await setDashboards();
-    };
-
-    fetchDashboards();
+    setDashboards();
   }, [setDashboards]);
 
   return (
