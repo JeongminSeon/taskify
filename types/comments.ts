@@ -1,3 +1,5 @@
+import { Card } from "./cards";
+import { ChangeEvent } from "react";
 export interface Comment {
   id: number;
   content: string;
@@ -37,4 +39,38 @@ export interface CommentResponse {
   updatedAt: string;
   cardId: number;
   author: Author;
+}
+
+// 추가
+export interface CommentState {
+  comments: Comment[];
+  content: string;
+  editCommentId: number | null;
+  editContent: string;
+}
+
+export interface ModalState {
+  isOpen: boolean;
+  modalMessage: string;
+  closeModal: () => void;
+}
+
+export interface CommentActions {
+  fetchComments: () => Promise<void>;
+  handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleCommentCreate: () => Promise<void>;
+  handleCommentChange: () => Promise<void>;
+  handleEditClick: (comment: Comment) => void;
+  handleCommentDelete: (commentId: number) => Promise<void>;
+}
+
+export interface UseCommentsReturn {
+  state: CommentState;
+  modal: ModalState;
+  actions: CommentActions;
+}
+
+export interface UseCommentsProps {
+  card: Card;
+  dashboardId: number;
 }

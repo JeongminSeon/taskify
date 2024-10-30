@@ -26,7 +26,7 @@ export const useCardList = (columnId: number) => {
     openDetailModal();
   };
 
-  const handleEditClick = () => {
+  const handleEditClick = (): void => {
     closeDetailModal();
     openUpdateModal();
   };

@@ -33,9 +33,10 @@ export const createComment = async (
   params: CommentCreateParams
 ): Promise<CommentResponse> => {
   try {
-    const response = await axiosInstance.post<CommentResponse>(`/comments`, {
-      params,
-    });
+    const response = await axiosInstance.post<CommentResponse>(
+      `/comments`,
+      params
+    );
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
