@@ -23,7 +23,7 @@ const Column: React.FC<ColumnProps> = ({ id, title, dashboardId }) => {
         const cardData = await getCards({ columnId: id });
         setCards(cardData.cards);
       } catch (err) {
-        console.error("Error fetching cards:", err);
+        console.error("카드를 불러오는데 실패했습니다.", err);
       }
     };
 
@@ -45,7 +45,7 @@ const Column: React.FC<ColumnProps> = ({ id, title, dashboardId }) => {
       await deleteCard(cardId);
       setCards((prevCards) => prevCards.filter((card) => card.id !== cardId));
     } catch (err) {
-      console.error("Error deleting card:", err);
+      console.error("카드를 삭제하는 데 실패했습니다. ", err);
     }
   };
 
