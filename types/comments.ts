@@ -12,6 +12,13 @@ export interface CommentParams {
   cardId: number;
 }
 
+export interface CommentCreateParams {
+  content: string;
+  cardId: number;
+  columnId: number;
+  dashboardId: number;
+}
+
 export interface CommentListResponse {
   cursorId: number;
   comments: Comment[];

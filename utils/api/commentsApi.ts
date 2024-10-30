@@ -1,4 +1,8 @@
-import { CommentResponse, CommentParams } from "@/types/comments";
+import {
+  CommentResponse,
+  CommentParams,
+  CommentCreateParams,
+} from "@/types/comments";
 import axiosInstance from "./axiosInstanceApi";
 import { AxiosError } from "axios";
 
@@ -41,15 +45,17 @@ export const getComments = async ({
 
 // 댓글 생성
 export const createComment = async ({
-  size,
-  cursorId,
+  content,
   cardId,
-}: CommentParams): Promise<CommentResponse> => {
+  columnId,
+  dashboardId,
+}: CommentCreateParams): Promise<CommentResponse> => {
   try {
     const response = await axiosInstance.post<CommentResponse>(`/comments`, {
-      size,
-      cursorId,
+      content,
       cardId,
+      columnId,
+      dashboardId,
     });
     return response.data;
   } catch (error) {
