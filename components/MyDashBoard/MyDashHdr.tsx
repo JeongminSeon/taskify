@@ -1,15 +1,13 @@
 import { hdMenuBtn, hdMenuBtnIcon } from "./MyDashStyle";
 import { useRouter } from "next/router";
-//import { getDashboardDetail } from "@/utils/api/dashboardsApi";
-import Image from "next/image";
-import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
 import { useDashBoardStore } from "@/store/dashBoardStore";
+import Image from "next/image";
+import Link from "next/link";
 
 const MyDashHdr = () => {
   const router = useRouter();
   const { dashboardsId } = router.query;
-
   const { user } = useAuthStore();
   const { dashboards } = useDashBoardStore();
 
@@ -21,43 +19,49 @@ const MyDashHdr = () => {
     ? currentDashboard.title
     : "내 대시보드";
 
+  // '/mydashboard' 경로 확인
+  const isMyDashboardPage = router.pathname === "/mydashboard";
+
   return (
     <div className="border-b border-gray400 bg-white">
       <div className="headerWrap flex justify-between items-center w-full p-[13px_8px_13px_18px] md:px-10 md:py-[15px]">
         <h2 className="pageTitle flex-1 text-x font-bold md:text-xl lg:text-[2rem]">
           {dashboardTitle}
         </h2>
-        <ul className="flex gap-[6px] md:gap-4">
-          <li>
-            <Link
-              href={`/dashboards/${dashboardsId}/edit`}
-              className={`${hdMenuBtn}`}
-            >
-              <span className={`${hdMenuBtnIcon}`}>
-                <Image
-                  src="/images/icons/icon_settings.svg"
-                  width={15}
-                  height={15}
-                  alt="관리"
-                />
-              </span>
-              관리
-            </Link>
-          </li>
-          <li>
-            <button type="button" className={`${hdMenuBtn}`}>
-              <span className={`${hdMenuBtnIcon}`}>
-                <Image
-                  src="/images/icons/icon_add_box.svg"
-                  width={15}
-                  height={15}
-                  alt="초대하기"
-                />
-              </span>
-              초대하기
-            </button>
-          </li>
-        </ul>
+        {/* '/mydashboard'에서 미노출 */}
+        {!isMyDashboardPage && (
+          <ul className="flex gap-[6px] md:gap-4">
+            <li>
+              <Link
+                href={`/dashboards/${dashboardsId}/edit`}
+                className={`${hdMenuBtn}`}
+              >
+                <span className={`${hdMenuBtnIcon}`}>
+                  <Image
+                    src="/images/icons/icon_settings.svg"
+                    width={15}
+                    height={15}
+                    alt="관리"
+                  />
+                </span>
+                관리
+              </Link>
+            </li>
+            <li>
+              <button type="button" className={`${hdMenuBtn}`}>
+                <span className={`${hdMenuBtnIcon}`}>
+                  <Image
+                    src="/images/icons/icon_add_box.svg"
+                    width={15}
+                    height={15}
+                    alt="초대하기"
+                  />
+                </span>
+                초대하기
+              </button>
+            </li>
+          </ul>
+        )}
         <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray400 md:ml-8 md:pl-8 lg:ml-9 lg:pl-9">
           <span className="overflow-hidden relative w-[34px] h-[34px] rounded-full bg-slate-500">
             {user?.profileImageUrl ? (

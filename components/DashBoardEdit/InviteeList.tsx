@@ -37,9 +37,9 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
 
   // 에러 모달
   const {
-    isOpen: isErrorOpen,
-    openModal: openErrorModal,
-    closeModal: closeErrorModal,
+    isOpen: isMessageOpen,
+    openModal: openMessageModal,
+    closeModal: closeMessageModal,
   } = useModal();
 
   useEffect(() => {
@@ -78,7 +78,8 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
       try {
         const newInvitation = await addInvitations(dashboardId, inputValue);
         setInvitations((prev) => [...prev, newInvitation]);
-        alert("초대 요청을 보냈습니다.");
+        setModalMessage("초대 요청을 보냈습니다.");
+        openMessageModal();
         closeModal();
       } catch (error) {
         const axiosError = error as AxiosError<{ message: string }>;
@@ -88,10 +89,10 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
               "초대 요청 중 오류가 발생했습니다."
           );
         }
-        openErrorModal();
+        openMessageModal();
       }
     },
-    [dashboardId, closeModal, openErrorModal]
+    [dashboardId, closeModal, openMessageModal]
   );
 
   const handleDeleteInvitation = async (invitationId: number) => {
@@ -159,11 +160,11 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
         />
       </Portal>
 
-      {/* 에러 모달창 */}
-      {isErrorOpen && (
+      {/* 메세지 모달창 */}
+      {isMessageOpen && (
         <ModalAlert
-          isOpen={isErrorOpen}
-          onClose={closeErrorModal}
+          isOpen={isMessageOpen}
+          onClose={closeMessageModal}
           text={modalMessage}
         />
       )}
