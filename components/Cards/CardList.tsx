@@ -4,7 +4,7 @@ import { deleteCard, getCards } from "@/utils/api/cardsApi";
 import { getRandomColor } from "@/utils/TodoForm";
 import useModal from "@/hooks/modal/useModal";
 import CardDetailModal from "../UI/modal/CardModal/CardDetailModal";
-
+import Portal from "../UI/modal/ModalPotal";
 import Card from "./components/Card";
 import UpdateTodoModal from "../UI/modal/UpdateTodoModal";
 
@@ -46,6 +46,12 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
     await deleteCard(id);
   };
 
+  const handleUpdateCard = (updatedCard: CardType) => {
+    setCards((prevCards) =>
+      prevCards.map((card) => (card.id === updatedCard.id ? updatedCard : card))
+    );
+  };
+
   useEffect(() => {
     const newTagColors: Record<string, string> = {};
     cards.forEach((card) => {
@@ -85,7 +91,7 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
         />
       ))}
       {selectedCard && (
-        <>
+        <Portal>
           <CardDetailModal
             card={selectedCard}
             isOpen={isDetailOpen}
@@ -98,8 +104,9 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
             isOpen={isUpdateOpen}
             onClose={closeUpdateModal}
             dashboardId={dashboardId}
+            onUpdateCard={handleUpdateCard}
           />
-        </>
+        </Portal>
       )}
     </div>
   );
