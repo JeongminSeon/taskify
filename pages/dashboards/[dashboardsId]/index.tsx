@@ -8,7 +8,7 @@ import { getUserInfo } from "@/utils/api/authApi";
 import { ColoumnsParams, Columns, ColumnsResponse } from "@/types/columns";
 import { UserResponse } from "@/types/users";
 import Image from "next/image";
-import Column from "@/components/DashBoard/Column";
+import Column from "@/components/DashBoard/column/Column";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import Portal from "@/components/UI/modal/ModalPotal";
 import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";

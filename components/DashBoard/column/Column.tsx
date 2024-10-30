@@ -1,11 +1,11 @@
 import CardList from "@/components/Cards/CardList";
 import CreateTodoModal from "@/components/UI/modal/CreateTodoModal";
-import Portal from "../UI/modal/ModalPotal";
+import Portal from "../../UI/modal/ModalPotal";
 import useModal from "@/hooks/modal/useModal";
 import { useEffect } from "react";
 import useCardsStore from "@/store/cardsStore";
-import AddCardButton from "./column/AddCardButton";
-import ColumnHeader from "./column/ColumnHeader";
+import AddCardButton from "./AddCardButton";
+import ColumnHeader from "./ColumnHeader";
 
 interface ColumnProps {
   id: number;
