@@ -5,6 +5,7 @@ import {
 } from "@/utils/api/dashboardsApi";
 import { Invitation, InvitationsResponse } from "@/types/dashboards";
 import { useCallback, useEffect, useState } from "react";
+import { AxiosError } from "axios";
 import Image from "next/image";
 import Pagination from "../UI/pagination/Pagination";
 import UnInvited from "../MyDashBoard/UnInvited";
@@ -12,6 +13,7 @@ import InviteeItem from "./components/InviteeItem";
 import useModal from "@/hooks/modal/useModal";
 import Portal from "@/components/UI/modal/ModalPotal";
 import OneInputModal from "../UI/modal/InputModal/OneInputModal";
+import ModalAlert from "../UI/modal/ModalAlert";
 
 interface InviteeListProps {
   dashboardId: number;
@@ -22,6 +24,8 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
 
+  const [modalMessage, setModalMessage] = useState<string>("");
+
   const {
     isOpen,
     inputValue,
@@ -29,6 +33,13 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
     closeModal,
     handleInputChange,
     handleConfirm: handleModalConfirm,
+  } = useModal();
+
+  // 에러 모달
+  const {
+    isOpen: isErrorOpen,
+    openModal: openErrorModal,
+    closeModal: closeErrorModal,
   } = useModal();
 
   useEffect(() => {
@@ -70,10 +81,17 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
         alert("초대 요청을 보냈습니다.");
         closeModal();
       } catch (error) {
-        console.error("초대 요청 중 오류 발생:", error);
+        const axiosError = error as AxiosError<{ message: string }>;
+        if (axiosError.response) {
+          setModalMessage(
+            axiosError.response.data.message ||
+              "초대 요청 중 오류가 발생했습니다."
+          );
+        }
+        openErrorModal();
       }
     },
-    [dashboardId, closeModal]
+    [dashboardId, closeModal, openErrorModal]
   );
 
   const handleDeleteInvitation = async (invitationId: number) => {
@@ -140,6 +158,15 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
           onInputChange={handleInputChange}
         />
       </Portal>
+
+      {/* 에러 모달창 */}
+      {isErrorOpen && (
+        <ModalAlert
+          isOpen={isErrorOpen}
+          onClose={closeErrorModal}
+          text={modalMessage}
+        />
+      )}
     </div>
   );
 };
