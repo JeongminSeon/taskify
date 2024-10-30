@@ -1,6 +1,11 @@
 import Image from "next/image";
+import React from "react";
 
-const UnInvited = () => {
+interface UnInvitedProps {
+  message?: string;
+}
+
+const UnInvited: React.FC<UnInvitedProps> = ({ message }) => {
   return (
     <div className="py-[105px] md:py-16">
       <div className="relative w-[60px] h-[60px] mx-auto md:w-[100px] md:h-[100px]">
@@ -11,9 +16,7 @@ const UnInvited = () => {
           alt="description"
         />
       </div>
-      <p className="pt-6 text-[18px] text-gray300 text-center">
-        아직 초대받은 대시보드가 없어요
-      </p>
+      <p className="pt-6 text-[18px] text-gray300 text-center">{message}</p>
     </div>
   );
 };

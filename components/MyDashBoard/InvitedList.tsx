@@ -1,6 +1,4 @@
-import { useGetInvitedList } from "@/hooks/dashboard/useGetInvitedList";
 import { useEffect, useState } from "react";
-import { MyInviteList } from "@/types/invitedList";
 import { getMyInvitations } from "@/utils/api/invitationsApi";
 import axiosInstance from "@/utils/api/axiosInstanceApi";
 import UnInvited from "./UnInvited";
@@ -9,6 +7,7 @@ import InvitationList from "./invitationsList/InvitationList";
 import Loading from "../UI/loading/Loading";
 import NoResults from "../UI/search/NoResults";
 import useDebounce from "@/hooks/dashboard/useDebounce";
+import { MyInviteList } from "@/types/invitedList";
 
 const InvitedList = () => {
   const size = 7;
@@ -46,12 +45,6 @@ const InvitedList = () => {
       console.error("초대 상태 업데이트 중 오류 발생:", err);
     }
   };
-
-  useEffect(() => {
-    if (data) {
-      setFilteredInvitations(data);
-    }
-  }, [data]);
 
   // debounced 검색어
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
