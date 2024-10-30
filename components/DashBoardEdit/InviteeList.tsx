@@ -1,9 +1,4 @@
-import {
-  addInvitations,
-  deleteInvitations,
-  getInvitations,
-} from "@/utils/api/dashboardsApi";
-import { Invitation, InvitationsResponse } from "@/types/dashboards";
+import { addInvitations, deleteInvitations } from "@/utils/api/dashboardsApi";
 import { useCallback, useEffect, useState } from "react";
 import { AxiosError } from "axios";
 import Image from "next/image";
@@ -14,16 +9,12 @@ import useModal from "@/hooks/modal/useModal";
 import Portal from "@/components/UI/modal/ModalPotal";
 import OneInputModal from "../UI/modal/InputModal/OneInputModal";
 import ModalAlert from "../UI/modal/ModalAlert";
+import { useInvitationStore } from "@/store/invitationStore";
 
-interface InviteeListProps {
-  dashboardId: number;
-}
-
-const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
-  const [invitations, setInvitations] = useState<Invitation[]>([]);
+const InviteeList = () => {
+  const { dashboardId, loadInvitations, invitations } = useInvitationStore();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
-
   const [modalMessage, setModalMessage] = useState<string>("");
 
   const {
@@ -35,31 +26,42 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
     handleConfirm: handleModalConfirm,
   } = useModal();
 
-  // 에러 모달
+  // 메세지 모달
   const {
     isOpen: isMessageOpen,
     openModal: openMessageModal,
     closeModal: closeMessageModal,
   } = useModal();
 
+  // 컴포넌트가 마운트될 때 초대 목록을 불러오기
   useEffect(() => {
-    const fetchInvitations = async () => {
-      if (dashboardId) {
-        try {
-          const data: InvitationsResponse = await getInvitations(
-            dashboardId,
-            currentPage,
-            5
-          );
-          setInvitations(data.invitations);
-          setTotalPages(Math.ceil(data.totalCount / 5));
-        } catch (error) {
-          console.error("Error fetching invitations:", error);
-        }
-      }
-    };
-    fetchInvitations();
-  }, [currentPage, dashboardId]);
+    if (dashboardId !== null) {
+      loadInvitations(dashboardId, 1, 10);
+    }
+  }, [dashboardId, loadInvitations]);
+
+  // const fetchInvitations = useCallback(async () => {
+  //   if (dashboardId) {
+  //     try {
+  //       const data: InvitationsResponse = await getInvitations(
+  //         dashboardId,
+  //         currentPage,
+  //         5
+  //       );
+  //       console.log(data);
+  //       setInvitations(data.invitations);
+  //       const currentInvitations = useInvitationStore.getState().invitations;
+  //       console.log("현재 초대 목록:", currentInvitations);
+  //       setTotalPages(Math.ceil(data.totalCount / 5));
+  //     } catch (error) {
+  //       console.error("Error fetching invitations:", error);
+  //     }
+  //   }
+  // }, [dashboardId, currentPage, setInvitations]);
+
+  // useEffect(() => {
+  //   fetchInvitations();
+  // }, [fetchInvitations]);
 
   const handleNextPage = () => {
     setCurrentPage((prev) => prev + 1);
@@ -77,7 +79,7 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
       }
       try {
         const newInvitation = await addInvitations(dashboardId, inputValue);
-        setInvitations((prev) => [...prev, newInvitation]);
+        useInvitationStore.getState().addInvitation(newInvitation);
         setModalMessage("초대 요청을 보냈습니다.");
         openMessageModal();
         closeModal();
@@ -99,9 +101,6 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
     if (confirm("해당 이메일을 삭제하시겠습니까?")) {
       try {
         await deleteInvitations(dashboardId, invitationId);
-        setInvitations((prevInvitations) =>
-          prevInvitations.filter((invitation) => invitation.id !== invitationId)
-        );
       } catch (error) {
         console.error("초대 취소 중 오류 발생:", error);
       }
@@ -132,17 +131,18 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
         </button>
       </div>
       <p className="px-4 md:px-7 text-xs md:text-sm text-gray-300">이메일</p>
-      {invitations.length === 0 ? (
+      {invitations && invitations.length === 0 ? (
         <UnInvited message="초대 목록이 없어요." />
       ) : (
         <ul className="pt-4">
-          {invitations.map((invitation) => (
-            <InviteeItem
-              key={invitation.id}
-              invitation={invitation}
-              handleDeleteInvitation={handleDeleteInvitation}
-            />
-          ))}
+          {Array.isArray(invitations) &&
+            invitations.map((invitation) => (
+              <InviteeItem
+                key={invitation.id}
+                invitation={invitation}
+                handleDeleteInvitation={handleDeleteInvitation}
+              />
+            ))}
         </ul>
       )}
       <Portal>

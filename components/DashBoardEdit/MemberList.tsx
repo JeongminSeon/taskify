@@ -6,20 +6,12 @@ import MemberItem from "./components/MemberItem";
 
 interface MemberListProps {
   dashboardId: number;
-  initialMembers: Member[];
-  totalCount: number;
 }
 
-const MemberList: React.FC<MemberListProps> = ({
-  dashboardId,
-  initialMembers,
-  totalCount,
-}) => {
-  const [members, setMembers] = useState<Member[]>(initialMembers);
+const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
+  const [members, setMembers] = useState<Member[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(
-    Math.ceil(totalCount / 5)
-  );
+  const [totalPages, setTotalPages] = useState<number>(0);
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -46,7 +38,7 @@ const MemberList: React.FC<MemberListProps> = ({
   };
 
   const handlePreviousPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1)); // 1페이지 이하로는 내리지 않음
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
   };
 
   // 멤버 삭제 핸들러
