@@ -3,9 +3,8 @@ import CardList from "@/components/Cards/CardList";
 import CreateTodoModal from "@/components/UI/modal/CreateTodoModal";
 import Portal from "../UI/modal/ModalPotal";
 import useModal from "@/hooks/modal/useModal";
-import { useEffect, useState } from "react";
-import { Card as CardType } from "@/types/cards";
-import { deleteCard, getCards } from "@/utils/api/cardsApi";
+import { useEffect } from "react";
+import useCardsStore from "@/store/cardsStore";
 
 interface ColumnProps {
   id: number;
@@ -15,39 +14,12 @@ interface ColumnProps {
 
 const Column: React.FC<ColumnProps> = ({ id, title, dashboardId }) => {
   const { isOpen, openModal, closeModal } = useModal();
-  const [cards, setCards] = useState<CardType[]>([]);
+  const { cards, fetchCards, addCard, updateCard, deleteCard } =
+    useCardsStore();
 
   useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        const cardData = await getCards({ columnId: id });
-        setCards(cardData.cards);
-      } catch (err) {
-        console.error("카드를 불러오는데 실패했습니다.", err);
-      }
-    };
-
-    fetchCards();
-  }, [id]);
-
-  const handleCreateCard = (newCard: CardType) => {
-    setCards((prevCards) => [...prevCards, newCard]);
-  };
-
-  const handleUpdateCard = (updatedCard: CardType) => {
-    setCards((prevCards) =>
-      prevCards.map((card) => (card.id === updatedCard.id ? updatedCard : card))
-    );
-  };
-
-  const handleDeleteCard = async (cardId: number) => {
-    try {
-      await deleteCard(cardId);
-      setCards((prevCards) => prevCards.filter((card) => card.id !== cardId));
-    } catch (err) {
-      console.error("카드를 삭제하는 데 실패했습니다. ", err);
-    }
-  };
+    fetchCards(id);
+  }, [id, fetchCards]);
 
   return (
     <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 sm:border-b border-r border-[gray600]">
@@ -77,10 +49,10 @@ const Column: React.FC<ColumnProps> = ({ id, title, dashboardId }) => {
         />
       </button>
       <CardList
-        onUpdateCard={handleUpdateCard}
-        onDeleteCard={handleDeleteCard}
+        onUpdateCard={(updatedCard) => updateCard(id, updatedCard)}
+        onDeleteCard={(cardId) => deleteCard(id, cardId)}
         dashboardId={dashboardId}
-        cards={cards}
+        cards={cards[id] || []}
       />
       {isOpen && (
         <Portal>
@@ -89,7 +61,7 @@ const Column: React.FC<ColumnProps> = ({ id, title, dashboardId }) => {
             isOpen={isOpen}
             onClose={closeModal}
             dashboardId={dashboardId}
-            onCreateCard={handleCreateCard}
+            onCreateCard={(newCard) => addCard(id, newCard)}
           />
         </Portal>
       )}
