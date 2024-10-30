@@ -65,9 +65,11 @@ export const CommentItem = ({
           <button
             className={styles.commentActionButton}
             onClick={() => {
+              // 수정 중인 댓글인지 확인
               if (editCommentId === comment.id) {
                 onCommentChange();
               } else {
+                // 수정 중이 아닌 경우 수정 버튼 클릭
                 onEditClick(comment);
               }
             }}
