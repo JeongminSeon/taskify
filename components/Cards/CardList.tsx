@@ -80,7 +80,7 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
   }, [columnId]);
 
   return (
-    <div className="mt-[10px]">
+    <div className="flex flex-col gap-4 mt-[10px]">
       {cards.map((card) => (
         <Card
           key={card.id}
