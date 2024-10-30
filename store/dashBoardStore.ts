@@ -11,7 +11,7 @@ interface DashboardStore {
   //removeDashboard: (id: number) => void;
 }
 
-// Zustand 사용하여 대시보드 관련 상태를 관리하는 useDashBoardStore 훅 생성
+// 대시보드 관련 상태 관리
 export const useDashBoardStore = create<DashboardStore>((set) => ({
   // 초기 상태
   dashboards: [],

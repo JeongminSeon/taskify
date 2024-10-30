@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MyInviteList } from "@/types/invitedList";
 import { getMyInvitations } from "@/utils/api/invitationsApi";
 import axiosInstance from "@/utils/api/axiosInstanceApi";
@@ -7,14 +7,12 @@ import SearchBox from "../UI/search/SearchBox";
 import InvitationsList from "./invitationsList/InvitationsList";
 import Loading from "../UI/loading/Loading";
 import NoResults from "../UI/search/NoResults";
+import useDebounce from "@/hooks/dashboard/useDebounce";
 
 const InvitedList = () => {
   const size = 7;
   const [searchTerm, setSearchTerm] = useState("");
   const [invitations, setInvitations] = useState<MyInviteList[]>([]);
-  const [filteredInvitations, setFilteredInvitations] = useState<
-    MyInviteList[]
-  >([]);
   const [displayCount, setDisplayCount] = useState(size);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
@@ -23,7 +21,7 @@ const InvitedList = () => {
     try {
       const data = await getMyInvitations();
       setInvitations(data.invitations);
-      setFilteredInvitations(data.invitations);
+      // setFilteredInvitations(data.invitations);
     } catch (err) {
       console.error(err);
     }
@@ -48,34 +46,15 @@ const InvitedList = () => {
     }
   };
 
-  // 검색 기능
-  const performSearch = useCallback(() => {
-    const filtered = searchTerm
-      ? invitations.filter(
-          (invite) =>
-            invite.invitee.nickname
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase()) ||
-            invite.inviter.nickname
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase()) ||
-            invite.dashboard.title
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase())
-        )
-      : invitations;
+  // debounced 검색어
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-    setFilteredInvitations(filtered);
-    setDisplayCount(size);
-  }, [invitations, searchTerm, size]);
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") performSearch();
-  };
-
-  useEffect(() => {
-    performSearch();
-  }, [performSearch]);
+  // 필터링된 초대 목록
+  const filteredInvitations = invitations.filter((invite) =>
+    invite.dashboard.title
+      .toLowerCase()
+      .includes(debouncedSearchTerm.toLowerCase())
+  );
 
   return (
     <div className="invitedList mt-6 p md:mt-12 lg:mt-10 bg-white rounded-lg">
@@ -89,8 +68,6 @@ const InvitedList = () => {
           <SearchBox
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
-            performSearch={performSearch}
-            handleKeyPress={handleKeyPress}
             placeholder="대시보드 명으로 검색"
           />
           {filteredInvitations.length === 0 ? (

@@ -1,6 +1,6 @@
 import Image from "next/image";
 const NoResults = () => (
-  <div className="flex flex-col gap-2 justify-center mt-10 text-center">
+  <div className="flex flex-col gap-2 justify-center py-10 text-center">
     <Image
       src="/images/icons/icon_no_results.png"
       width={50}
