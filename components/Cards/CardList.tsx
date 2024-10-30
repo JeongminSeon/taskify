@@ -1,20 +1,25 @@
 import { useEffect, useState } from "react";
-import { Card as CardType, CardListResponse } from "@/types/cards";
-import { deleteCard, getCards } from "@/utils/api/cardsApi";
+import { Card as CardType } from "@/types/cards";
 import { getRandomColor } from "@/utils/TodoForm";
 import useModal from "@/hooks/modal/useModal";
 import CardDetailModal from "../UI/modal/CardModal/CardDetailModal";
 import Portal from "../UI/modal/ModalPotal";
-import Card from "./components/Card";
 import UpdateTodoModal from "../UI/modal/UpdateTodoModal";
+import Card from "./components/Card";
 
 interface CardListProps {
-  columnId: number;
   dashboardId: number;
+  cards: CardType[];
+  onUpdateCard: (card: CardType) => void;
+  onDeleteCard: (cardId: number) => void;
 }
 
-const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
-  const [cards, setCards] = useState<CardType[]>([]);
+const CardList: React.FC<CardListProps> = ({
+  dashboardId,
+  cards,
+  onUpdateCard,
+  onDeleteCard,
+}) => {
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
   const {
     isOpen: isDetailOpen,
@@ -43,13 +48,7 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
 
     if (!selectedCard) return;
     const id = selectedCard.id;
-    await deleteCard(id);
-  };
-
-  const handleUpdateCard = (updatedCard: CardType) => {
-    setCards((prevCards) =>
-      prevCards.map((card) => (card.id === updatedCard.id ? updatedCard : card))
-    );
+    await onDeleteCard(id);
   };
 
   useEffect(() => {
@@ -63,21 +62,6 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
     });
     setTagColors(newTagColors);
   }, [cards]);
-
-  useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        const cardData: CardListResponse = await getCards({ columnId });
-        setCards(cardData.cards);
-      } catch (err) {
-        console.error("Error fetching cards:", err);
-      }
-    };
-
-    if (columnId) {
-      fetchCards();
-    }
-  }, [columnId]);
 
   return (
     <div className="flex flex-col gap-4 mt-[10px]">
@@ -104,7 +88,7 @@ const CardList: React.FC<CardListProps> = ({ columnId, dashboardId }) => {
             isOpen={isUpdateOpen}
             onClose={closeUpdateModal}
             dashboardId={dashboardId}
-            onUpdateCard={handleUpdateCard}
+            onUpdateCard={onUpdateCard}
           />
         </Portal>
       )}

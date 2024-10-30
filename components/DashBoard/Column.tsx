@@ -3,6 +3,9 @@ import CardList from "@/components/Cards/CardList";
 import CreateTodoModal from "@/components/UI/modal/CreateTodoModal";
 import Portal from "../UI/modal/ModalPotal";
 import useModal from "@/hooks/modal/useModal";
+import { useEffect, useState } from "react";
+import { Card as CardType } from "@/types/cards";
+import { deleteCard, getCards } from "@/utils/api/cardsApi";
 
 interface ColumnProps {
   id: number;
@@ -12,6 +15,39 @@ interface ColumnProps {
 
 const Column: React.FC<ColumnProps> = ({ id, title, dashboardId }) => {
   const { isOpen, openModal, closeModal } = useModal();
+  const [cards, setCards] = useState<CardType[]>([]);
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const cardData = await getCards({ columnId: id });
+        setCards(cardData.cards);
+      } catch (err) {
+        console.error("Error fetching cards:", err);
+      }
+    };
+
+    fetchCards();
+  }, [id]);
+
+  const handleCreateCard = (newCard: CardType) => {
+    setCards((prevCards) => [...prevCards, newCard]);
+  };
+
+  const handleUpdateCard = (updatedCard: CardType) => {
+    setCards((prevCards) =>
+      prevCards.map((card) => (card.id === updatedCard.id ? updatedCard : card))
+    );
+  };
+
+  const handleDeleteCard = async (cardId: number) => {
+    try {
+      await deleteCard(cardId);
+      setCards((prevCards) => prevCards.filter((card) => card.id !== cardId));
+    } catch (err) {
+      console.error("Error deleting card:", err);
+    }
+  };
 
   return (
     <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 sm:border-b border-r border-[gray600]">
@@ -40,7 +76,12 @@ const Column: React.FC<ColumnProps> = ({ id, title, dashboardId }) => {
           className="mx-auto"
         />
       </button>
-      <CardList columnId={id} dashboardId={dashboardId} />
+      <CardList
+        onUpdateCard={handleUpdateCard}
+        onDeleteCard={handleDeleteCard}
+        dashboardId={dashboardId}
+        cards={cards}
+      />
       {isOpen && (
         <Portal>
           <CreateTodoModal
@@ -48,6 +89,7 @@ const Column: React.FC<ColumnProps> = ({ id, title, dashboardId }) => {
             isOpen={isOpen}
             onClose={closeModal}
             dashboardId={dashboardId}
+            onCreateCard={handleCreateCard}
           />
         </Portal>
       )}

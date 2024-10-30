@@ -70,7 +70,7 @@ const UpdateTodoForm = ({
       try {
         if (!cardId) return;
         const updatedCard = await updateCard({ cardId, formData: outputData });
-        onUpdateCard(updatedCard);
+        onUpdateCard?.(updatedCard);
         onClose();
       } catch (error) {
         console.error(error);

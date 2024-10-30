@@ -96,5 +96,6 @@ export interface TodoModalProps {
   isOpen?: boolean;
   onClose: () => void;
   dashboardId?: number;
-  onUpdateCard: (card: CardResponse) => void;
+  onUpdateCard?: (card: CardResponse) => void;
+  onCreateCard?: (card: CardResponse) => void;
 }

@@ -13,7 +13,12 @@ import TagInput from "../inputs/TagInput";
 import ImageInput from "../inputs/ImageInput";
 import UserInput from "../inputs/UserInput";
 
-const CreateTodoForm = ({ columnId, onClose, dashboardId }: TodoModalProps) => {
+const CreateTodoForm = ({
+  columnId,
+  onClose,
+  dashboardId,
+  onCreateCard,
+}: TodoModalProps) => {
   const [formData, setFormData] = useState<TodoFormProps>(INITIAL_VALUES);
   const preview = useImagePreview(formData.imageUrl ? formData.imageUrl : null);
 
@@ -39,7 +44,8 @@ const CreateTodoForm = ({ columnId, onClose, dashboardId }: TodoModalProps) => {
       };
 
       try {
-        await createCard(outputData);
+        const newCard = await createCard(outputData);
+        onCreateCard?.(newCard);
         setFormData(INITIAL_VALUES);
         onClose();
       } catch (error) {
