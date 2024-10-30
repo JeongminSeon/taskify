@@ -8,7 +8,6 @@ interface InvitationStore {
   totalCount: number;
   invitations: Invitation[];
   setInvitations: (invitations: Invitation[]) => void;
-  addInvitation: (invitation: Invitation) => void;
   loadInvitations: (
     dashboardId: number,
     currentPage: number,
@@ -33,20 +32,12 @@ export const useInvitationStore = create<InvitationStore>((set) => ({
   ) => {
     try {
       const res = await getInvitations(dashboardId, currentPage, size);
-      console.log("API로부터 받은 초대 목록:", res.invitations);
       set({
         invitations: res.invitations,
         totalCount: res.totalCount,
       });
-      console.log("초대 목록 업데이트됨:", useInvitationStore.getState());
     } catch (error) {
       console.error("초대 목록을 불러오는 중 오류 발생:", error);
     }
   },
-
-  // 새로운 초대를 기존 초대 목록에 추가
-  addInvitation: (invitation) =>
-    set((state) => ({
-      invitations: [...state.invitations, invitation], // 현재 상태의 초대 목록에 새로운 초대를 추가
-    })),
 }));

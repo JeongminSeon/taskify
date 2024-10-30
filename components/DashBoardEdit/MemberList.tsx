@@ -3,6 +3,7 @@ import Pagination from "../UI/pagination/Pagination";
 import { deleteMember, getMembers } from "@/utils/api/membersApi";
 import { Member, MemberResponse } from "@/types/members";
 import MemberItem from "./components/MemberItem";
+import { AxiosError } from "axios";
 
 interface MemberListProps {
   dashboardId: number;
@@ -51,7 +52,12 @@ const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
           prevMembers.filter((member) => member.id !== memberId)
         ); // 삭제 후 상태 업데이트
       } catch (error) {
-        console.error("Failed to delete member:", error);
+        const axiosError = error as AxiosError<{ message: string }>;
+        if (axiosError.response) {
+          alert(axiosError.response.data.message);
+        } else {
+          console.error("Failed to delete member:", error);
+        }
       }
     }
   };

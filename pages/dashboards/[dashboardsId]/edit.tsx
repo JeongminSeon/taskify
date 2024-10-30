@@ -14,11 +14,7 @@ import EditBox from "@/components/DashBoardEdit/EditBox";
 import InputField from "@/components/My/InputField";
 import ColorChip from "@/components/UI/colorchip/ColorChip";
 import InviteeList from "@/components/DashBoardEdit/InviteeList";
-
-/* TO DO 
-HEADER > 관리 클릭 시, 권한 있는 지 없는 지 확인
-없을 경우 /dashboards/${dashboardsId} 
-*/
+import { AxiosError } from "axios";
 
 const DashboardEdit = () => {
   const router = useRouter();
@@ -89,7 +85,12 @@ const DashboardEdit = () => {
         setDashboardDetail(updatedDashboard);
         await useDashBoardStore.getState().setDashboards(); // Zustand 스토어에서 대시보드 목록 업데이트
       } catch (error) {
-        console.error("Failed to update dashboard:", error);
+        const axiosError = error as AxiosError<{ message: string }>;
+        if (axiosError.response) {
+          alert(axiosError.response.data.message);
+        } else {
+          console.error("Failed to update dashboard:", error);
+        }
       }
     }
   };

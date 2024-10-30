@@ -1,6 +1,7 @@
 import { addInvitations, deleteInvitations } from "@/utils/api/dashboardsApi";
 import { useCallback, useEffect, useState } from "react";
 import { AxiosError } from "axios";
+import { useInvitationStore } from "@/store/invitationStore";
 import Image from "next/image";
 import Pagination from "../UI/pagination/Pagination";
 import UnInvited from "../MyDashBoard/UnInvited";
@@ -9,10 +10,12 @@ import useModal from "@/hooks/modal/useModal";
 import Portal from "@/components/UI/modal/ModalPotal";
 import OneInputModal from "../UI/modal/InputModal/OneInputModal";
 import ModalAlert from "../UI/modal/ModalAlert";
-import { useInvitationStore } from "@/store/invitationStore";
+
+const ITEMS_PER_PAGE = 5;
 
 const InviteeList = () => {
-  const { dashboardId, loadInvitations, invitations } = useInvitationStore();
+  const { dashboardId, loadInvitations, invitations, totalCount } =
+    useInvitationStore();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [modalMessage, setModalMessage] = useState<string>("");
@@ -33,35 +36,19 @@ const InviteeList = () => {
     closeModal: closeMessageModal,
   } = useModal();
 
-  // 컴포넌트가 마운트될 때 초대 목록을 불러오기
+  // totalCount가 업데이트되면 totalPages 계산
+  useEffect(() => {
+    if (totalCount) {
+      setTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE));
+    }
+  }, [totalCount]);
+
+  // 초대 목록을 불러오기
   useEffect(() => {
     if (dashboardId !== null) {
-      loadInvitations(dashboardId, 1, 10);
+      loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE);
     }
-  }, [dashboardId, loadInvitations]);
-
-  // const fetchInvitations = useCallback(async () => {
-  //   if (dashboardId) {
-  //     try {
-  //       const data: InvitationsResponse = await getInvitations(
-  //         dashboardId,
-  //         currentPage,
-  //         5
-  //       );
-  //       console.log(data);
-  //       setInvitations(data.invitations);
-  //       const currentInvitations = useInvitationStore.getState().invitations;
-  //       console.log("현재 초대 목록:", currentInvitations);
-  //       setTotalPages(Math.ceil(data.totalCount / 5));
-  //     } catch (error) {
-  //       console.error("Error fetching invitations:", error);
-  //     }
-  //   }
-  // }, [dashboardId, currentPage, setInvitations]);
-
-  // useEffect(() => {
-  //   fetchInvitations();
-  // }, [fetchInvitations]);
+  }, [dashboardId, currentPage, loadInvitations]);
 
   const handleNextPage = () => {
     setCurrentPage((prev) => prev + 1);
@@ -77,12 +64,18 @@ const InviteeList = () => {
         alert("이메일을 입력해주세요.");
         return;
       }
+
+      if (dashboardId === null) {
+        alert("대시보드 ID가 설정되어 있지 않습니다.");
+        return;
+      }
+
       try {
-        const newInvitation = await addInvitations(dashboardId, inputValue);
-        useInvitationStore.getState().addInvitation(newInvitation);
+        await addInvitations(dashboardId, inputValue);
         setModalMessage("초대 요청을 보냈습니다.");
         openMessageModal();
         closeModal();
+        loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE);
       } catch (error) {
         const axiosError = error as AxiosError<{ message: string }>;
         if (axiosError.response) {
@@ -94,13 +87,19 @@ const InviteeList = () => {
         openMessageModal();
       }
     },
-    [dashboardId, closeModal, openMessageModal]
+    [dashboardId, closeModal, openMessageModal, currentPage, loadInvitations]
   );
 
   const handleDeleteInvitation = async (invitationId: number) => {
     if (confirm("해당 이메일을 삭제하시겠습니까?")) {
+      if (dashboardId === null) {
+        alert("대시보드 ID가 설정되어 있지 않습니다.");
+        return;
+      }
+
       try {
         await deleteInvitations(dashboardId, invitationId);
+        loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE);
       } catch (error) {
         console.error("초대 취소 중 오류 발생:", error);
       }
