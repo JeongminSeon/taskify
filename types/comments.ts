@@ -8,7 +8,7 @@ export interface Comment {
 }
 export interface CommentParams {
   size: number;
-  cursorId: number;
+  cursorId?: number;
   cardId: number;
 }
 
@@ -20,8 +20,8 @@ export interface CommentCreateParams {
 }
 
 export interface CommentListResponse {
-  cursorId: number;
   comments: Comment[];
+  cursorId: number;
 }
 
 export interface Author {

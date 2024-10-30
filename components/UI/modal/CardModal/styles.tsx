@@ -21,7 +21,7 @@ export const styles = {
   commentInput:
     "w-full p-2 pr-16 md:pr-20 border rounded-lg h-20 md:h-24 resize-none",
   commentSubmitButton:
-    "absolute right-2 md:right-3 bottom-3 md:bottom-5 text-blue-500 px-4 md:px-7 py-1 rounded-md border border-gray-300 hover:bg-gray-100 text-sm",
+    "absolute right-2 md:right-3 bottom-2 text-blue-500 px-4 md:px-7 py-1 rounded-md border border-gray-300 hover:bg-gray-100 text-sm",
   commentContainer: "mt-4",
   commentItem: "flex items-start space-x-2 md:space-x-3",
   commentActionButton: "text-xs md:text-sm text-gray-500 mr-2 underline",
