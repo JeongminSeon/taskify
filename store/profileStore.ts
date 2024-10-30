@@ -2,7 +2,7 @@ import { create } from "zustand";
 import {
   createCardImage,
   getUserInfo,
-  UpdateUserInfo,
+  updateUserInfo,
 } from "@/utils/api/authApi";
 
 interface ProfileState {
@@ -46,7 +46,7 @@ export const useProfileStore = create<ProfileState>((set) => ({
       }
 
       // 사용자 정보 업데이트
-      await UpdateUserInfo({
+      await updateUserInfo({
         nickname,
         profileImageUrl: profileImageUrl ?? undefined, // 이미지 URL이 없으면 undefined로 설정
       });
