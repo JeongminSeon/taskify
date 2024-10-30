@@ -3,47 +3,75 @@ import InputField from "./InputField";
 import MyButton from "./MyButton";
 import ModalAlert from "../UI/modal/ModalAlert";
 import { isPWValid, isSame, isEntered } from "@/utils/validation";
+import { updatePassword } from "@/utils/api/authApi";
 import useModal from "@/hooks/modal/useModal";
+import { PasswordProps } from "@/types/my";
+
+// 초기 비밀번호 상태를 설정
+const INITIAL_PASSWORDS = {
+  current: "",
+  new: "",
+  confirm: "",
+};
 
 const MyPassWord: React.FC = () => {
+  // 모달 상태 제어 훅을 호출
   const { isOpen, openModal, closeModal } = useModal();
-  const [password, setPassword] = useState<string>("");
-  const [newPassword, setNewPassword] = useState<string>("");
-  const [newPasswordConfirm, setNewPasswordConfirm] = useState<string>("");
+
+  // 비밀번호 관련 에러 상태와 모달 메시지 상태를 설정
   const [passwordLenError, setPasswordLenError] = useState<boolean>(false);
   const [passwordMatchError, setPasswordMatchError] = useState<boolean>(false);
+  const [modalMessage, setModalMessage] = useState<string>("");
 
-  const handlePasswordChange = () => {
-    if (password !== "currentPassword") {
-      // 실제로는 서버에서 비밀번호 확인
-      openModal(); // 모달 열기
-    } else {
-      console.log("비밀번호 변경 완료");
+  // 입력된 비밀번호 값을 객체로 관리
+  const [passwords, setPasswords] = useState<PasswordProps>(INITIAL_PASSWORDS);
+
+  // 비밀번호 업데이트 요청 핸들러 함수
+  const handlePasswordChange = async () => {
+    try {
+      // 현재 비밀번호와 새 비밀번호를 전달하여 비밀번호를 업데이트
+      await updatePassword({
+        password: passwords.current,
+        newPassword: passwords.new,
+      });
+      setModalMessage("비밀번호가 성공적으로 변경되었습니다.");
+      setPasswords(INITIAL_PASSWORDS); // 성공 시 입력란 초기화
+      openModal();
+    } catch (error) {
+      console.error(error);
+      setModalMessage((error as Error).message); // 에러 메시지 설정
+      openModal();
     }
   };
 
-  const handleBlur = () => {
-    setPasswordLenError(!isPWValid(newPassword));
+  // 입력 필드 변경 시 비밀번호 상태를 업데이트
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setPasswords((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 디바운스 설정을 위한 변수
+  // 새 비밀번호 유효성 검사 핸들러 함수
+  const handleBlur = () => {
+    setPasswordLenError(!isPWValid(passwords.new)); // 길이가 유효한지 검사
+  };
+
+  // 새 비밀번호와 확인 비밀번호의 일치 여부를 디바운스를 통해 검사
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (isEntered(newPasswordConfirm)) {
-        setPasswordMatchError(!isSame(newPassword, newPasswordConfirm));
+      if (isEntered(passwords.confirm)) {
+        setPasswordMatchError(!isSame(passwords.new, passwords.confirm));
       } else {
-        setPasswordMatchError(false); // 길이가 0일 때는 에러를 제거
+        setPasswordMatchError(false); // 입력값이 없으면 에러를 초기화
       }
-    }, 300); // 300ms 후에 비교
+    }, 300); // 입력 후 300ms 지연
+    return () => clearTimeout(timer); // 이전 타이머 제거
+  }, [passwords.new, passwords.confirm]);
 
-    // 컴포넌트 언마운트 시 타이머 클리어
-    return () => clearTimeout(timer);
-  }, [newPassword, newPasswordConfirm]);
-
+  // 모든 필드가 입력되었고 에러가 없을 때만 버튼 활성화
   const isButtonDisabled =
-    !isEntered(password) ||
-    !isEntered(newPassword) ||
-    !isEntered(newPasswordConfirm) ||
+    !isEntered(passwords.current) ||
+    !isEntered(passwords.new) ||
+    !isEntered(passwords.confirm) ||
     passwordMatchError ||
     passwordLenError;
 
@@ -53,22 +81,25 @@ const MyPassWord: React.FC = () => {
         비밀번호 변경
       </h2>
       <div className="flex flex-col gap-4">
+        {/* 현재 비밀번호 입력 필드 */}
         <InputField
           label="현재 비밀번호"
-          name="password"
+          name="current"
           type="password"
           placeholder="비밀번호 입력"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={passwords.current}
+          onChange={handleInputChange}
         />
+
+        {/* 새 비밀번호 입력 필드 */}
         <div>
           <InputField
             label="새 비밀번호"
-            name="newPassword"
+            name="new"
             type="password"
             placeholder="새 비밀번호 입력"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            value={passwords.new}
+            onChange={handleInputChange}
             onBlur={handleBlur}
             error={passwordLenError}
           />
@@ -77,14 +108,15 @@ const MyPassWord: React.FC = () => {
           )}
         </div>
 
+        {/* 새 비밀번호 확인 입력 필드 */}
         <div>
           <InputField
             label="새 비밀번호 확인"
-            name="newPasswordConfirm"
+            name="confirm"
             type="password"
             placeholder="새 비밀번호 입력"
-            value={newPasswordConfirm}
-            onChange={(e) => setNewPasswordConfirm(e.target.value)}
+            value={passwords.confirm}
+            onChange={handleInputChange}
             error={passwordMatchError}
           />
           {passwordMatchError && (
@@ -93,16 +125,14 @@ const MyPassWord: React.FC = () => {
         </div>
       </div>
 
+      {/* 비밀번호 변경 버튼 */}
       <MyButton onClick={handlePasswordChange} disabled={isButtonDisabled}>
         변경
       </MyButton>
 
+      {/* 모달창 */}
       {isOpen && (
-        <ModalAlert
-          isOpen={isOpen}
-          onClose={closeModal}
-          text="현재 비밀번호가 틀립니다."
-        />
+        <ModalAlert isOpen={isOpen} onClose={closeModal} text={modalMessage} />
       )}
     </div>
   );
