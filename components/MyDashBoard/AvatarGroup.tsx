@@ -54,7 +54,7 @@ const AvatarGroup = () => {
         <div
           key={member.id}
           className={`w-10 h-10 rounded-full flex items-center justify-center text-lg -ml-3 border border-white ${
-            member.profileImageUrl ? "bg-white" : "bg-blue-400"
+            member.profileImageUrl ? "bg-gray-200" : "bg-blue-400"
           } relative`}
           style={{
             backgroundImage: member.profileImageUrl
