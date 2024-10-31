@@ -2,6 +2,7 @@ import { Card as CardType } from "@/types/cards";
 import Card from "../Cards/Card";
 import CardDetailModal from "../UI/modal/CardModal/CardDetailModal";
 import UpdateTodoModal from "../UI/modal/UpdateTodoModal";
+import Portal from "../UI/modal/ModalPotal";
 
 interface CardListLayoutProps {
   cards: CardType[];
@@ -15,6 +16,8 @@ interface CardListLayoutProps {
   onCloseDetail: () => void;
   onCloseUpdate: () => void;
   onEdit: () => void;
+  onDelete: () => void;
+  onUpdateCard: (card: CardType) => void;
 }
 
 const CardListLayout: React.FC<CardListLayoutProps> = ({
@@ -29,9 +32,11 @@ const CardListLayout: React.FC<CardListLayoutProps> = ({
   onCloseDetail,
   onCloseUpdate,
   onEdit,
+  onDelete,
+  onUpdateCard,
 }) => {
   return (
-    <div className="mt-[10px]">
+    <div className="flex flex-col gap-4 mt-[10px]">
       {cards.map((card) => (
         <Card
           key={card.id}
@@ -42,7 +47,7 @@ const CardListLayout: React.FC<CardListLayoutProps> = ({
         />
       ))}
       {selectedCard && (
-        <>
+        <Portal>
           <CardDetailModal
             card={selectedCard}
             columnTitle={columnTitle}
@@ -50,14 +55,16 @@ const CardListLayout: React.FC<CardListLayoutProps> = ({
             isOpen={isDetailOpen}
             onClose={onCloseDetail}
             onEdit={onEdit}
+            onDelete={onDelete}
           />
           <UpdateTodoModal
             cardId={selectedCard.id}
             isOpen={isUpdateOpen}
             onClose={onCloseUpdate}
             dashboardId={dashboardId}
+            onUpdateCard={onUpdateCard}
           />
-        </>
+        </Portal>
       )}
     </div>
   );

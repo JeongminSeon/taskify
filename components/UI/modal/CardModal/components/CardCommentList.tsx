@@ -9,45 +9,41 @@ import ModalAlert from "../../ModalAlert";
 
 interface CommentProps {
   card: Card;
+  dashboardId?: number;
 }
 
 const CardCommentList: React.FC<CommentProps> = ({ card }) => {
   const router = useRouter();
-  const { dashboardsId } = router.query;
+  const dashboardId = Number(router.query.dashboardsId);
 
-  // 관련된 상태와 함수들을 논리적으로 그룹화
-  const {
-    state: { comments, content, editCommentId, editContent },
-    modal: { isOpen, modalMessage, closeModal },
-    actions: {
-      fetchComments,
-      handleInputChange,
-      handleCommentCreate,
-      handleCommentChange,
-      handleEditClick,
-      handleCommentDelete,
-    },
-  } = useComments({
+  const { state, modal, actions } = useComments({
     card,
-    dashboardId: Number(dashboardsId),
+    dashboardId,
   });
+
+  const { comments, content, editCommentId, editContent } = state;
+  const { isOpen, modalMessage, closeModal } = modal;
+  const {
+    fetchComments,
+    handleInputChange,
+    handleCommentCreate,
+    handleCommentChange,
+    handleEditClick,
+    handleCommentDelete,
+  } = actions;
 
   useEffect(() => {
     fetchComments();
-  }, []);
+  }, [fetchComments]);
 
   return (
     <div className="p-4">
       <h2 className={styles.commentTitle}>댓글</h2>
-
-      {/* 댓글 입력 컴포넌트 */}
       <CommentInput
         content={content}
-        onChange={handleInputChange}
+        onChange={(e) => handleInputChange(e.target.value)}
         onSubmit={handleCommentCreate}
       />
-
-      {/* 댓글 목록 렌더링*/}
       <div className="space-y-4">
         {comments.map((comment) => (
           <CommentItem
@@ -55,14 +51,13 @@ const CardCommentList: React.FC<CommentProps> = ({ card }) => {
             comment={comment}
             editCommentId={editCommentId}
             editContent={editContent}
-            onInputChange={handleInputChange}
-            onEditClick={handleEditClick}
-            onCommentChange={handleCommentChange}
+            onInputChange={(e) => handleInputChange(e.target.value)}
+            onEditClick={() => handleEditClick(comment.id, comment.content)}
+            onCommentChange={() => handleCommentChange(comment.id)}
             onCommentDelete={handleCommentDelete}
           />
         ))}
       </div>
-
       {isOpen && (
         <ModalAlert isOpen={isOpen} onClose={closeModal} text={modalMessage} />
       )}

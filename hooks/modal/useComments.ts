@@ -1,127 +1,129 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { Card } from "@/types/cards";
+import { Comment } from "@/types/comments";
 import {
-  Comment,
-  CommentParams,
-  CommentCreateParams,
-  UseCommentsProps,
-  UseCommentsReturn,
-} from "@/types/comments";
-import {
-  createComment,
-  deleteComment,
   getComments,
+  createComment,
   updateComment,
+  deleteComment,
 } from "@/utils/api/commentsApi";
-import useModal from "@/hooks/modal/useModal";
+import useModal from "./useModal";
 
-// 커멘트 관련 훅
+interface UseCommentsProps {
+  card: Card;
+  dashboardId: number;
+}
+
+interface UseCommentsReturn {
+  state: {
+    comments: Comment[];
+    content: string;
+    editCommentId: number | null;
+    editContent: string;
+  };
+  modal: {
+    isOpen: boolean;
+    modalMessage: string;
+    closeModal: () => void;
+  };
+  actions: {
+    fetchComments: () => Promise<void>;
+    handleInputChange: (value: string) => void;
+    handleCommentCreate: () => Promise<void>;
+    handleCommentChange: (commentId: number) => Promise<void>;
+    handleEditClick: (commentId: number, currentContent: string) => void;
+    handleCommentDelete: (commentId: number) => Promise<void>;
+  };
+}
+
 export const useComments = ({
   card,
   dashboardId,
 }: UseCommentsProps): UseCommentsReturn => {
-  const { isOpen, openModal, closeModal } = useModal(); // 모달 상태 관리
-  const [comments, setComments] = useState<Comment[]>([]); // 댓글 목록 상태
-  const [content, setContent] = useState<string>(""); // 새로운 댓글 내용 상태
-  const [editCommentId, setEditCommentId] = useState<number | null>(null); // 수정할 댓글 ID 상태
-  const [editContent, setEditContent] = useState<string>(""); // 수정할 댓글 내용 상태
-  const [modalMessage, setModalMessage] = useState<string>(""); // 모달에 표시할 메시지 상태
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [content, setContent] = useState("");
+  const [editCommentId, setEditCommentId] = useState<number | null>(null);
+  const [editContent, setEditContent] = useState("");
 
-  // 댓글 목록 가져오기
-  const fetchComments = async (): Promise<void> => {
+  const { isOpen, openModal, closeModal, modalMessage } = useModal();
+
+  const fetchComments = useCallback(async () => {
     try {
-      const params: CommentParams = {
-        size: 10,
+      const response = await getComments({
         cardId: card.id,
-      };
-      const response = await getComments(params); // API 호출
-      setComments(response.comments); // 댓글 목록 업데이트
+        size: 20,
+        cursorId: undefined,
+      });
+      setComments(response.comments);
     } catch (error) {
-      if (error instanceof Error) {
-        setModalMessage(error.message); // 오류 메시지 설정
-        openModal(); // 모달 열기
-      }
+      console.error("Failed to fetch comments:", error);
     }
-  };
+  }, [card.id]);
 
-  // 댓글 생성 핸들러
-  const handleCommentCreate = async (): Promise<void> => {
+  const handleInputChange = useCallback(
+    (value: string) => {
+      if (editCommentId !== null) {
+        setEditContent(value);
+      } else {
+        setContent(value);
+      }
+    },
+    [editCommentId]
+  );
+
+  const handleCommentCreate = async () => {
+    if (!content.trim()) {
+      openModal("댓글 내용을 입력해주세요.");
+      return;
+    }
+
     try {
-      const params: CommentCreateParams = {
-        content,
+      await createComment({
         cardId: card.id,
+        dashboardId,
         columnId: card.columnId,
-        dashboardId: Number(dashboardId),
-      };
-      const newComment = await createComment(params); // API 호출
-      setComments((prev) => [...prev, newComment]); // 상태 업데이트
-      setContent(""); // 입력 필드 초기화
+        content,
+      });
+      setContent("");
+      await fetchComments();
     } catch (error) {
-      if (error instanceof Error) {
-        setModalMessage(error.message); // 오류 메시지 설정
-        openModal(); // 모달 열기
-      }
+      openModal(error);
     }
   };
 
-  // 댓글 수정 input 핸들러
-  const handleCommentChange = async (): Promise<void> => {
+  const handleCommentChange = async (commentId: number) => {
+    if (!editContent.trim()) {
+      openModal("댓글 내용을 입력해주세요.");
+      return;
+    }
+
     try {
-      if (editCommentId) {
-        const updatedComment = await updateComment({
-          commentId: editCommentId,
-          content: editContent,
-        }); // API 호출
-        setComments((prev) =>
-          prev.map((comment) =>
-            comment.id === editCommentId
-              ? {
-                  ...comment,
-                  content: updatedComment.content,
-                  updatedAt: updatedComment.updatedAt,
-                }
-              : comment
-          )
-        ); // 댓글 목록 업데이트
-        setEditCommentId(null); // 수정 상태 초기화
-      }
+      await updateComment({
+        commentId,
+        content: editContent,
+      });
+      setEditCommentId(null);
+      setEditContent("");
+      await fetchComments();
     } catch (error) {
-      if (error instanceof Error) {
-        setModalMessage(error.message); // 오류 메시지 설정
-        openModal(); // 모달 열기
-      }
+      console.error("Failed to update comment:", error);
     }
   };
 
-  // 댓글 삭제 핸들러
-  const handleCommentDelete = async (commentId: number): Promise<void> => {
+  const handleEditClick = (commentId: number, currentContent: string) => {
+    setEditCommentId(commentId);
+    setEditContent(currentContent);
+  };
+
+  const handleCommentDelete = async (commentId: number) => {
     try {
-      await deleteComment(commentId); // API 호출
-      setComments((prev) => prev.filter((comment) => comment.id !== commentId)); // 댓글 목록 업데이트
+      await deleteComment(commentId);
+      await fetchComments();
     } catch (error) {
-      if (error instanceof Error) {
-        setModalMessage(error.message); // 오류 메시지 설정
-        openModal(); // 모달 열기
-      }
+      console.error("Failed to delete comment:", error);
     }
   };
 
-  // 댓글 입력 input 핸들러
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = e.target;
-    if (name === "editComment") {
-      setEditContent(value); // 수정할 댓글 내용 설정
-    } else {
-      setContent(value); // 새로운 댓글 내용 설정
-    }
-  };
-
-  // 댓글 수정 클릭 핸들러
-  const handleEditClick = (comment: Comment): void => {
-    setEditCommentId(comment.id); // 수정할 댓글 ID 설정
-    setEditContent(comment.content); // 수정할 댓글 내용 설정
-  };
-
-  // 반환값: 상태, 모달, 액션 함수들
   return {
     state: {
       comments,

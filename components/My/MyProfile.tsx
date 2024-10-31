@@ -6,18 +6,33 @@ import useModal from "@/hooks/modal/useModal";
 import ModalAlert from "../UI/modal/ModalAlert";
 import { useProfileStore } from "@/store/profileStore";
 
-const MyProfile: React.FC = () => {
-  const { email, nickname, profileImageUrl, loadProfile, updateProfile } =
-    useProfileStore();
+interface MyProfileProps {
+  profileData: {
+    email: string;
+    nickname: string;
+    profileImageUrl: string | null;
+  } | null;
+}
 
-  const [newNickname, setNewNickname] = useState(nickname);
+const MyProfile: React.FC<MyProfileProps> = ({ profileData }) => {
+  const [newNickname, setNewNickname] = useState<string>(
+    profileData?.nickname || ""
+  ); // 초기값 설정
   const [newProfileImage, setNewProfileImage] = useState<File | undefined>(
     undefined
   );
   const [imagePreview, setImagePreview] = useState<string | null>(
-    profileImageUrl
-  ); // 이미지 프리뷰 상태
+    profileData?.profileImageUrl || null
+  ); // 초기값 설정
   const { isOpen, openModal, closeModal } = useModal();
+  const { updateProfile } = useProfileStore();
+  // 프로필 데이터가 변경될 경우 상태 업데이트
+  useEffect(() => {
+    if (profileData) {
+      setNewNickname(profileData.nickname);
+      setImagePreview(profileData.profileImageUrl);
+    }
+  }, [profileData]);
 
   // 파일 선택 시 이미지 업로드 처리
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,18 +47,11 @@ const MyProfile: React.FC = () => {
     }
   };
 
-  // 저장 버튼 클릭 시 프로필 업데이트
+  // 저장 버튼 클릭 시 프로필 업데이트 (API 호출 필요)
   const handleSave = async () => {
     await updateProfile(newNickname, newProfileImage);
     openModal();
   };
-
-  // 컴포넌트 마운트 시 프로필 정보 로드
-  useEffect(() => {
-    loadProfile();
-    setNewNickname(nickname);
-    setImagePreview(profileImageUrl);
-  }, [nickname, profileImageUrl, loadProfile]);
 
   return (
     <div className="lg:w-[672px] md:w-[548px] sm:w-[284px] md:p-6 sm:p-4 md:mb-6 sm:mb-4 rounded-2xl bg-white100">
@@ -61,7 +69,7 @@ const MyProfile: React.FC = () => {
               width="182"
               height="182"
             />
-            <p className="text-[18px] text-gray200 text-center mt-6">
+            <p className="text-gray200 text-center md:text-[18px] md:mt-6 sm:text-[10px] sm:mt-2">
               이미지를 클릭하여 <br />
               프로필을 변경하세요😎
             </p>
@@ -80,7 +88,7 @@ const MyProfile: React.FC = () => {
               label="이메일"
               name="email"
               type="email"
-              value={email}
+              value={profileData?.email || ""}
               readOnly
             />
             <InputField

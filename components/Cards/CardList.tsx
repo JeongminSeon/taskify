@@ -1,16 +1,23 @@
 import { useCardList } from "@/hooks/dashboard/useCardList";
 import CardListLayout from "../Layout/CardListLayout";
+import { Card as CardType } from "@/types/cards";
 
 interface CardListProps {
+  dashboardId: number;
   columnId: number;
   title: string;
-  dashboardId: number;
+  cards: CardType[];
+  onUpdateCard: (card: CardType) => void;
+  onDeleteCard: (cardId: number) => void;
 }
 
 const CardList: React.FC<CardListProps> = ({
   columnId,
   title,
   dashboardId,
+  cards: initialCards,
+  onUpdateCard,
+  onDeleteCard,
 }) => {
   const {
     cards,
@@ -22,7 +29,13 @@ const CardList: React.FC<CardListProps> = ({
     closeUpdateModal,
     handleCardClick,
     handleEditClick,
-  } = useCardList(columnId);
+    handleDeleteClick,
+  } = useCardList({
+    columnId,
+    initialCards,
+    onDeleteCard,
+    dashboardId, // dashboardId 추가
+  });
 
   return (
     <CardListLayout
@@ -37,6 +50,8 @@ const CardList: React.FC<CardListProps> = ({
       onCloseDetail={closeDetailModal}
       onCloseUpdate={closeUpdateModal}
       onEdit={handleEditClick}
+      onDelete={handleDeleteClick}
+      onUpdateCard={onUpdateCard}
     />
   );
 };

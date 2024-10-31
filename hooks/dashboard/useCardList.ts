@@ -1,11 +1,22 @@
 import { useState, useEffect } from "react";
-import { Card as CardType, CardListResponse } from "@/types/cards";
-import { getCards } from "@/utils/api/cardsApi";
+import { Card as CardType } from "@/types/cards";
 import { getRandomColor } from "@/utils/TodoForm";
 import useModal from "@/hooks/modal/useModal";
 
-export const useCardList = (columnId: number) => {
-  const [cards, setCards] = useState<CardType[]>([]);
+interface UseCardListProps {
+  columnId: number;
+  initialCards: CardType[];
+  onDeleteCard: (cardId: number) => void;
+  dashboardId: number;
+}
+
+export const useCardList = ({
+  columnId,
+  initialCards,
+  onDeleteCard,
+  dashboardId,
+}: UseCardListProps) => {
+  const [cards, setCards] = useState<CardType[]>(initialCards);
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
   const [tagColors, setTagColors] = useState<Record<string, string>>({});
 
@@ -26,10 +37,20 @@ export const useCardList = (columnId: number) => {
     openDetailModal();
   };
 
-  const handleEditClick = (): void => {
+  const handleEditClick = () => {
     closeDetailModal();
     openUpdateModal();
   };
+
+  const handleDeleteClick = async () => {
+    if (!selectedCard) return;
+    await onDeleteCard(selectedCard.id);
+    closeDetailModal();
+  };
+
+  useEffect(() => {
+    setCards(initialCards);
+  }, [initialCards]);
 
   useEffect(() => {
     const newTagColors: Record<string, string> = {};
@@ -43,21 +64,6 @@ export const useCardList = (columnId: number) => {
     setTagColors(newTagColors);
   }, [cards]);
 
-  useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        const cardData: CardListResponse = await getCards({ columnId });
-        setCards(cardData.cards);
-      } catch (err) {
-        console.error("Error fetching cards:", err);
-      }
-    };
-
-    if (columnId) {
-      fetchCards();
-    }
-  }, [columnId]);
-
   return {
     cards,
     selectedCard,
@@ -68,5 +74,6 @@ export const useCardList = (columnId: number) => {
     closeUpdateModal,
     handleCardClick,
     handleEditClick,
+    handleDeleteClick,
   };
 };
