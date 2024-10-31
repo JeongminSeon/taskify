@@ -1,8 +1,10 @@
 import {
   DashboardResponse,
   DashboardDetailResponse,
+  InvitationsResponse,
   MembersResponse,
   CreateDashboardResponse,
+  Invitation,
 } from "@/types/dashboards";
 import axiosInstance from "./axiosInstanceApi";
 import { AxiosError } from "axios";
@@ -86,6 +88,97 @@ export const getMembers = async (
     return response.data;
   } catch (error) {
     console.error("Failed to fetch Members:", error);
+    throw error;
+  }
+};
+
+// 대시보드 업데이트
+export const updateDashboard = async (
+  dashboardId: number,
+  title: string,
+  color: string
+): Promise<DashboardDetailResponse> => {
+  const requestBody = {
+    title,
+    color,
+  };
+
+  try {
+    const response = await axiosInstance.put<DashboardDetailResponse>(
+      `/dashboards/${dashboardId}`,
+      requestBody
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Failed to update dashboard:", error);
+    throw error;
+  }
+};
+
+// 대시보드 삭제
+export const deleteDashboard = async (dashboardId: number): Promise<void> => {
+  try {
+    await axiosInstance.delete(`/dashboards/${dashboardId}`);
+  } catch (error) {
+    console.error("Failed to fetch dashboard detail:", error);
+    throw error;
+  }
+};
+
+// 대시보드 초대 목록 불러오기 함수
+export const getInvitations = async (
+  dashboardId: number,
+  page: number,
+  size: number
+): Promise<InvitationsResponse> => {
+  try {
+    const response = await axiosInstance.get<InvitationsResponse>(
+      `/dashboards/${dashboardId}/invitations`,
+      {
+        params: {
+          page,
+          size,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("초대 목록을 가져오는 데 실패했습니다:", error);
+    throw error;
+  }
+};
+
+// 대시보드 초대하기
+export const addInvitations = async (
+  dashboardId: number,
+  email: string
+): Promise<Invitation> => {
+  try {
+    const response = await axiosInstance.post<Invitation>(
+      `/dashboards/${dashboardId}/invitations`,
+      {
+        dashboardId,
+        email,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("초대하는 데 실패했습니다.:", error);
+    throw error;
+  }
+};
+
+// 대시보드 초대 취소
+export const deleteInvitations = async (
+  dashboardId: number,
+  invitationId: number
+): Promise<void> => {
+  try {
+    await axiosInstance.delete(
+      `/dashboards/${dashboardId}/invitations/${invitationId}`
+    );
+  } catch (error) {
+    console.error("초대 취소하는 데 실패했습니다:", error);
     throw error;
   }
 };

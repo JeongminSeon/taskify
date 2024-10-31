@@ -54,7 +54,7 @@ export const getCard = async ({
 };
 
 // 카드 상세 수정
-export const UpdateCard = async ({
+export const updateCard = async ({
   cardId,
   formData,
 }: {
@@ -66,6 +66,18 @@ export const UpdateCard = async ({
     return response.data;
   } catch (error) {
     console.error("카드를 조회하는 중 오류가 발생했습니다:", error);
+    throw error;
+  }
+};
+
+//카드 삭제
+
+export const deleteCard = async (id: number) => {
+  try {
+    const response = await axiosInstance.delete(`/cards/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("카드를 삭제하는 중 오류가 발생했습니다:", error);
     throw error;
   }
 };

@@ -34,24 +34,32 @@ const CardList: React.FC<CardListProps> = ({
     columnId,
     initialCards,
     onDeleteCard,
-    dashboardId, // dashboardId 추가
+    dashboardId,
   });
 
   return (
     <CardListLayout
-      cards={cards}
-      selectedCard={selectedCard}
-      tagColors={tagColors}
-      isDetailOpen={isDetailOpen}
-      isUpdateOpen={isUpdateOpen}
-      dashboardId={dashboardId}
-      columnTitle={title}
-      onCardClick={handleCardClick}
-      onCloseDetail={closeDetailModal}
-      onCloseUpdate={closeUpdateModal}
-      onEdit={handleEditClick}
-      onDelete={handleDeleteClick}
-      onUpdateCard={onUpdateCard}
+      cardProps={{
+        cards,
+        selectedCard,
+        tagColors,
+      }}
+      modalProps={{
+        isDetailOpen,
+        isUpdateOpen,
+        onCloseDetail: closeDetailModal,
+        onCloseUpdate: closeUpdateModal,
+      }}
+      actionProps={{
+        onCardClick: handleCardClick,
+        onEdit: handleEditClick,
+        onDelete: handleDeleteClick,
+        onUpdateCard,
+      }}
+      metaProps={{
+        dashboardId,
+        columnTitle: title,
+      }}
     />
   );
 };

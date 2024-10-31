@@ -5,35 +5,31 @@ import UpdateTodoModal from "../UI/modal/UpdateTodoModal";
 import Portal from "../UI/modal/ModalPotal";
 
 interface CardListLayoutProps {
-  cards: CardType[];
-  selectedCard: CardType | null;
-  columnTitle: string;
-  tagColors: Record<string, string>;
-  isDetailOpen: boolean;
-  isUpdateOpen: boolean;
-  dashboardId: number;
-  onCardClick: (card: CardType) => void;
-  onCloseDetail: () => void;
-  onCloseUpdate: () => void;
-  onEdit: () => void;
-  onDelete: () => void;
-  onUpdateCard: (card: CardType) => void;
+  cardProps: {
+    cards: CardType[];
+    selectedCard: CardType | null;
+    tagColors: Record<string, string>;
+  };
+  modalProps: {
+    isDetailOpen: boolean;
+    isUpdateOpen: boolean;
+    onCloseDetail: () => void;
+    onCloseUpdate: () => void;
+  };
+  actionProps: {
+    onCardClick: (card: CardType) => void;
+    onEdit: () => void;
+    onDelete: () => void;
+    onUpdateCard: (card: CardType) => void;
+  };
+  metaProps: { columnTitle: string; dashboardId: number };
 }
 
 const CardListLayout: React.FC<CardListLayoutProps> = ({
-  cards,
-  selectedCard,
-  columnTitle,
-  tagColors,
-  isDetailOpen,
-  isUpdateOpen,
-  dashboardId,
-  onCardClick,
-  onCloseDetail,
-  onCloseUpdate,
-  onEdit,
-  onDelete,
-  onUpdateCard,
+  cardProps: { cards, selectedCard, tagColors },
+  modalProps: { isDetailOpen, isUpdateOpen, onCloseDetail, onCloseUpdate },
+  actionProps: { onCardClick, onEdit, onDelete, onUpdateCard },
+  metaProps: { dashboardId, columnTitle },
 }) => {
   return (
     <div className="flex flex-col gap-4 mt-[10px]">

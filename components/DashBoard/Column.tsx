@@ -3,14 +3,25 @@ import CardList from "@/components/Cards/CardList";
 import CreateTodoModal from "@/components/UI/modal/CreateTodoModal";
 import Portal from "../UI/modal/ModalPotal";
 import useModal from "@/hooks/modal/useModal";
+import { Card as CardType } from "@/types/cards";
 
 interface ColumnProps {
   id: number;
   title: string;
   dashboardId: number;
+  cards: CardType[];
+  onUpdateCard: (card: CardType) => void;
+  onDeleteCard: (cardId: number) => void;
 }
 
-const Column: React.FC<ColumnProps> = ({ id, title, dashboardId }) => {
+const Column: React.FC<ColumnProps> = ({
+  id,
+  title,
+  dashboardId,
+  cards,
+  onUpdateCard,
+  onDeleteCard,
+}) => {
   const { isOpen, openModal, closeModal } = useModal();
 
   return (
@@ -40,7 +51,14 @@ const Column: React.FC<ColumnProps> = ({ id, title, dashboardId }) => {
           className="mx-auto"
         />
       </button>
-      <CardList columnId={id} title={title} dashboardId={dashboardId} />
+      <CardList
+        columnId={id}
+        title={title}
+        dashboardId={dashboardId}
+        cards={cards}
+        onUpdateCard={onUpdateCard}
+        onDeleteCard={onDeleteCard}
+      />
       {isOpen && (
         <Portal>
           <CreateTodoModal
