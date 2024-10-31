@@ -39,7 +39,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
   } = useModal();
 
   // 인증 관련 상태와 메서드 불러오기
-  const { user, setUser, checkAuth } = useAuthStore();
+  const { setUser, checkAuth } = useAuthStore();
 
   // 컴포넌트가 마운트될 때 initialUser가 있으면 유저 정보 설정, 없으면 인증 체크
   useEffect(() => {
@@ -104,7 +104,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
   return (
     <DashBoardLayout>
       <div>
-        {user && <p>환영합니다, {user.nickname}님!</p>}
         <div className="columns flex flex-col lg:flex-row">
           {/* 각 칼럼 데이터를 Column 컴포넌트로 렌더링 */}
           {columns.map((item) => (
