@@ -61,7 +61,7 @@ const MyProfile: React.FC = () => {
               width="182"
               height="182"
             />
-            <p className="text-[18px] text-gray200 text-center mt-6">
+            <p className="text-gray200 text-center md:text-[18px] md:mt-6 sm:text-[10px] sm:mt-2">
               이미지를 클릭하여 <br />
               프로필을 변경하세요😎
             </p>

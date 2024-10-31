@@ -1,3 +1,5 @@
+import { CardResponse } from "./cards";
+
 export type DashboardDetailResponse = {
   id: number;
   title: string;
@@ -94,4 +96,6 @@ export interface TodoModalProps {
   isOpen?: boolean;
   onClose: () => void;
   dashboardId?: number;
+  onUpdateCard?: (card: CardResponse) => void;
+  onCreateCard?: (card: CardResponse) => void;
 }
