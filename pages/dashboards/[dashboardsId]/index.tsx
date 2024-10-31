@@ -7,13 +7,13 @@ import { getColumns, createColumn } from "@/utils/api/columnsApi";
 import { getUserInfo } from "@/utils/api/authApi";
 import { ColoumnsParams, Columns, ColumnsResponse } from "@/types/columns";
 import { UserResponse } from "@/types/users";
+import { useAuthStore } from "@/store/authStore";
 import Image from "next/image";
 import Column from "@/components/DashBoard/column/Column";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import Portal from "@/components/UI/modal/ModalPotal";
 import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
 import useModal from "@/hooks/modal/useModal";
-import { useAuthStore } from "@/store/authStore";
 
 // DashboardDetailProps 인터페이스 정의 - 초기 유저 정보를 받는 props
 interface DashboardDetailProps {

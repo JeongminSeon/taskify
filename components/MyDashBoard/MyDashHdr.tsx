@@ -1,25 +1,28 @@
 import { hdMenuBtn, hdMenuBtnIcon } from "./MyDashStyle";
 import { useRouter } from "next/router";
 import { useAuthStore } from "@/store/authStore";
-import { useDashBoardStore } from "@/store/dashBoardStore";
 import { addInvitations } from "@/utils/api/dashboardsApi";
 import { useCallback, useState } from "react";
 import { useInvitationStore } from "@/store/invitationStore";
 import { AxiosError } from "axios";
 import Image from "next/image";
-import Link from "next/link";
 import useModal from "@/hooks/modal/useModal";
 import Portal from "@/components/UI/modal/ModalPotal";
 import OneInputModal from "../UI/modal/InputModal/OneInputModal";
 import ModalAlert from "../UI/modal/ModalAlert";
+import { Dashboard } from "@/types/dashboards";
+
+interface MyDashSideMenuProps {
+  dashboards: Dashboard[];
+}
 
 const ITEMS_PER_PAGE = 5;
 
-const MyDashHdr = () => {
+const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
   const router = useRouter();
   const { dashboardsId } = router.query;
   const { user } = useAuthStore();
-  const { dashboards } = useDashBoardStore();
+  //const { dashboards } = useDashBoardStore();
   const [modalMessage, setModalMessage] = useState<string>("");
   const { loadInvitations } = useInvitationStore();
 
@@ -77,6 +80,17 @@ const MyDashHdr = () => {
     [dashboardsId, closeModal, openMessageModal, loadInvitations]
   );
 
+  const handleManageClick = () => {
+    if (currentDashboard && !currentDashboard.createdByMe) {
+      // createdByMe가 false일 경우 상세로 이동
+      alert("접근 권한이 없습니다.");
+      router.push(`/dashboards/${dashboardsId}`);
+    } else {
+      // 관리 페이지로 이동
+      router.push(`/dashboards/${dashboardsId}/edit`);
+    }
+  };
+
   return (
     <div>
       <div className="border-b border-gray400 bg-white">
@@ -88,10 +102,7 @@ const MyDashHdr = () => {
           {!isMyDashboardPage && (
             <ul className="flex gap-[6px] md:gap-4">
               <li>
-                <Link
-                  href={`/dashboards/${dashboardsId}/edit`}
-                  className={`${hdMenuBtn}`}
-                >
+                <button onClick={handleManageClick} className={`${hdMenuBtn}`}>
                   <span className={`${hdMenuBtnIcon}`}>
                     <Image
                       src="/images/icons/icon_settings.svg"
@@ -101,7 +112,7 @@ const MyDashHdr = () => {
                     />
                   </span>
                   관리
-                </Link>
+                </button>
               </li>
               <li>
                 <button
