@@ -14,7 +14,7 @@ import Portal from "@/components/UI/modal/ModalPotal";
 import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
 import useModal from "@/hooks/modal/useModal";
 import { useAuthStore } from "@/store/authStore";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/UI/loading/LoadingSpinner";
 
 // DashboardDetailProps 인터페이스 정의 - 초기 유저 정보를 받는 props
 interface DashboardDetailProps {
@@ -149,7 +149,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
           </div>
         </div>
       ) : (
-        <LoadingSpinner text={"로딩중입니다! 잠시만 기다려주세요🙂‍↕️"}/>
+        <LoadingSpinner text={"로딩중입니다! 잠시만 기다려주세요🙂‍↕️"} />
       )}
     </DashBoardLayout>
   );
