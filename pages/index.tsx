@@ -1,8 +1,8 @@
-import LandingLayout from "./Landing/LandingLayout";
-import LandingHeader from "./Landing/LandingHeader";
-import LandingBanner from "./Landing/LandingBanner";
-import LandingInfo from "./Landing/LandingInfo";
-import LandingFooter from "./Landing/LandingFooter";
+import LandingLayout from "../components/Landing/LandingLayout";
+import LandingHeader from "../components/Landing/LandingHeader";
+import LandingBanner from "../components/Landing/LandingBanner";
+import LandingInfo from "../components/Landing/LandingInfo";
+import LandingFooter from "../components/Landing/LandingFooter";
 
 const index = () => {
   return (
