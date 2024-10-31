@@ -33,24 +33,33 @@ const AvatarGroup = () => {
   }, []);
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center ml-4">
       {avatars.slice(0, 4).map((member, index) => (
         <div
           key={member.id}
           style={{
-            backgroundColor: member.profileImageUrl ? "transparent" : "#90cdf4", // 이미지가 없을 때 색상 설정
+            backgroundColor: member.profileImageUrl ? "transparent" : "#90cdf4",
             backgroundImage: member.profileImageUrl
               ? `url(${member.profileImageUrl})`
-              : "none", // 이미지가 있을 때만 설정
+              : "none",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            zIndex: avatars.length - index,
+            position: "relative",
+            zIndex: index,
           }}
-          className="w-10 h-10 rounded-full text-white flex items-center justify-center text-lg -ml-3 border-2 border-white"
+          className="w-10 h-10 rounded-full flex items-center justify-center text-lg -ml-3 border border-white"
         >
-          <p>{member.nickname[0]}</p>
+          {!member.profileImageUrl && <span>{member.nickname[0]}</span>}
         </div>
       ))}
+      {totalCount > 4 && (
+        <div
+          style={{ backgroundColor: "#f4cccc" }}
+          className="w-10 h-10 rounded-full flex items-center justify-center text-lg -ml-3 border border-white"
+        >
+          +{totalCount - 4}
+        </div>
+      )}
     </div>
   );
 };
