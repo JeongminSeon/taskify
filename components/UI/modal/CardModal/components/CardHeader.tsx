@@ -50,7 +50,9 @@ const CardHeader: React.FC<HeaderProps> = ({
             height={16}
             alt="더보기"
           />
-          <Dropdown isOpen={isDropdownOpen} items={dropdownItems} />
+          <div className="absolute top-[28px] right-0 w-[93px] bg-white rounded-md shadow-lg z-10">
+            <Dropdown isOpen={isDropdownOpen} items={dropdownItems} />
+          </div>
         </button>
 
         <button className={styles.closeButton} onClick={onClose}>

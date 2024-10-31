@@ -1,16 +1,23 @@
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import { hdMenuBtn, hdMenuBtnIcon } from "../MyDashStyle";
 
-const ActionButton = ({ dashboardsId }) => {
+interface ActionButtonProps {
+  onManageClick: () => void;
+  onInviteClick: () => void;
+  isMyDashboardPage: boolean;
+}
+
+const ActionButton: React.FC<ActionButtonProps> = ({
+  onManageClick,
+  onInviteClick,
+  isMyDashboardPage,
+}) => {
+  if (isMyDashboardPage) return null; // '/mydashboard'에서 버튼을 숨김
   return (
     <ul className="flex gap-[6px] md:gap-4">
       <li>
-        <Link
-          href={`/dashboards/${dashboardsId}/edit`}
-          className={`${hdMenuBtn}`}
-        >
+        <button onClick={onManageClick} className={`${hdMenuBtn}`}>
           <span className={`${hdMenuBtnIcon}`}>
             <Image
               src="/images/icons/icon_settings.svg"
@@ -20,10 +27,14 @@ const ActionButton = ({ dashboardsId }) => {
             />
           </span>
           관리
-        </Link>
+        </button>
       </li>
       <li>
-        <button type="button" className={`${hdMenuBtn}`}>
+        <button
+          type="button"
+          onClick={onInviteClick}
+          className={`${hdMenuBtn}`}
+        >
           <span className={`${hdMenuBtnIcon}`}>
             <Image
               src="/images/icons/icon_add_box.svg"
