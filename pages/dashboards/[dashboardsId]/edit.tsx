@@ -59,7 +59,7 @@ const DashboardEdit = () => {
   };
 
   // 컬러칩 정의
-  const colorChips = [
+  const COLOR_CHIPS = [
     { id: 1, color: "#7AC555" },
     { id: 2, color: "#760DDE" },
     { id: 3, color: "#FFA500" },
@@ -128,7 +128,7 @@ const DashboardEdit = () => {
                 onChange={(e) => setTitle(e.target.value)}
               />
               <div className="flex gap-2 pt-4">
-                {colorChips.map((chip) => (
+                {COLOR_CHIPS.map((chip) => (
                   <ColorChip
                     key={chip.id}
                     color={chip.color}
@@ -154,7 +154,7 @@ const DashboardEdit = () => {
             )}
           </EditBox>
           <EditBox title="초대 내역">
-            <InviteeList />
+            <InviteeList dashboardId={dashboardId} />
           </EditBox>
         </div>
         <button

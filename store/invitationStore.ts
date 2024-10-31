@@ -33,6 +33,7 @@ export const useInvitationStore = create<InvitationStore>((set) => ({
     try {
       const res = await getInvitations(dashboardId, currentPage, size);
       set({
+        dashboardId,
         invitations: res.invitations,
         totalCount: res.totalCount,
       });

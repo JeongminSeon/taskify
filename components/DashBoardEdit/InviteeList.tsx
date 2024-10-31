@@ -11,14 +11,16 @@ import Portal from "@/components/UI/modal/ModalPotal";
 import OneInputModal from "../UI/modal/InputModal/OneInputModal";
 import ModalAlert from "../UI/modal/ModalAlert";
 
-const ITEMS_PER_PAGE = 5;
+interface InviteeListProps {
+  dashboardId: number | null;
+}
 
-const InviteeList = () => {
-  const { dashboardId, loadInvitations, invitations, totalCount } =
-    useInvitationStore();
+const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
+  const { loadInvitations, invitations, totalCount } = useInvitationStore();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [modalMessage, setModalMessage] = useState<string>("");
+  const ITEMS_PER_PAGE = 5;
 
   const {
     isOpen,
@@ -130,7 +132,7 @@ const InviteeList = () => {
         </button>
       </div>
       <p className="px-4 md:px-7 text-xs md:text-sm text-gray-300">이메일</p>
-      {invitations && invitations.length === 0 ? (
+      {invitations.length === 0 ? (
         <UnInvited message="초대 목록이 없어요." />
       ) : (
         <ul className="pt-4">
@@ -144,6 +146,8 @@ const InviteeList = () => {
             ))}
         </ul>
       )}
+
+      {/* 모달 관련 */}
       <Portal>
         <OneInputModal
           isOpen={isOpen}
