@@ -4,6 +4,7 @@ import { Card as CardType } from "@/types/cards";
 import CardImage from "./CardImage";
 import CardTags from "./CardTags";
 import CardDueDate from "./CardDueDate";
+import Image from "next/image";
 
 interface CardProps {
   card: CardType;
@@ -26,9 +27,16 @@ const Card: React.FC<CardProps> = ({ card, tagColors, onClick }) => (
         <CardTags tags={card.tags} tagColors={tagColors} />
         <div className="flex items-center justify-between pt-[6px] md:flex-1">
           <CardDueDate dueDate={card.dueDate} />
-          <p className="relative w-[34px] h-[34px] overflow-hidden bg-slate-500 rounded-full">
-            {card.assignee.nickname}
-          </p>
+          <div className="relative w-[34px] h-[34px] overflow-hidden rounded-full">
+            <Image
+              src={card.assignee.profileImageUrl || "/default-profile.png"}
+              alt={`${card.assignee.nickname}의 프로필`}
+              fill
+              sizes="34px"
+              className="object-cover"
+              priority={false}
+            />
+          </div>
         </div>
       </div>
     </div>
