@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { parse } from "cookie";
-import { getColumns, createColumn } from "../../utils/api/columnsApi";
+import { getColumns, createColumn } from "../../../utils/api/columnsApi";
 import { getUserInfo } from "@/utils/api/authApi";
 import { ColoumnsParams, Columns, ColumnsResponse } from "@/types/columns";
 import { UserResponse } from "@/types/users";
