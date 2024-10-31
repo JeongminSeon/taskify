@@ -32,15 +32,16 @@ const CardListLayout: React.FC<CardListLayoutProps> = ({
   metaProps: { dashboardId, columnTitle },
 }) => {
   return (
-    <div className="flex flex-col gap-4 mt-[10px]">
+    <ul className="flex flex-col gap-4 mt-[10px]">
       {cards.map((card) => (
-        <Card
-          key={card.id}
-          card={card}
-          tagColors={tagColors}
-          onClick={() => onCardClick(card)}
-          dashboardId={dashboardId}
-        />
+        <li key={card.id}>
+          <Card
+            card={card}
+            tagColors={tagColors}
+            onClick={() => onCardClick(card)}
+            dashboardId={dashboardId}
+          />
+        </li>
       ))}
       {selectedCard && (
         <Portal>
@@ -62,7 +63,7 @@ const CardListLayout: React.FC<CardListLayoutProps> = ({
           />
         </Portal>
       )}
-    </div>
+    </ul>
   );
 };
 

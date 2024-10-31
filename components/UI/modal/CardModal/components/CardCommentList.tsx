@@ -44,20 +44,21 @@ const CardCommentList: React.FC<CommentProps> = ({ card }) => {
         onChange={(e) => handleInputChange(e.target.value)}
         onSubmit={handleCommentCreate}
       />
-      <div className="space-y-4">
+      <ul className="space-y-4">
         {comments.map((comment) => (
-          <CommentItem
-            key={comment.id}
-            comment={comment}
-            editCommentId={editCommentId}
-            editContent={editContent}
-            onInputChange={(e) => handleInputChange(e.target.value)}
-            onEditClick={() => handleEditClick(comment.id, comment.content)}
-            onCommentChange={() => handleCommentChange(comment.id)}
-            onCommentDelete={handleCommentDelete}
-          />
+          <li key={comment.id}>
+            <CommentItem
+              comment={comment}
+              editCommentId={editCommentId}
+              editContent={editContent}
+              onInputChange={(e) => handleInputChange(e.target.value)}
+              onEditClick={() => handleEditClick(comment.id, comment.content)}
+              onCommentChange={() => handleCommentChange(comment.id)}
+              onCommentDelete={handleCommentDelete}
+            />
+          </li>
         ))}
-      </div>
+      </ul>
       {isOpen && (
         <ModalAlert isOpen={isOpen} onClose={closeModal} text={modalMessage} />
       )}
