@@ -6,6 +6,7 @@ import { GetServerSideProps } from "next";
 import { getUserInfo } from "@/utils/api/authApi";
 import { ProfileProps } from "@/types/my";
 import { parseCookies } from "nookies";
+import MetaHead from "@/components/MetaHead";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = parseCookies(context); // 쿠키 파싱
@@ -33,18 +34,24 @@ const MyPage = ({ profileData }: { profileData: ProfileProps }) => {
   };
 
   return (
-    <DashBoardLayout>
-      <div className="mt-5 ml-5 md:mb-[136px] sm:mb-[61px] min-h-screen">
-        <button
-          onClick={returnButton}
-          className="text-[16px] font-[500] mb-[29px]"
-        >
-          &lt; 돌아가기
-        </button>
-        <MyProfile profileData={profileData} />
-        <MyPassWord />
-      </div>
-    </DashBoardLayout>
+    <>
+      <MetaHead
+        title="내 정보🎯"
+        description="내 정보를 확인 또는 수정 할 수 있습니다!"
+      />
+      <DashBoardLayout>
+        <div className="mt-5 ml-5 md:mb-[136px] sm:mb-[61px] min-h-screen">
+          <button
+            onClick={returnButton}
+            className="text-[16px] font-[500] mb-[29px]"
+          >
+            &lt; 돌아가기
+          </button>
+          <MyProfile profileData={profileData} />
+          <MyPassWord />
+        </div>
+      </DashBoardLayout>
+    </>
   );
 };
 
