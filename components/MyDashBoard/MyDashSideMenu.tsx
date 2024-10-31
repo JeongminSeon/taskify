@@ -1,15 +1,58 @@
-import { useGetDashboardList } from "@/hooks/dashboard/useGetDashboardList";
 import Link from "next/link";
 import Image from "next/image";
 import DashBoardLink from "./DashBoardLink";
+import Pagination from "../UI/pagination/Pagination";
+import { useState } from "react";
+import { Dashboard } from "@/types/dashboards";
+import { getDashboards } from "@/utils/api/dashboardsApi";
+import { GetServerSideProps } from "next";
 
-const MyDashSideMenu: React.FC = () => {
-  const { data } = useGetDashboardList("pagination", 0, 1, 10);
+interface MyDashSideMenuProps {
+  dashboards: Dashboard[];
+}
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  try {
+    const data = await getDashboards(1, 20); // 대시보드 목록 가져오기
+    return {
+      props: { initialDashboards: data.dashboards },
+    };
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+};
+
+const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
+
+  const totalPages = dashboards
+    ? Math.ceil(dashboards.length / itemsPerPage)
+    : 0;
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const currentDashboards = dashboards?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="sticky top-0 h-screen py-5 px-[14px] border-r border-gray400 bg-white lg:px-2 ">
       <h1 className="md:hidden">
-        <Link href="/">
+        <Link href="/mydashboard">
           <Image
             src="/images/logos/logo-small.svg"
             width={24}
@@ -19,7 +62,7 @@ const MyDashSideMenu: React.FC = () => {
         </Link>
       </h1>
       <h1 className="hidden md:block">
-        <Link href="/">
+        <Link href="/mydashboard">
           <Image
             src="/images/logos/logo-large.svg"
             width={109}
@@ -47,7 +90,7 @@ const MyDashSideMenu: React.FC = () => {
           />
         </button>
         <ul className="flex flex-col gap-2">
-          {data?.dashboards.map((dashboard) => (
+          {currentDashboards?.map((dashboard) => (
             <li key={dashboard.id} className="md:px-[10px] lg:px-3">
               <DashBoardLink
                 id={dashboard.id}
@@ -59,6 +102,16 @@ const MyDashSideMenu: React.FC = () => {
           ))}
         </ul>
       </div>
+      {dashboards && dashboards.length > 0 && (
+        <div className="mt-3">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onNextPage={handleNextPage}
+            onPreviousPage={handlePreviousPage}
+          />
+        </div>
+      )}
     </div>
   );
 };
