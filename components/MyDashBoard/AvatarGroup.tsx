@@ -1,29 +1,24 @@
-import axiosInstance from "@/utils/api/axiosInstanceApi";
+import { Member } from "@/types/dashboards";
+import { getMembers } from "@/utils/api/dashboardsApi";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-
-interface Member {
-  id: number;
-  userId: number;
-  email: string;
-  nickname: string;
-  profileImageUrl: string | null;
-  createdAt: string;
-  updatedAt: string;
-  isOwner: boolean;
-}
 
 const AvatarGroup = () => {
   const [avatars, setAvatars] = useState<Member[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [showCountThreshold, setShowCountThreshold] = useState(5);
+  const router = useRouter();
+  const { dashboardsId } = router.query;
 
   const loadMembers = async () => {
+    if (!dashboardsId) return; // id가 없는 경우 함수 종료
+    console.log("dashboard ID : ", dashboardsId);
     try {
-      const response = await axiosInstance.get(
-        "/members?page=1&size=20&dashboardId=12006"
-      );
-      setAvatars(response.data.members);
-      setTotalCount(response.data.totalCount);
+      const response = await getMembers({
+        dashboardId: dashboardsId as string,
+      }); // id를 문자열로 캐스팅
+      setAvatars(response.members);
+      setTotalCount(response.totalCount);
     } catch (error) {
       console.error("예기치 못한 에러가 발생했습니다.", error);
     }
@@ -46,13 +41,16 @@ const AvatarGroup = () => {
     };
   }, []);
 
+  // id가 변경되었거나 처음 로드되었을 때만 loadMembers 호출
   useEffect(() => {
-    loadMembers();
-  }, []);
+    if (dashboardsId) {
+      loadMembers();
+    }
+  }, [dashboardsId]);
 
   return (
     <div className="flex items-center ml-4">
-      {avatars.slice(0, 4).map((member, index) => (
+      {avatars.slice(0, showCountThreshold).map((member, index) => (
         <div
           key={member.id}
           className={`w-10 h-10 rounded-full flex items-center justify-center text-lg -ml-3 border border-white ${
