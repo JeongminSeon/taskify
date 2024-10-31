@@ -1,17 +1,35 @@
-import { hdMenuBtn, hdMenuBtnIcon } from "./MyDashStyle";
 import { useRouter } from "next/router";
-//import { getDashboardDetail } from "@/utils/api/dashboardsApi";
-import Image from "next/image";
-import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
 import { useDashBoardStore } from "@/store/dashBoardStore";
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import Dropdown from "../UI/dropdown/Dropdown";
+import ActionButton from "./dashHeader/ActionButton";
 
 const MyDashHdr = () => {
   const router = useRouter();
   const { dashboardsId } = router.query;
-
   const { user } = useAuthStore();
   const { dashboards } = useDashBoardStore();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const dropdownItems = [
+    {
+      label: "로그아웃",
+      onClick: () => {
+        onEdit();
+        onClose();
+      },
+    },
+    {
+      label: "삭제하기",
+      onClick: () => {
+        onDelete();
+        onClose();
+      },
+    },
+  ];
 
   // 대시보드 제목 : 쿼리에 id 값과 dashboards의 id 값 비교
   const currentDashboard = dashboards.find(
@@ -27,38 +45,11 @@ const MyDashHdr = () => {
         <h2 className="pageTitle flex-1 text-x font-bold md:text-xl lg:text-[2rem]">
           {dashboardTitle}
         </h2>
-        <ul className="flex gap-[6px] md:gap-4">
-          <li>
-            <Link
-              href={`/dashboards/${dashboardsId}/edit`}
-              className={`${hdMenuBtn}`}
-            >
-              <span className={`${hdMenuBtnIcon}`}>
-                <Image
-                  src="/images/icons/icon_settings.svg"
-                  width={15}
-                  height={15}
-                  alt="관리"
-                />
-              </span>
-              관리
-            </Link>
-          </li>
-          <li>
-            <button type="button" className={`${hdMenuBtn}`}>
-              <span className={`${hdMenuBtnIcon}`}>
-                <Image
-                  src="/images/icons/icon_add_box.svg"
-                  width={15}
-                  height={15}
-                  alt="초대하기"
-                />
-              </span>
-              초대하기
-            </button>
-          </li>
-        </ul>
-        <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray400 md:ml-8 md:pl-8 lg:ml-9 lg:pl-9">
+        <ActionButton dashboardsId={dashboardsId} />
+        <button
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          className="relative flex items-center gap-3 ml-4 pl-4 border-l border-gray400 md:ml-8 md:pl-8 lg:ml-9 lg:pl-9"
+        >
           <span className="overflow-hidden relative w-[34px] h-[34px] rounded-full bg-slate-500">
             {user?.profileImageUrl ? (
               <Image
@@ -79,7 +70,8 @@ const MyDashHdr = () => {
             )}
           </span>
           <p className="hidden md:block">{user?.nickname || ""}</p>
-        </div>
+          <Dropdown isOpen={isDropdownOpen} items={dropdownItems} />
+        </button>
       </div>
     </div>
   );
