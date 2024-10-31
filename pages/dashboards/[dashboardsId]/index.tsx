@@ -14,7 +14,6 @@ import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import Portal from "@/components/UI/modal/ModalPotal";
 import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
 import useModal from "@/hooks/modal/useModal";
-import { useAuthStore } from "@/store/authStore";
 import LoadingSpinner from "@/components/UI/loading/LoadingSpinner";
 import MetaHead from "@/components/MetaHead";
 
@@ -101,7 +100,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
   }, [dashboardsId, fetchColumns]);
 
   // 로딩 상태나 에러가 있을 때 로딩 및 에러 메시지 렌더링
-
   if (error) return <div>{error}</div>;
 
   // 실제 렌더링 부분
