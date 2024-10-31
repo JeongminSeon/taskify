@@ -1,15 +1,22 @@
 import MyDashList from "@/components/MyDashBoard/MyDashList";
 import InvitedList from "@/components/MyDashBoard/InvitedList";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
+import MetaHead from "@/components/MetaHead";
 
 const MyDashBoardPage = () => {
   return (
-    <DashBoardLayout>
-      <div className="w-full p-6 md:p-10 lg:max-w-[1102px]">
-        <MyDashList />
-        <InvitedList />
-      </div>
-    </DashBoardLayout>
+    <>
+      <MetaHead
+        title="내 대시보드🎯"
+        description="나의 대시보드에 새로운 일정을 추가해보세요!"
+      />
+      <DashBoardLayout>
+        <div className="w-full p-6 md:p-10 lg:max-w-[1102px]">
+          <MyDashList />
+          <InvitedList />
+        </div>
+      </DashBoardLayout>
+    </>
   );
 };
 

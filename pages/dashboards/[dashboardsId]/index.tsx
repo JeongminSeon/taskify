@@ -14,6 +14,9 @@ import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import Portal from "@/components/UI/modal/ModalPotal";
 import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
 import useModal from "@/hooks/modal/useModal";
+import { useAuthStore } from "@/store/authStore";
+import LoadingSpinner from "@/components/UI/loading/LoadingSpinner";
+import MetaHead from "@/components/MetaHead";
 
 // DashboardDetailProps 인터페이스 정의 - 초기 유저 정보를 받는 props
 interface DashboardDetailProps {
@@ -25,7 +28,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
   const router = useRouter(); // Next.js의 useRouter 훅 사용
   const { dashboardsId } = router.query; // 쿼리 파라미터에서 dashboard ID 추출
   const [columns, setColumns] = useState<Columns[]>([]); // 칼럼 데이터 상태
-  const [loading, setLoading] = useState<boolean>(true); // 로딩 상태
+  const [loading, setLoading] = useState<boolean>(false); // 로딩 상태
   const [error, setError] = useState<string | null>(null); // 에러 상태
 
   // 모달 관련 훅 사용 (모달 열기, 닫기, 입력값 제어, 확인 함수 설정)
@@ -59,6 +62,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
     const params: ColoumnsParams = { dashboardId }; // API 호출에 필요한 파라미터 설정
 
     try {
+      setLoading(true);
       const columnsData: ColumnsResponse = await getColumns(params); // 칼럼 데이터 API 호출
       setColumns(columnsData.data); // 상태에 칼럼 데이터 설정
     } catch (err) {
@@ -97,55 +101,65 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
   }, [dashboardsId, fetchColumns]);
 
   // 로딩 상태나 에러가 있을 때 로딩 및 에러 메시지 렌더링
-  if (loading) return <div>Loading...</div>;
+
   if (error) return <div>{error}</div>;
 
   // 실제 렌더링 부분
   return (
-    <DashBoardLayout>
-      <div>
-        <div className="columns flex flex-col lg:flex-row">
-          {/* 각 칼럼 데이터를 Column 컴포넌트로 렌더링 */}
-          {columns.map((item) => (
-            <Column
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              dashboardId={Number(dashboardsId)}
-            />
-          ))}
-          <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 border-r border-[gray600]">
-            <button
-              type="button"
-              className="flex justify-center items-center gap-3 w-full sm:h-[66px] h-[70px] lg:mt-12 border border-gray400 rounded-md bg-white100 text-black300 font-bold"
-              onClick={handleAddColumn}
-            >
-              새로운 컬럼 추가하기
-              <Image
-                src="/images/icons/icon_add_column.svg"
-                width={16}
-                height={16}
-                alt="할 일 추가"
-              />
-            </button>
+    <>
+      <MetaHead
+        title="상세 대시보드🎯"
+        description="대시보드에 새로운 일정을 추가해보세요!"
+      />
+      <DashBoardLayout>
+        {!loading ? (
+          <div>
+            <div className="columns flex flex-col lg:flex-row">
+              {/* 각 칼럼 데이터를 Column 컴포넌트로 렌더링 */}
+              {columns.map((item) => (
+                <Column
+                  key={item.id}
+                  id={item.id}
+                  title={item.title}
+                  dashboardId={Number(dashboardsId)}
+                />
+              ))}
+              <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 border-r border-[gray600]">
+                <button
+                  type="button"
+                  className="flex justify-center items-center gap-3 w-full sm:h-[66px] h-[70px] lg:mt-12 border border-gray400 rounded-md bg-white100 text-black300 font-bold"
+                  onClick={handleAddColumn}
+                >
+                  새로운 컬럼 추가하기
+                  <Image
+                    src="/images/icons/icon_add_column.svg"
+                    width={16}
+                    height={16}
+                    alt="할 일 추가"
+                  />
+                </button>
+              </div>
+              <Portal>
+                <OneInputModal
+                  isOpen={isOpen}
+                  modalTitle="새 칼럼 생성"
+                  inputLabel="이름"
+                  inputPlaceholder="컬럼 이름을 입력해주세요"
+                  onCancel={closeModal}
+                  cancelButtonText="취소"
+                  onConfirm={() => handleModalConfirm(handleConfirm)}
+                  confirmButtonText="생성"
+                  inputValue={inputValue}
+                  onInputChange={handleInputChange}
+                />
+              </Portal>
+            </div>
           </div>
-          <Portal>
-            <OneInputModal
-              isOpen={isOpen}
-              modalTitle="새 칼럼 생성"
-              inputLabel="이름"
-              inputPlaceholder="컬럼 이름을 입력해주세요"
-              onCancel={closeModal}
-              cancelButtonText="취소"
-              onConfirm={() => handleModalConfirm(handleConfirm)}
-              confirmButtonText="생성"
-              inputValue={inputValue}
-              onInputChange={handleInputChange}
-            />
-          </Portal>
-        </div>
-      </div>
-    </DashBoardLayout>
+        ) : (
+          <LoadingSpinner text={"로딩중입니다! 잠시만 기다려주세요🙂‍↕️"} />
+        )}
+      </DashBoardLayout>
+    </>
   );
 };
 
