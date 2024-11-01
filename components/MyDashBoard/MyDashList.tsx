@@ -3,9 +3,9 @@ import { useDashBoardStore } from "@/store/dashBoardStore";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Pagination from "../UI/pagination/Pagination";
 import CreateDashBoard from "./CreateDashBoard";
 import useModal from "@/hooks/modal/useModal";
+import Pagination from "../UI/pagination/Pagination";
 
 const MyDashList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);

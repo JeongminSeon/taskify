@@ -15,7 +15,6 @@ const axiosInstance = Axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = Cookies.get("accessToken"); // 또는 다른 방식으로 토큰을 가져옵니다
-    console.log("현재 토큰:", token); // 토큰 로그 추가
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }

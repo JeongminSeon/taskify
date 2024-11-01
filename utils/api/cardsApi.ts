@@ -10,7 +10,6 @@ interface CardsParams {
 export const createCard = async (cardData: CreateCardBody) => {
   try {
     const response = await axiosInstance.post("/cards", cardData);
-    console.log("카드 생성 응답 데이터:", response.data);
     return response.data;
   } catch (error) {
     console.error("카드 생성 중 오류가 발생했습니다:", error);

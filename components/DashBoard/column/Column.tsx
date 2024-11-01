@@ -27,10 +27,12 @@ const Column: React.FC<ColumnProps> = ({ id, title, dashboardId }) => {
       <ColumnHeader title={title} />
       <AddCardButton onClick={openModal} />
       <CardList
+        cards={cards[id] || []}
+        columnId={id}
+        title={title}
+        dashboardId={dashboardId}
         onUpdateCard={(updatedCard) => updateCard(id, updatedCard)}
         onDeleteCard={(cardId) => deleteCard(id, cardId)}
-        dashboardId={dashboardId}
-        cards={cards[id] || []}
       />
       {isOpen && (
         <Portal>
