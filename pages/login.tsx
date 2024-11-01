@@ -7,7 +7,7 @@ import visibilityOn from "@/public/images/icons/icon_visibility.svg?url";
 import Input from "@/components/Auth/Input";
 import { isEmailValid, isEntered, isPWValid } from "@/utils/validation";
 import useInput from "@/hooks/useInput";
-import { Axios, AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useAuthStore } from "@/store/authStore";
 import { getLogin } from "@/utils/api/authApi";
@@ -15,7 +15,6 @@ import { setAccessToken } from "@/utils/api/cookie";
 import MetaHead from "@/components/MetaHead";
 import ModalAlert from "@/components/UI/modal/ModalAlert";
 import useModal from "@/hooks/modal/useModal";
-import Portal from "@/components/UI/modal/ModalPotal";
 
 const Login = () => {
   const router = useRouter();
@@ -78,7 +77,6 @@ const Login = () => {
       router.push("/mydashboard");
       return;
     } catch (error) {
-      console.log("isAxiosError ?  : ", error instanceof AxiosError);
       if (error instanceof AxiosError) {
         const status = error.status;
         const message = error.message;
@@ -91,7 +89,7 @@ const Login = () => {
       }
     }
   };
-  console.log("isModalOpen : ", isModalOpen);
+
   return (
     <>
       <MetaHead
@@ -103,13 +101,11 @@ const Login = () => {
           <Image src={logoImage} width={200} height={280} alt="logo_main" />
           <p className="text-xl">오늘도 만나서 반가워요!</p>
         </div>
-        <Portal>
-          <ModalAlert
-            isOpen={isModalOpen}
-            onClose={closeModal}
-            text={modalMessage}
-          />
-        </Portal>
+        <ModalAlert
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          text={modalMessage}
+        />
         <form className="flex flex-col w-full gap-3" onSubmit={handleSubmit}>
           <Input
             id="email"
