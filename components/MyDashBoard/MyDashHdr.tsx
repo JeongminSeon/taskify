@@ -3,7 +3,6 @@ import { useAuthStore } from "@/store/authStore";
 import { addInvitations } from "@/utils/api/dashboardsApi";
 import { useCallback, useEffect, useState } from "react";
 import { useInvitationStore } from "@/store/invitationStore";
-import { AxiosError } from "axios";
 import { Dashboard } from "@/types/dashboards";
 import { removeAccessToken } from "@/utils/api/cookie";
 import useModal from "@/hooks/modal/useModal";
@@ -12,6 +11,7 @@ import OneInputModal from "../UI/modal/InputModal/OneInputModal";
 import ModalAlert from "../UI/modal/ModalAlert";
 import ActionButton from "./dashHeader/ActionButton";
 import UserMenu from "./dashHeader/UserMenu";
+import useErrorModal from "@/hooks/modal/useErrorModal";
 
 interface MyDashSideMenuProps {
   dashboards: Dashboard[];
@@ -26,7 +26,6 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
   const { dashboardsId } = router.query;
   const { loadInvitations } = useInvitationStore();
   const { user, checkAuth } = useAuthStore();
-  const [modalMessage, setModalMessage] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // 컴포넌트가 마운트될 때 인증 상태 확인
@@ -38,7 +37,25 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
     verifyAuth();
   }, [checkAuth]);
 
-  // 대시보드 제목 : 쿼리에 id 값과 dashboards의 id 값 비교
+  const {
+    isOpen: isInviteModalOpen,
+    inputValue,
+    openModal: openInviteModal,
+    closeModal: closeInviteModal,
+    handleInputChange,
+    handleConfirm: handleModalConfirm,
+  } = useModal();
+
+  const {
+    isOpen: isErrorModalOpen,
+    errorMessage,
+    handleError,
+    handleClose: closeErrorModal,
+  } = useErrorModal();
+
+  const [modalMessage, setModalMessage] = useState<string>("");
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
+
   const currentDashboard = dashboards.find(
     (dashboard) => dashboard.id === Number(dashboardsId)
   );
@@ -46,8 +63,6 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
   const dashboardTitle = currentDashboard
     ? currentDashboard.title
     : "내 대시보드";
-
-  // '/mydashboard' 경로 확인
   const isMyDashboardPage = router.pathname === "/mydashboard";
 
   // 유저 메뉴
@@ -69,57 +84,27 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
     },
   ];
 
-  // 모달
-  const {
-    isOpen,
-    inputValue,
-    openModal: handleAddInvite,
-    closeModal,
-    handleInputChange,
-    handleConfirm: handleModalConfirm,
-  } = useModal();
-
-  // 메세지 모달
-  const {
-    isOpen: isMessageOpen,
-    openModal: openMessageModal,
-    closeModal: closeMessageModal,
-  } = useModal();
-
   const handleConfirm = useCallback(
     async (inputValue: string) => {
-      if (!inputValue) {
-        alert("이메일을 입력해주세요.");
-        return;
-      }
-
       try {
         await addInvitations(Number(dashboardsId), inputValue);
         setModalMessage("초대 요청을 보냈습니다.");
-        openMessageModal();
-        closeModal();
+        setIsMessageModalOpen(true);
+        closeInviteModal();
         loadInvitations(Number(dashboardsId), 1, ITEMS_PER_PAGE);
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        if (axiosError.response) {
-          setModalMessage(
-            axiosError.response.data.message ||
-              "초대 요청 중 오류가 발생했습니다."
-          );
-        }
-        openMessageModal();
+        handleError(error);
       }
     },
-    [dashboardsId, closeModal, openMessageModal, loadInvitations]
+    [dashboardsId, closeInviteModal, loadInvitations, handleError]
   );
 
   const handleManageClick = () => {
     if (currentDashboard && !currentDashboard.createdByMe) {
       setModalMessage("접근 권한이 없습니다.");
-      openMessageModal();
+      setIsMessageModalOpen(true);
       router.push(`/dashboards/${dashboardsId}`);
     } else {
-      // 관리 페이지로 이동
       router.push(`/dashboards/${dashboardsId}/edit`);
     }
   };
@@ -133,7 +118,7 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
           </h2>
           <ActionButton
             onManageClick={handleManageClick}
-            onInviteClick={handleAddInvite}
+            onInviteClick={openInviteModal}
             isMyDashboardPage={isMyDashboardPage}
           />
           <UserMenu
@@ -144,13 +129,14 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
           />
         </div>
       </div>
+
       <Portal>
         <OneInputModal
-          isOpen={isOpen}
+          isOpen={isInviteModalOpen}
           modalTitle="초대하기"
           inputLabel="이메일"
           inputPlaceholder="이메일을 입력해주세요"
-          onCancel={closeModal}
+          onCancel={closeInviteModal}
           cancelButtonText="취소"
           onConfirm={() => handleModalConfirm(handleConfirm)}
           confirmButtonText="생성"
@@ -159,11 +145,18 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
         />
       </Portal>
 
-      {/* 메세지 모달창 */}
-      {isMessageOpen && (
+      {isErrorModalOpen && (
         <ModalAlert
-          isOpen={isMessageOpen}
-          onClose={closeMessageModal}
+          isOpen={isErrorModalOpen}
+          onClose={closeErrorModal}
+          text={errorMessage}
+        />
+      )}
+
+      {isMessageModalOpen && (
+        <ModalAlert
+          isOpen={isMessageModalOpen}
+          onClose={() => setIsMessageModalOpen(false)}
           text={modalMessage}
         />
       )}

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { getUserInfo, getLogin } from "@/utils/api/authApi";
-
+import { setAccessToken } from "@/utils/api/cookie";
 interface User {
   id: number;
   email: string;
@@ -26,17 +26,20 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ user, isAuthenticated: true });
     useAuthStore.getState();
   },
+  // ... existing code ...
+
   login: async (loginData: { email: string; password: string }) => {
     try {
-      const { user } = await getLogin(loginData);
+      const response = await getLogin(loginData);
+      const { user, accessToken } = response;
+      setAccessToken(accessToken); // cookie 설정 추가
       set({ user, isAuthenticated: true });
-      // 로그인 성공 시, 상태 업데이트
-      useAuthStore.getState();
     } catch (error) {
-      console.error("로그인 실패:", error);
       set({ user: null, isAuthenticated: false });
+      throw error;
     }
   },
+
   logout: () => {
     set({ user: null, isAuthenticated: false });
     // store 상태 업데이트

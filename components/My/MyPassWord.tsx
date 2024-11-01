@@ -5,10 +5,11 @@ import ModalAlert from "../UI/modal/ModalAlert";
 import { isPWValid, isSame, isEntered } from "@/utils/validation";
 import { updatePassword } from "@/utils/api/authApi";
 import useModal from "@/hooks/modal/useModal";
+import useErrorModal from "@/hooks/modal/useErrorModal";
 import { PasswordProps } from "@/types/my";
 
 // 초기 비밀번호 상태를 설정
-const INITIAL_PASSWORDS = {
+const INITIAL_PASSWORDS: PasswordProps = {
   current: "",
   new: "",
   confirm: "",
@@ -16,12 +17,13 @@ const INITIAL_PASSWORDS = {
 
 const MyPassWord: React.FC = () => {
   // 모달 상태 제어 훅을 호출
-  const { isOpen, openModal, closeModal } = useModal();
+  const { isOpen: isModalOpen, openModal, closeModal } = useModal();
+  const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
 
   // 비밀번호 관련 에러 상태와 모달 메시지 상태를 설정
-  const [passwordLenError, setPasswordLenError] = useState<boolean>(false);
-  const [passwordMatchError, setPasswordMatchError] = useState<boolean>(false);
-  const [modalMessage, setModalMessage] = useState<string>("");
+  const [passwordLenError, setPasswordLenError] = useState(false);
+  const [passwordMatchError, setPasswordMatchError] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   // 입력된 비밀번호 값을 객체로 관리
   const [passwords, setPasswords] = useState<PasswordProps>(INITIAL_PASSWORDS);
@@ -38,9 +40,7 @@ const MyPassWord: React.FC = () => {
       setPasswords(INITIAL_PASSWORDS); // 성공 시 입력란 초기화
       openModal();
     } catch (error) {
-      console.error(error);
-      setModalMessage((error as Error).message); // 에러 메시지 설정
-      openModal();
+      handleError(error as Error);
     }
   };
 
@@ -55,7 +55,7 @@ const MyPassWord: React.FC = () => {
     setPasswordLenError(!isPWValid(passwords.new)); // 길이가 유효한지 검사
   };
 
-  // 새 비밀번호와 확인 비밀번호의 일치 여부를 디바운스를 통해 검사
+  // 새 비밀번호와 확인 비밀번호의 일치 여부를 검사
   useEffect(() => {
     const timer = setTimeout(() => {
       if (isEntered(passwords.confirm)) {
@@ -130,9 +130,18 @@ const MyPassWord: React.FC = () => {
         변경
       </MyButton>
 
-      {/* 모달창 */}
+      {/* 성공 모달창 */}
+      {isModalOpen && (
+        <ModalAlert
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          text={modalMessage}
+        />
+      )}
+
+      {/* 에러 모달창 */}
       {isOpen && (
-        <ModalAlert isOpen={isOpen} onClose={closeModal} text={modalMessage} />
+        <ModalAlert isOpen={isOpen} onClose={handleClose} text={errorMessage} />
       )}
     </div>
   );

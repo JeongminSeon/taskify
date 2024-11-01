@@ -75,7 +75,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
   // 새로운 칼럼을 생성하는 함수, 모달의 확인 버튼을 클릭 시 실행
   const handleConfirm = useCallback(
     (inputValue: string) => {
-      alert("새로운 칼럼이 생성되었습니다.");
       createColumn({
         title: inputValue,
         dashboardId: Number(dashboardsId),
@@ -101,7 +100,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
 
   // 로딩 상태나 에러가 있을 때 로딩 및 에러 메시지 렌더링
   if (error) return <div>{error}</div>;
-  if (columns.length === 0) return <div>No columns available.</div>;
 
   // 실제 렌더링 부분
   return (
