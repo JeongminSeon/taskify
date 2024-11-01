@@ -1,11 +1,15 @@
 import { useRouter } from "next/router";
 import { useAuthStore } from "@/store/authStore";
+import AvatarGroup from "./AvatarGroup";
+
 import { addInvitations } from "@/utils/api/dashboardsApi";
 import { useCallback, useState } from "react";
 import { useInvitationStore } from "@/store/invitationStore";
 import { AxiosError } from "axios";
 import { Dashboard } from "@/types/dashboards";
 import { removeAccessToken } from "@/utils/api/cookie";
+import { hdMenuBtn, hdMenuBtnIcon } from "./MyDashStyle";
+import Image from "next/image";
 import useModal from "@/hooks/modal/useModal";
 import Portal from "@/components/UI/modal/ModalPotal";
 import OneInputModal from "../UI/modal/InputModal/OneInputModal";
@@ -132,6 +136,66 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
             onDropdownToggle={() => setIsDropdownOpen(!isDropdownOpen)}
             dropdownItems={dropdownItems}
           />
+          {/* '/mydashboard'에서 미노출 */}
+          {!isMyDashboardPage && (
+            <ul className="flex gap-[6px] md:gap-4">
+              <li>
+                <button onClick={handleManageClick} className={`${hdMenuBtn}`}>
+                  <span className={`${hdMenuBtnIcon}`}>
+                    <Image
+                      src="/images/icons/icon_settings.svg"
+                      width={15}
+                      height={15}
+                      alt="관리"
+                    />
+                  </span>
+                  관리
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className={`${hdMenuBtn}`}
+                  onClick={handleAddInvite}
+                >
+                  <span className={`${hdMenuBtnIcon}`}>
+                    <Image
+                      src="/images/icons/icon_add_box.svg"
+                      width={15}
+                      height={15}
+                      alt="초대하기"
+                    />
+                  </span>
+                  초대하기
+                </button>
+              </li>
+              <li>
+                <AvatarGroup />
+              </li>
+            </ul>
+          )}
+          <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray400 md:ml-8 md:pl-8 lg:ml-9 lg:pl-9">
+            <span className="overflow-hidden relative w-[34px] h-[34px] rounded-full bg-slate-500">
+              {user?.profileImageUrl ? (
+                <Image
+                  className="object-cover"
+                  src={user.profileImageUrl}
+                  fill
+                  alt="Profile Image"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // 뷰포트에 따른 이미지 크기 설정
+                />
+              ) : (
+                <Image
+                  className="object-cover"
+                  src="https://via.placeholder.com/34"
+                  fill
+                  alt="Default Profile"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // 뷰포트에 따른 이미지 크기 설정
+                />
+              )}
+            </span>
+            <p className="hidden md:block">{user?.nickname || ""}</p>
+          </div>
         </div>
       </div>
       <Portal>

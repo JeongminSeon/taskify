@@ -5,10 +5,11 @@ import Input from "../Auth/Input";
 import useInput from "@/hooks/useInput";
 import { isEntered } from "@/utils/validation";
 import ColorInput from "../DashBoard/inputs/ColorInput";
-import { ColorKey } from "@/types/color";
 import { createDashboard } from "@/utils/api/dashboardsApi";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
+
+type ColorKey = "green" | "violet" | "orange" | "blue" | "pink";
 
 interface DashBoardProps {
   isOpen: boolean;
