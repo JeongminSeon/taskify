@@ -2,11 +2,12 @@ import { Member } from "@/types/dashboards";
 import { getMembers } from "@/utils/api/dashboardsApi";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import useResponsiveThreshold from "@/hooks/dashboard/useResponsiveThreshold";
 
 const AvatarGroup = () => {
+  const showCountThreshold = useResponsiveThreshold(3, 5);
   const [avatars, setAvatars] = useState<Member[]>([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [showCountThreshold, setShowCountThreshold] = useState(5);
   const router = useRouter();
   const { dashboardsId } = router.query;
 
@@ -23,23 +24,6 @@ const AvatarGroup = () => {
       console.error("예기치 못한 에러가 발생했습니다.", error);
     }
   };
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setShowCountThreshold(3);
-      } else {
-        setShowCountThreshold(5);
-      }
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   // id가 변경되었거나 처음 로드되었을 때만 loadMembers 호출
   useEffect(() => {
