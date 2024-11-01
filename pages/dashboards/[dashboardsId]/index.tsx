@@ -142,6 +142,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
                 id={item.id}
                 title={item.title}
                 dashboardId={Number(dashboardsId)}
+                onRefresh={fetchColumns}
               />
             ))}
             <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 border-r border-[gray600]">

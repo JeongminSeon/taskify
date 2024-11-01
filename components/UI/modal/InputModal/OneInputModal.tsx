@@ -7,7 +7,8 @@ interface OneInputModalProps {
   modalTitle: string;
   inputLabel: string;
   inputPlaceholder: string;
-  onCancel: () => void;
+  onCancel: () => void; // 기본 닫기 동작 (X 버튼용)
+  cancelAction?: () => void | Promise<void>; // 취소/삭제 등 버튼의 실제 동작
   cancelButtonText?: string;
   onConfirm: (value: string) => void;
   confirmButtonText?: string;
@@ -21,6 +22,7 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
   inputLabel,
   inputPlaceholder,
   onCancel,
+  cancelAction,
   cancelButtonText,
   onConfirm,
   confirmButtonText,
@@ -36,6 +38,14 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
     onCancel();
   };
 
+  const handleCancelButtonClick = () => {
+    if (cancelAction) {
+      cancelAction();
+    } else {
+      handleCancel();
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -44,7 +54,7 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>{modalTitle}</h2>
           <button
-            onClick={handleCancel}
+            onClick={handleCancel} // X 버튼은 항상 기본 닫기 동작
             className={styles.closeButton}
             aria-label="닫기"
           >
@@ -73,7 +83,7 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
           <div className="flex gap-2">
             <button
               type="button"
-              onClick={handleCancel}
+              onClick={handleCancelButtonClick}
               className={styles.cancelButton}
             >
               {cancelButtonText}
