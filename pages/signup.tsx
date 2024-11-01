@@ -118,13 +118,9 @@ const SignUp = () => {
       router.push("/login");
     } catch (error) {
       if (error instanceof AxiosError) {
-        if (error.status === 409) {
-          alert(error.message);
-        } else {
-          console.error(error.message);
-        }
+        openModal(error.message);
       } else {
-        console.error("예기치 못한 에러가 발생했습니다.", error);
+        openModal("예기치 못한 에러가 발생했습니다.");
       }
     }
   };
