@@ -14,11 +14,14 @@ const Pagination: React.FC<PaginationProps> = ({
   onNextPage,
   onPreviousPage,
 }) => {
+  // totalPages가 0일 경우 1로 표시
+  const displayTotalPages = totalPages > 0 ? totalPages : 1;
+
   return (
     <div className="flex items-center justify-end gap-5">
       <div>
         <span className="text-sm text-black300">
-          {currentPage} 페이지 중 {totalPages}
+          {currentPage} 페이지 중 {displayTotalPages}
         </span>
       </div>
       <div className="flex items-center justify-between">
