@@ -17,6 +17,7 @@ import useModal from "@/hooks/modal/useModal";
 import LoadingSpinner from "@/components/UI/loading/LoadingSpinner";
 import MetaHead from "@/components/MetaHead";
 import Custom404 from "@/pages/404";
+import { useDashBoardStore } from "@/store/dashBoardStore";
 
 // DashboardDetailProps 인터페이스 정의 - 초기 유저 정보를 받는 props
 interface DashboardDetailProps {
@@ -27,6 +28,7 @@ interface DashboardDetailProps {
 const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
   const router = useRouter(); // Next.js의 useRouter 훅 사용
   const { dashboardsId } = router.query; // 쿼리 파라미터에서 dashboard ID 추출
+  const { setDashboardId } = useDashBoardStore();
   const [columns, setColumns] = useState<Columns[]>([]); // 칼럼 데이터 상태
   const [loading, setLoading] = useState<boolean>(false); // 로딩 상태
   const [error, setError] = useState<string | null>(null); // 에러 상태
@@ -56,7 +58,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
     }
   }, [initialUser, setUser, checkAuth]);
 
-  // 칼럼 데이터를 가져오는 함수 - 비동기로 getColumns API 호출
+  // 칼럼 데이터를 가져오는 함수
   const fetchColumns = useCallback(async () => {
     const dashboardId = Number(dashboardsId); // dashboard ID를 숫자로 변환
     const params: ColoumnsParams = { dashboardId }; // API 호출에 필요한 파라미터 설정
@@ -97,7 +99,8 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
     if (dashboardsId) {
       fetchColumns();
     }
-  }, [dashboardsId, fetchColumns]);
+    setDashboardId(Number(dashboardsId));
+  }, [dashboardsId, fetchColumns, setDashboardId]);
 
   // 실제 렌더링 부분
   return (
@@ -140,7 +143,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
                 key={item.id}
                 id={item.id}
                 title={item.title}
-                dashboardId={Number(dashboardsId)}
                 onRefresh={fetchColumns}
               />
             ))}

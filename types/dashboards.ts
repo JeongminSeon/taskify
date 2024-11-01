@@ -93,10 +93,11 @@ export interface TodoFormProps {
 
 export interface TodoModalProps {
   cardId?: number;
-  columnId?: number;
+
   isOpen?: boolean;
   onClose: () => void;
   dashboardId?: number;
   onUpdateCard?: (card: CardResponse) => void;
   onCreateCard?: (card: CardResponse) => void;
+  onRefresh?: () => void;
 }

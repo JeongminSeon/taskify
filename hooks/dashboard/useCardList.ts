@@ -4,17 +4,13 @@ import { getRandomColor } from "@/utils/TodoForm";
 import useModal from "@/hooks/modal/useModal";
 
 interface UseCardListProps {
-  columnId: number;
   initialCards: CardType[];
   onDeleteCard: (cardId: number) => void;
-  dashboardId: number;
 }
 
 export const useCardList = ({
-  columnId,
   initialCards,
   onDeleteCard,
-  dashboardId,
 }: UseCardListProps) => {
   const [cards, setCards] = useState<CardType[]>(initialCards);
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null);

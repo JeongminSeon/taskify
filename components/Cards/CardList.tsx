@@ -3,21 +3,19 @@ import CardListLayout from "../Layout/CardListLayout";
 import { Card as CardType } from "@/types/cards";
 
 interface CardListProps {
-  dashboardId: number;
-  columnId: number;
   title: string;
   cards: CardType[];
   onUpdateCard: (card: CardType) => void;
   onDeleteCard: (cardId: number) => void;
+  onRefresh: () => void;
 }
 
 const CardList: React.FC<CardListProps> = ({
-  columnId,
   title,
-  dashboardId,
   cards: initialCards,
   onUpdateCard,
   onDeleteCard,
+  onRefresh,
 }) => {
   const {
     cards,
@@ -31,10 +29,8 @@ const CardList: React.FC<CardListProps> = ({
     handleEditClick,
     handleDeleteClick,
   } = useCardList({
-    columnId,
     initialCards,
     onDeleteCard,
-    dashboardId,
   });
 
   return (
@@ -55,9 +51,9 @@ const CardList: React.FC<CardListProps> = ({
         onEdit: handleEditClick,
         onDelete: handleDeleteClick,
         onUpdateCard,
+        onRefresh,
       }}
       metaProps={{
-        dashboardId,
         columnTitle: title,
       }}
     />
