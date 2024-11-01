@@ -53,15 +53,13 @@ const AvatarGroup = () => {
       {avatars.slice(0, showCountThreshold).map((member, index) => (
         <div
           key={member.id}
-          className={`w-10 h-10 rounded-full flex items-center justify-center text-lg -ml-3 border border-white ${
+          className={`w-10 h-10 rounded-full flex items-center justify-center text-lg -ml-3 border border-white bg-cover bg-center ${
             member.profileImageUrl ? "bg-gray-200" : "bg-blue-400"
           } relative`}
           style={{
             backgroundImage: member.profileImageUrl
               ? `url(${member.profileImageUrl})`
               : "none",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
             zIndex: index,
           }}
         >
