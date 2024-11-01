@@ -27,13 +27,7 @@ const CardHeader: React.FC<HeaderProps> = ({
         onClose();
       },
     },
-    {
-      label: "삭제하기",
-      onClick: () => {
-        onDelete();
-        onClose();
-      },
-    },
+    { label: "삭제하기", onClick: () => onDelete() },
   ];
 
   return (
@@ -42,7 +36,7 @@ const CardHeader: React.FC<HeaderProps> = ({
       <div className="flex items-center">
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className={`${styles.kebabButton} relative`}
+          className={`${styles.kebabButton} relative cursor-pointer`}
         >
           <Image
             src="/images/icons/icon_kebab.svg"

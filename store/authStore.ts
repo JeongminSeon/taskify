@@ -20,36 +20,34 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  //  스토어의 초기 상태를 정의
-  isAuthenticated: false, //사용자가 인증되었는지를 나타내는 boolean 값
-  user: null, // 현재 로그인한 사용자에 대한 정보를 담고 있는 객체
-
-  // setUser : 사용자 정보와 인증 상태를 업데이트합니다
+  isAuthenticated: false,
+  user: null,
   setUser: (user: User) => {
-    console.log("setUser 호출됨:", user);
     set({ user, isAuthenticated: true });
-    console.log("Store 상태 업데이트됨:", useAuthStore.getState());
+    useAuthStore.getState();
   },
   login: async (loginData: { email: string; password: string }) => {
     try {
       const { user } = await getLogin(loginData);
       set({ user, isAuthenticated: true });
-      console.log("로그인 성공:", useAuthStore.getState());
+      // 로그인 성공 시, 상태 업데이트
+      useAuthStore.getState();
     } catch (error) {
       console.error("로그인 실패:", error);
       set({ user: null, isAuthenticated: false });
     }
   },
   logout: () => {
-    console.log("logout 호출됨");
     set({ user: null, isAuthenticated: false });
-    console.log("Store 상태 업데이트됨:", useAuthStore.getState());
+    // store 상태 업데이트
+    useAuthStore.getState();
   },
   checkAuth: async () => {
     try {
       const user = await getUserInfo();
       set({ user, isAuthenticated: true });
-      console.log("인증 상태 확인됨:", useAuthStore.getState());
+      // 인증상태 확인
+      useAuthStore.getState();
     } catch (error) {
       set({ user: null, isAuthenticated: false });
       console.error("인증 실패:", error);

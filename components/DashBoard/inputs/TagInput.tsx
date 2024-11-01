@@ -26,11 +26,11 @@ const TagInput = ({ value, onChange }: TagInputProps) => {
     );
   }, [value]);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && tag.trim().length > 0) {
-      e.preventDefault();
+  const handleAddTag = () => {
+    const trimmedTag = tag.trim();
+    if (trimmedTag.length > 0) {
       const newTag = {
-        text: tag,
+        text: trimmedTag,
         id: uuidv4(),
       };
       const updatedTags = [...tempTags, newTag];
@@ -38,6 +38,18 @@ const TagInput = ({ value, onChange }: TagInputProps) => {
       onChange(updatedTags);
       setTag("");
     }
+  };
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (e.nativeEvent.isComposing) return; // 한글 입력 중에는 엔터키 이벤트를 무시
+      handleAddTag();
+    }
+  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // 엔터 키가 포함된 입력값 필터링
+    const value = e.target.value.replace(/[\n\r]/g, "");
+    setTag(value);
   };
 
   const handleDelete = (id: string) => {
@@ -58,8 +70,8 @@ const TagInput = ({ value, onChange }: TagInputProps) => {
         type="text"
         placeholder="입력 후 Enter"
         value={tag}
-        onChange={(e) => setTag(e.target.value)}
-        onKeyDown={handleKeyDown}
+        onChange={handleChange}
+        onKeyDown={handleKeyPress}
       />
       <TodoTagList tags={tempTags} onDelete={handleDelete} />
     </div>

@@ -9,6 +9,7 @@ import Logo from "@/components/Auth/Logo";
 import { createUser } from "../utils/api/authApi";
 import { AxiosError } from "axios";
 import MetaHead from "@/components/MetaHead";
+import { useRouter } from "next/router";
 
 const SignUp = () => {
   const [isShowPW, setIsShowPw] = useState<{ [key: string]: boolean }>({
@@ -16,7 +17,7 @@ const SignUp = () => {
     confirmPassword: false,
   });
   const [checked, setChecked] = useState(false);
-
+  const router = useRouter();
   const handleShowPW = (identifier: string) => {
     setIsShowPw((prevState) => ({
       ...prevState,
@@ -96,12 +97,15 @@ const SignUp = () => {
     };
     try {
       const response = await createUser(formData);
-      console.log(response);
+
       // Input Reset
       resetEmailInput();
       resetNameInput();
       resetPasswordInput();
       resetPWCheckInput();
+
+      // 회원가입 성공 시 /mydashboard로 이동
+      router.push("/mydashboard");
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.status === 409) {
