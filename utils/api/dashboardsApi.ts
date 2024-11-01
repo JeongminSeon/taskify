@@ -7,7 +7,7 @@ import {
   Invitation,
 } from "@/types/dashboards";
 import axiosInstance from "./axiosInstanceApi";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { onError } from "./error";
 
 // 대시보드 목록 가져오기
@@ -76,11 +76,16 @@ export const getDashboardDetail = async (
 };
 
 // 대시보드 맴버 정보 가져오기
-export const getMembers = async (
-  dashboardId: number,
-  page: number = 1,
-  size: number = 10
-): Promise<MembersResponse> => {
+export const getMembers = async ({
+  dashboardId,
+  page = 1, // 기본값 설정
+  size = 20, // 기본값 설정
+}: {
+  dashboardId: string;
+  page?: number;
+  size?: number;
+}): Promise<MembersResponse> => {
+  console.log(dashboardId);
   try {
     const response = await axiosInstance.get(
       `/members?page=${page}&size=${size}&dashboardId=${dashboardId}`

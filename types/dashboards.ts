@@ -64,18 +64,19 @@ export type CreateDashboardResponse = {
   userId: number;
 };
 
-export interface MemberProps {
+export interface Member {
   id: number;
   userId: number;
   email: string;
   nickname: string;
-  profileImageUrl?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  isOwner?: boolean;
+  profileImageUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
+  isOwner: boolean;
 }
+
 export interface MembersResponse {
-  members: MemberProps[];
+  members: Member[];
   totalCount: number;
 }
 
