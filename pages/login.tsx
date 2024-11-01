@@ -10,8 +10,6 @@ import useInput from "@/hooks/useInput";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useAuthStore } from "@/store/authStore";
-import { getLogin } from "@/utils/api/authApi";
-import { setAccessToken } from "@/utils/api/cookie";
 import MetaHead from "@/components/MetaHead";
 
 const Login = () => {
@@ -62,12 +60,8 @@ const Login = () => {
     };
 
     try {
-      const response = await getLogin(formData);
-      const { user, accessToken } = response;
-      setAccessToken(accessToken);
-      login(user); // 추가: 로그인 성공 시 useAuthStore의 login 함수 호출
+      await login(formData);
       router.push("/mydashboard");
-      return;
     } catch (error) {
       console.error("로그인 중 오류 발생:", error);
       if (error instanceof AxiosError) {
