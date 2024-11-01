@@ -63,8 +63,6 @@ const Login = () => {
       handleError(error);
     }
   };
-
-  console.log(isSubmitEnabled);
   return (
     <>
       <MetaHead

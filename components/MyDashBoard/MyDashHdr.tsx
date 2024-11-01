@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useAuthStore } from "@/store/authStore";
 import { addInvitations } from "@/utils/api/dashboardsApi";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useInvitationStore } from "@/store/invitationStore";
 import { Dashboard } from "@/types/dashboards";
 import { removeAccessToken } from "@/utils/api/cookie";
@@ -25,17 +25,8 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
   const router = useRouter();
   const { dashboardsId } = router.query;
   const { loadInvitations } = useInvitationStore();
-  const { user, checkAuth } = useAuthStore();
+  const { user } = useAuthStore();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  // 컴포넌트가 마운트될 때 인증 상태 확인
-  useEffect(() => {
-    const verifyAuth = async () => {
-      await checkAuth();
-    };
-
-    verifyAuth();
-  }, [checkAuth]);
 
   const {
     isOpen: isInviteModalOpen,
