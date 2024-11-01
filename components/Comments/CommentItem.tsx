@@ -36,18 +36,18 @@ export const CommentItem = ({
       <div className="flex-grow">
         <div className="flex items-center">
           <p className="font-semibold">{comment.author.nickname}</p>
-          <p className="text-sm text-gray-500 ml-2">
+          <div className="text-sm text-gray-500 ml-2">
             <p className="text-sm text-gray-500 ml-2">
-              <p className="text-sm text-gray-500 ml-2">
+              <span className="text-sm text-gray-500 ml-2">
                 {/* 서버시간 기준으로 날짜 포맷 변경 */}
                 {formatInTimeZone(
                   new Date(comment.updatedAt || comment.createdAt),
                   "UTC",
                   "yyyy.MM.dd HH:mm"
                 )}
-              </p>
+              </span>
             </p>
-          </p>
+          </div>
         </div>
 
         {editCommentId === comment.id ? (

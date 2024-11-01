@@ -13,25 +13,27 @@ const CardTagList: React.FC<CardTagListProps> = ({
   card,
   columnTitle,
   tagColors,
-}) => (
-  <div className={styles.tagContainer}>
-    <span className={`${styles.tagBase} bg-indigo-100 text-indigo-800`}>
-      • {columnTitle}
-    </span>
-    <div className={styles.tagDivider}></div>
-    {card?.tags.map((tag) => (
-      <span
-        key={tag}
-        className={styles.tagBase}
-        style={{
-          backgroundColor: hexToRgba(tagColors[tag], 0.1),
-          color: tagColors[tag],
-        }}
-      >
-        {tag}
+}) => {
+  return (
+    <div className={styles.tagContainer}>
+      <span className={`${styles.tagBase} bg-indigo-100 text-indigo-800`}>
+        • {columnTitle}
       </span>
-    ))}
-  </div>
-);
+      <div className={styles.tagDivider}></div>
+      {card?.tags.map((tag) => (
+        <span
+          key={tag}
+          className={styles.tagBase}
+          style={{
+            backgroundColor: hexToRgba(tagColors[tag], 0.1),
+            color: tagColors[tag],
+          }}
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+  );
+};
 
 export default CardTagList;

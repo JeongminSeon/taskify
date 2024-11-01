@@ -28,7 +28,6 @@ const CardDetailModal: React.FC<CardDetailModalProps> = ({
   tagColors,
 }) => {
   if (!isOpen) return null;
-
   return (
     <>
       <div className={styles.modalOverlay} onClick={onClose}>
