@@ -14,7 +14,7 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ card, tagColors, onClick }) => (
-  <button
+  <div
     className="w-full p-3 border rounded-md bg-white border-gray400 lg:block md:flex md:gap-5"
     onClick={onClick}
   >
@@ -40,7 +40,7 @@ const Card: React.FC<CardProps> = ({ card, tagColors, onClick }) => (
         </div>
       </div>
     </div>
-  </button>
+  </div>
 );
 
 export default Card;
