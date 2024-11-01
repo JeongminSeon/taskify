@@ -38,15 +38,7 @@ export const getLogin = async (loginData: loginData) => {
     const response = await axiosInstance.post("/auth/login", loginData);
     return response.data;
   } catch (error) {
-<<<<<<< HEAD
-    if (error instanceof AxiosError) {
-      const message = error.response?.data?.message || error.message;
-      const status = error.response?.status ?? 500;
-      onError(status, message);
-    }
-=======
     throw error;
->>>>>>> develop
   }
 };
 
