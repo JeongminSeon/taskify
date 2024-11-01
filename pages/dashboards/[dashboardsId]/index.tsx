@@ -76,7 +76,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
   // 새로운 칼럼을 생성하는 함수, 모달의 확인 버튼을 클릭 시 실행
   const handleConfirm = useCallback(
     (inputValue: string) => {
-      alert("새로운 칼럼이 생성되었습니다.");
       createColumn({
         title: inputValue,
         dashboardId: Number(dashboardsId),

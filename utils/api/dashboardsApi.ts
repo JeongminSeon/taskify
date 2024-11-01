@@ -7,7 +7,7 @@ import {
   Invitation,
 } from "@/types/dashboards";
 import axiosInstance from "./axiosInstanceApi";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { onError } from "./error";
 
 // 대시보드 목록 가져오기
@@ -70,7 +70,7 @@ export const getDashboardDetail = async (
     );
     return response.data;
   } catch (error) {
-    console.error("Failed to fetch dashboard detail:", error);
+    console.error("대시보드 상세 정보 가져오는 데 실패했습니다:", error);
     throw error;
   }
 };
@@ -85,14 +85,13 @@ export const getMembers = async ({
   page?: number;
   size?: number;
 }): Promise<MembersResponse> => {
-  console.log(dashboardId);
   try {
     const response = await axiosInstance.get(
       `/members?page=${page}&size=${size}&dashboardId=${dashboardId}`
     );
     return response.data;
   } catch (error) {
-    console.error("Failed to fetch Members:", error);
+    console.error("멤버 정보 가져오는 데 실패했습니다:", error);
     throw error;
   }
 };
@@ -115,7 +114,7 @@ export const updateDashboard = async (
     );
     return response.data;
   } catch (error) {
-    console.error("Failed to update dashboard:", error);
+    console.error("대시보드 업데이트하는 데 실패했습니다:", error);
     throw error;
   }
 };
@@ -125,7 +124,7 @@ export const deleteDashboard = async (dashboardId: number): Promise<void> => {
   try {
     await axiosInstance.delete(`/dashboards/${dashboardId}`);
   } catch (error) {
-    console.error("Failed to fetch dashboard detail:", error);
+    console.error("대시보드 삭제하는 데 실패했습니다:", error);
     throw error;
   }
 };

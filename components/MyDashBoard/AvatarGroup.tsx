@@ -12,8 +12,7 @@ const AvatarGroup = () => {
   const { dashboardsId } = router.query;
 
   const loadMembers = async () => {
-    if (!dashboardsId) return; // id가 없는 경우 함수 종료
-    console.log("dashboard ID : ", dashboardsId);
+    if (!dashboardsId) return;
     try {
       const response = await getMembers({
         dashboardId: dashboardsId as string,

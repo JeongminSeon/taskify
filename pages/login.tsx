@@ -7,22 +7,23 @@ import visibilityOn from "@/public/images/icons/icon_visibility.svg?url";
 import Input from "@/components/Auth/Input";
 import { isEmailValid, isEntered, isPWValid } from "@/utils/validation";
 import useInput from "@/hooks/useInput";
-import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useAuthStore } from "@/store/authStore";
 import MetaHead from "@/components/MetaHead";
+import useErrorModal from "@/hooks/modal/useErrorModal";
+import ModalAlert from "@/components/UI/modal/ModalAlert";
 
 const Login = () => {
   const router = useRouter();
   const [isShowPW, setIsShowPw] = useState(false);
   const login = useAuthStore((state) => state.login);
+  const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
 
   const {
     enteredValue: emailValue,
     handleInputChange: handleEmailInputChange,
     handleBlurChange: handleEmailBlurChange,
     error: isEmailNotValid,
-    // reset: resetEmailInput,
   } = useInput<string>({
     defaultValue: "",
     hasError: (value) => isEmailValid(value),
@@ -33,7 +34,6 @@ const Login = () => {
     handleInputChange: handlePWInputChange,
     handleBlurChange: handlePWBlurChange,
     error: isPWNotValid,
-    // reset: resetPasswordInput,
   } = useInput<string>({
     defaultValue: "",
     hasError: (value) => isPWValid(value),
@@ -44,11 +44,8 @@ const Login = () => {
   };
 
   const allFieldsFilled = isEntered(emailValue) && isEntered(passwordValue);
-
   const hasErrors = isEmailNotValid || isPWNotValid;
-
   const isSubmitEnabled = allFieldsFilled && !hasErrors;
-
   const buttonColor = isSubmitEnabled ? "bg-purple100" : "bg-gray300";
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -63,21 +60,7 @@ const Login = () => {
       await login(formData);
       router.push("/mydashboard");
     } catch (error) {
-      console.error("로그인 중 오류 발생:", error);
-      if (error instanceof AxiosError) {
-        const message = error.message;
-        const status = error.status;
-
-        if (status === 400) {
-          alert(message);
-        } else if (status === 404) {
-          alert(message);
-        } else {
-          console.error(message);
-        }
-      } else {
-        console.error("예기치 못한 에러가 발생했습니다.", error);
-      }
+      handleError(error);
     }
   };
 
@@ -136,6 +119,9 @@ const Login = () => {
           </p>
         </div>
       </div>
+      {isOpen && (
+        <ModalAlert isOpen={isOpen} onClose={handleClose} text={errorMessage} />
+      )}
     </>
   );
 };

@@ -35,13 +35,11 @@ export const useAuthStore = create<AuthState>((set) => ({
       setAccessToken(accessToken); // cookie 설정 추가
       set({ user, isAuthenticated: true });
     } catch (error) {
-      console.error("로그인 실패:", error);
       set({ user: null, isAuthenticated: false });
-      throw error; // 에러를 상위로 전파하여 컴포넌트에서 처리할 수 있도록 함
+      throw error;
     }
   },
 
-  // ... existing code ...
   logout: () => {
     set({ user: null, isAuthenticated: false });
     // store 상태 업데이트

@@ -9,3 +9,8 @@ export const setAccessToken = (token: string) => {
 export const getAccessToken = () => {
   return Cookies.get("accessToken") || null;
 };
+
+// Access Token 삭제하는 함수
+export const removeAccessToken = () => {
+  Cookies.remove("accessToken");
+};
