@@ -40,7 +40,6 @@ const InvitedList = () => {
       await axiosInstance.put(`/invitations/${invitationId}`, {
         inviteAccepted: accepted,
       });
-      alert(accepted ? "초대를 수락했습니다." : "초대를 거절했습니다.");
     } catch (err) {
       console.error("초대 상태 업데이트 중 오류 발생:", err);
     }

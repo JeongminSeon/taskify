@@ -7,11 +7,11 @@ import { isEmailValid, isEntered, isPWValid, isSame } from "@/utils/validation";
 import useInput from "@/hooks/useInput";
 import Logo from "@/components/Auth/Logo";
 import { createUser } from "../utils/api/authApi";
-import { AxiosError } from "axios";
 import MetaHead from "@/components/MetaHead";
 import { useRouter } from "next/router";
-import useModal from "@/hooks/modal/useModal";
+import useErrorModal from "@/hooks/modal/useErrorModal";
 import ModalAlert from "@/components/UI/modal/ModalAlert";
+import useModal from "@/hooks/modal/useModal";
 
 const SignUp = () => {
   const router = useRouter();
@@ -21,6 +21,7 @@ const SignUp = () => {
     confirmPassword: false,
   });
   const [checked, setChecked] = useState(false);
+  const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
   const handleShowPW = (identifier: string) => {
     setIsShowPw((prevState) => ({
       ...prevState,
@@ -106,7 +107,7 @@ const SignUp = () => {
       password: passwordValue,
     };
     try {
-      const response = await createUser(formData);
+      await createUser(formData);
 
       // Input Reset
       resetEmailInput();
@@ -117,11 +118,7 @@ const SignUp = () => {
       // 회원가입 성공 시 /mydashboard로 이동
       openModal("가입이 완료되었습니다!");
     } catch (error) {
-      if (error instanceof AxiosError) {
-        openModal(error.message);
-      } else {
-        openModal("예기치 못한 에러가 발생했습니다.");
-      }
+      handleError(error);
     }
   };
 
@@ -222,6 +219,13 @@ const SignUp = () => {
             </Link>
           </p>
         </div>
+        {isOpen && (
+          <ModalAlert
+            isOpen={isOpen}
+            onClose={handleClose}
+            text={errorMessage}
+          />
+        )}
       </div>
     </>
   );

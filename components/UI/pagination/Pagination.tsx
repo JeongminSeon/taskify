@@ -6,6 +6,7 @@ interface PaginationProps {
   totalPages: number;
   onNextPage: () => void;
   onPreviousPage: () => void;
+  showPageInfo?: boolean;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
@@ -13,17 +14,20 @@ const Pagination: React.FC<PaginationProps> = ({
   totalPages,
   onNextPage,
   onPreviousPage,
+  showPageInfo = true,
 }) => {
   // totalPages가 0일 경우 1로 표시
   const displayTotalPages = totalPages > 0 ? totalPages : 1;
 
   return (
     <div className="flex items-center justify-end gap-5">
-      <div>
-        <span className="text-sm text-black300">
-          {currentPage} 페이지 중 {displayTotalPages}
-        </span>
-      </div>
+      {showPageInfo && ( // showPageInfo가 true일 때만 페이지 정보 표시
+        <div>
+          <span className="text-sm text-black300">
+            {currentPage} 페이지 중 {displayTotalPages}
+          </span>
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <button
           onClick={onPreviousPage}
