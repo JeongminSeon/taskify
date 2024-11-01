@@ -23,14 +23,14 @@ interface CardListLayoutProps {
     onUpdateCard: (card: CardType) => void;
     onRefresh: () => void;
   };
-  metaProps: { columnTitle: string; dashboardId: number };
+  metaProps: { columnTitle: string };
 }
 
 const CardListLayout: React.FC<CardListLayoutProps> = ({
   cardProps: { cards, selectedCard, tagColors },
   modalProps: { isDetailOpen, isUpdateOpen, onCloseDetail, onCloseUpdate },
   actionProps: { onCardClick, onEdit, onDelete, onUpdateCard, onRefresh },
-  metaProps: { dashboardId, columnTitle },
+  metaProps: { columnTitle },
 }) => {
   return (
     <ul className="flex flex-col gap-4 mt-[10px]">
@@ -40,7 +40,6 @@ const CardListLayout: React.FC<CardListLayoutProps> = ({
             card={card}
             tagColors={tagColors}
             onClick={() => onCardClick(card)}
-            dashboardId={dashboardId}
           />
         </li>
       ))}
@@ -59,7 +58,6 @@ const CardListLayout: React.FC<CardListLayoutProps> = ({
             cardId={selectedCard.id}
             isOpen={isUpdateOpen}
             onClose={onCloseUpdate}
-            dashboardId={dashboardId}
             onUpdateCard={onUpdateCard}
             onRefresh={onRefresh}
           />

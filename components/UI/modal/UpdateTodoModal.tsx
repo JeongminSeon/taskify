@@ -6,7 +6,6 @@ const UpdateTodoModal = ({
   cardId,
   isOpen,
   onClose,
-  dashboardId,
   onUpdateCard,
   onRefresh,
 }: TodoModalProps) => {
@@ -17,7 +16,6 @@ const UpdateTodoModal = ({
       <UpdateTodoForm
         cardId={cardId}
         onClose={onClose}
-        dashboardId={dashboardId}
         onUpdateCard={onUpdateCard}
         onRefresh={onRefresh}
       />

@@ -10,12 +10,11 @@ interface CardProps {
   card: CardType;
   tagColors: Record<string, string>;
   onClick: () => void;
-  dashboardId: number;
 }
 
 const Card: React.FC<CardProps> = ({ card, tagColors, onClick }) => (
   <div
-    className="w-full p-3 border rounded-md bg-white border-gray400 lg:block md:flex md:gap-5"
+    className="w-full p-3 border rounded-md bg-white border-gray400 lg:block md:flex md:gap-5 cursor-pointer"
     onClick={onClick}
   >
     <CardImage imageUrl={card.imageUrl} />

@@ -10,16 +10,10 @@ import ColumnHeader from "./ColumnHeader";
 interface ColumnProps {
   id: number;
   title: string;
-  dashboardId: number;
   onRefresh: () => void;
 }
 
-const Column: React.FC<ColumnProps> = ({
-  id,
-  title,
-  dashboardId,
-  onRefresh,
-}) => {
+const Column: React.FC<ColumnProps> = ({ id, title, onRefresh }) => {
   const { isOpen, openModal, closeModal } = useModal();
   const { cards, fetchCards, addCard, updateCard, deleteCard } =
     useCardsStore();
@@ -36,7 +30,6 @@ const Column: React.FC<ColumnProps> = ({
         cards={cards[id] || []}
         columnId={id}
         title={title}
-        dashboardId={dashboardId}
         onUpdateCard={(updatedCard) => updateCard(id, updatedCard)}
         onDeleteCard={(cardId) => deleteCard(id, cardId)}
         onRefresh={onRefresh}
@@ -47,7 +40,6 @@ const Column: React.FC<ColumnProps> = ({
             columnId={id}
             isOpen={isOpen}
             onClose={closeModal}
-            dashboardId={dashboardId}
             onCreateCard={(newCard) => addCard(id, newCard)}
           />
         </Portal>

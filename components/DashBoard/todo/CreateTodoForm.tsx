@@ -12,15 +12,17 @@ import DateInput from "../inputs/DateInput";
 import TagInput from "../inputs/TagInput";
 import ImageInput from "../inputs/ImageInput";
 import UserInput from "../inputs/UserInput";
+import { useDashBoardStore } from "@/store/dashBoardStore";
 
 const CreateTodoForm = ({
   columnId,
   onClose,
-  dashboardId,
+
   onCreateCard,
 }: TodoModalProps) => {
   const [formData, setFormData] = useState<TodoFormProps>(INITIAL_VALUES);
   const preview = useImagePreview(formData.imageUrl ? formData.imageUrl : null);
+  const { dashboardId } = useDashBoardStore();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

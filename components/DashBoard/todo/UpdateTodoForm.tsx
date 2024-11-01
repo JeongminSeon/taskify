@@ -13,16 +13,17 @@ import ImageInput from "../inputs/ImageInput";
 import UserInput from "../inputs/UserInput";
 import ColumnInput from "../inputs/ColumnInput";
 import { getCard, updateCard } from "@/utils/api/cardsApi";
+import { useDashBoardStore } from "@/store/dashBoardStore";
 
 const UpdateTodoForm = ({
   cardId,
   onClose,
-  dashboardId,
   onUpdateCard,
   onRefresh,
 }: TodoModalProps) => {
   const [formData, setFormData] = useState<TodoFormProps>(INITIAL_VALUES);
   const preview = useImagePreview(formData.imageUrl ? formData.imageUrl : null);
+  const { dashboardId } = useDashBoardStore();
 
   useEffect(() => {
     if (!cardId) return;

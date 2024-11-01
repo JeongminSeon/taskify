@@ -6,7 +6,6 @@ const CreateTodoModal = ({
   columnId,
   isOpen,
   onClose,
-  dashboardId,
   onCreateCard,
 }: TodoModalProps) => {
   if (!isOpen) return null;
@@ -16,7 +15,6 @@ const CreateTodoModal = ({
       <CreateTodoForm
         columnId={columnId}
         onClose={onClose}
-        dashboardId={dashboardId}
         onCreateCard={onCreateCard}
       />
     </TodoModalLayout>
