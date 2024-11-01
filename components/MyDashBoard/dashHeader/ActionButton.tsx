@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { hdMenuBtn, hdMenuBtnIcon } from "../MyDashStyle";
+import AvatarGroup from "../AvatarGroup";
 
 interface ActionButtonProps {
   onManageClick: () => void;
@@ -15,7 +16,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
 }) => {
   if (isMyDashboardPage) return null; // '/mydashboard'에서 버튼을 숨김
   return (
-    <ul className="flex gap-[6px] md:gap-4">
+    <ul className="flex items-center gap-[6px] md:gap-4">
       <li>
         <button onClick={onManageClick} className={`${hdMenuBtn}`}>
           <span className={`${hdMenuBtnIcon}`}>
@@ -45,6 +46,9 @@ const ActionButton: React.FC<ActionButtonProps> = ({
           </span>
           초대하기
         </button>
+      </li>
+      <li>
+        <AvatarGroup />
       </li>
     </ul>
   );
