@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   // 임시 이미지 사용을 위한 도메인 추가
   images: {
     domains: [
