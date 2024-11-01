@@ -23,7 +23,19 @@ const InvitedList = () => {
   const fetchInvitations = async () => {
     try {
       const data = await getMyInvitations();
-      setInvitations(data.invitations);
+
+      // 중복 초대 제거
+      const uniqueInvitations = data.invitations.filter(
+        (invite, index, self) =>
+          index ===
+          self.findIndex(
+            (t) =>
+              t.invitee.id === invite.invitee.id &&
+              t.dashboard.id === invite.dashboard.id
+          )
+      );
+
+      setInvitations(uniqueInvitations);
     } catch (err) {
       console.error(err);
     }

@@ -22,8 +22,8 @@ export type Dashboard = {
 
 export type DashboardResponse = {
   cursorId: number;
-  dashboards: Dashboard[];
   totalCount: number;
+  dashboards: Dashboard[];
 };
 
 interface Inviter {
