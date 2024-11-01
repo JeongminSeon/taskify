@@ -19,6 +19,9 @@ import LoadingSpinner from "@/components/UI/loading/LoadingSpinner";
 import useErrorModal from "@/hooks/modal/useErrorModal";
 import MetaHead from "@/components/MetaHead";
 import ModalAlert from "@/components/UI/modal/ModalAlert";
+import { GetServerSideProps } from "next";
+import { parse } from "cookie";
+import { getUserInfo } from "@/utils/api/authApi";
 
 const DashboardEdit = () => {
   const router = useRouter();
@@ -187,4 +190,37 @@ const DashboardEdit = () => {
   );
 };
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req } = context;
+  const cookies = parse(req.headers.cookie || "");
+  const accessToken = cookies.accessToken;
+
+  if (!accessToken) {
+    // 로그인 토큰이 없으면 로그인 페이지로 리다이렉트
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  try {
+    // 로그인 토큰이 있을 경우 사용자 정보 가져오기
+    const user = await getUserInfo(accessToken);
+    return {
+      props: {
+        initialUser: user,
+      },
+    };
+  } catch (error) {
+    console.error("Failed to fetch user info:", error);
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+};
 export default DashboardEdit;

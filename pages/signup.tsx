@@ -6,12 +6,14 @@ import Input from "@/components/Auth/Input";
 import { isEmailValid, isEntered, isPWValid, isSame } from "@/utils/validation";
 import useInput from "@/hooks/useInput";
 import Logo from "@/components/Auth/Logo";
-import { createUser } from "../utils/api/authApi";
+import { createUser, getUserInfo } from "../utils/api/authApi";
 import MetaHead from "@/components/MetaHead";
 import { useRouter } from "next/router";
 import useErrorModal from "@/hooks/modal/useErrorModal";
 import ModalAlert from "@/components/UI/modal/ModalAlert";
 import useModal from "@/hooks/modal/useModal";
+import { GetServerSideProps } from "next";
+import { parse } from "cookie";
 
 const SignUp = () => {
   const router = useRouter();
@@ -229,6 +231,38 @@ const SignUp = () => {
       </div>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req } = context;
+  const cookies = parse(req.headers.cookie || "");
+  const accessToken = cookies.accessToken;
+
+  // 로그인 상태일 경우 /mydashboard로 리다이렉트
+  if (accessToken) {
+    try {
+      const user = await getUserInfo(accessToken);
+      return {
+        redirect: {
+          destination: "/mydashboard",
+          permanent: false,
+        },
+      };
+    } catch (error) {
+      console.error("Failed to fetch user info:", error);
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
+    }
+  }
+
+  // 로그인 상태가 아닌 경우 페이지에 접근 허용
+  return {
+    props: {},
+  };
 };
 
 export default SignUp;
