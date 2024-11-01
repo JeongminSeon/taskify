@@ -81,7 +81,7 @@ export const getMembers = async ({
   page = 1, // 기본값 설정
   size = 20, // 기본값 설정
 }: {
-  dashboardId: string;
+  dashboardId: number;
   page?: number;
   size?: number;
 }): Promise<MembersResponse> => {
