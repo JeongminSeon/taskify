@@ -116,7 +116,6 @@ const SignUp = () => {
 
       // 회원가입 성공 시 /mydashboard로 이동
       openModal("가입이 완료되었습니다!");
-      router.push("/login");
     } catch (error) {
       if (error instanceof AxiosError) {
         openModal(error.message);
@@ -124,6 +123,11 @@ const SignUp = () => {
         openModal("예기치 못한 에러가 발생했습니다.");
       }
     }
+  };
+
+  const handleModalConfirm = () => {
+    closeModal();
+    router.push("/login");
   };
 
   return (
@@ -137,6 +141,7 @@ const SignUp = () => {
         <ModalAlert
           isOpen={isModalOpen}
           onClose={closeModal}
+          onConfirm={handleModalConfirm}
           text={modalMessage}
         />
         <form className="flex flex-col w-full gap-3" onSubmit={handleSubmit}>
