@@ -97,7 +97,7 @@ const SignUp = () => {
     };
     try {
       const response = await createUser(formData);
-      console.log(response);
+
       // Input Reset
       resetEmailInput();
       resetNameInput();
