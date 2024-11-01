@@ -7,17 +7,26 @@ import visibilityOn from "@/public/images/icons/icon_visibility.svg?url";
 import Input from "@/components/Auth/Input";
 import { isEmailValid, isEntered, isPWValid } from "@/utils/validation";
 import useInput from "@/hooks/useInput";
-import { AxiosError } from "axios";
+import { Axios, AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useAuthStore } from "@/store/authStore";
 import { getLogin } from "@/utils/api/authApi";
 import { setAccessToken } from "@/utils/api/cookie";
 import MetaHead from "@/components/MetaHead";
+import ModalAlert from "@/components/UI/modal/ModalAlert";
+import useModal from "@/hooks/modal/useModal";
+import Portal from "@/components/UI/modal/ModalPotal";
 
 const Login = () => {
   const router = useRouter();
   const [isShowPW, setIsShowPw] = useState(false);
   const login = useAuthStore((state) => state.login);
+  const {
+    isOpen: isModalOpen,
+    openModal,
+    closeModal,
+    modalMessage,
+  } = useModal(); // useModal 훅 사용
 
   const {
     enteredValue: emailValue,
@@ -69,24 +78,20 @@ const Login = () => {
       router.push("/mydashboard");
       return;
     } catch (error) {
-      console.error("로그인 중 오류 발생:", error);
+      console.log("isAxiosError ?  : ", error instanceof AxiosError);
       if (error instanceof AxiosError) {
-        const message = error.message;
         const status = error.status;
+        const message = error.message;
 
-        if (status === 400) {
-          alert(message);
-        } else if (status === 404) {
-          alert(message);
+        if (status === 400 || status === 404) {
+          openModal(message);
         } else {
-          console.error(message);
+          openModal("예기치 못한 에러가 발생했습니다.");
         }
-      } else {
-        console.error("예기치 못한 에러가 발생했습니다.", error);
       }
     }
   };
-
+  console.log("isModalOpen : ", isModalOpen);
   return (
     <>
       <MetaHead
@@ -98,6 +103,13 @@ const Login = () => {
           <Image src={logoImage} width={200} height={280} alt="logo_main" />
           <p className="text-xl">오늘도 만나서 반가워요!</p>
         </div>
+        <Portal>
+          <ModalAlert
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            text={modalMessage}
+          />
+        </Portal>
         <form className="flex flex-col w-full gap-3" onSubmit={handleSubmit}>
           <Input
             id="email"

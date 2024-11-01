@@ -49,6 +49,7 @@ export const createUser = async (formData: formData) => {
     }
   }
 };
+
 export const getLogin = async (loginData: loginData) => {
   try {
     const response = await axiosInstance.post("/auth/login", loginData);
@@ -59,7 +60,6 @@ export const getLogin = async (loginData: loginData) => {
       const status = error.response?.status ?? 500;
       onError(status, message);
     }
-    throw error;
   }
 };
 
