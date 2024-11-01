@@ -64,6 +64,7 @@ const Login = () => {
     }
   };
 
+  console.log(isSubmitEnabled);
   return (
     <>
       <MetaHead
@@ -102,6 +103,7 @@ const Login = () => {
           />
           <button
             className={`${buttonColor} py-3 rounded-lg text-white text-lg mt-2`}
+            disabled={!isSubmitEnabled}
             type="submit"
           >
             로그인

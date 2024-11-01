@@ -32,6 +32,7 @@ export const createUser = async (formData: formData) => {
     throw error;
   }
 };
+
 export const getLogin = async (loginData: loginData) => {
   try {
     const response = await axiosInstance.post("/auth/login", loginData);
