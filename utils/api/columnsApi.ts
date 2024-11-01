@@ -1,8 +1,8 @@
 import {
   ColoumnsParams,
-  ColumnsResponse,
   ColumnsCreateParams,
-  ColumnsCreateResponse,
+  ColumnsResponse,
+  ColumnsUpdateParams,
   ImageCreateParams,
   ImageCreateResponse,
 } from "@/types/columns";
@@ -30,18 +30,41 @@ export const getColumns = async ({
 export const createColumn = async ({
   title,
   dashboardId,
-}: ColumnsCreateParams): Promise<ColumnsCreateResponse> => {
+}: ColumnsCreateParams): Promise<ColumnsResponse> => {
   try {
-    const response = await axiosInstance.post<ColumnsCreateResponse>(
-      `/columns`,
-      {
-        title,
-        dashboardId,
-      }
-    );
+    const response = await axiosInstance.post<ColumnsResponse>(`/columns`, {
+      title,
+      dashboardId,
+    });
     return response.data;
   } catch (error) {
     console.error("칼럼을 생성하는 중 오류가 발생했습니다:", error);
+    throw error;
+  }
+};
+
+// 칼럼 수정
+export const updateColumn = async ({
+  columnId,
+  title,
+}: ColumnsUpdateParams): Promise<ColumnsResponse> => {
+  try {
+    const response = await axiosInstance.put(`/columns/${columnId}`, {
+      title,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("칼럼을 수정하는 중 오류가 발생했습니다:", error);
+    throw error;
+  }
+};
+
+// 칼럼 삭제
+export const deleteColumn = async (columnId: number): Promise<void> => {
+  try {
+    await axiosInstance.delete(`/columns/${columnId}`);
+  } catch (error) {
+    console.error("칼럼을 삭제하는 중 오류가 발생했습니다:", error);
     throw error;
   }
 };

@@ -15,7 +15,7 @@ const AvatarGroup = () => {
     if (!dashboardsId) return;
     try {
       const response = await getMembers({
-        dashboardId: dashboardsId as string,
+        dashboardId: Number(dashboardsId as string),
       }); // id를 문자열로 캐스팅
       setAvatars(response.members);
       setTotalCount(response.totalCount);

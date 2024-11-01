@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { TempTagsProps } from "./inputs/TagInput";
+import { TempTagsProps } from "../inputs/TagInput";
 
 const TodoTagList = ({
   tags,

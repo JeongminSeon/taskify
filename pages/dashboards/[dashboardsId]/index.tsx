@@ -16,6 +16,7 @@ import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
 import useModal from "@/hooks/modal/useModal";
 import LoadingSpinner from "@/components/UI/loading/LoadingSpinner";
 import MetaHead from "@/components/MetaHead";
+import Custom404 from "@/pages/404";
 
 // DashboardDetailProps 인터페이스 정의 - 초기 유저 정보를 받는 props
 interface DashboardDetailProps {
@@ -98,9 +99,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
     }
   }, [dashboardsId, fetchColumns]);
 
-  // 로딩 상태나 에러가 있을 때 로딩 및 에러 메시지 렌더링
-  if (error) return <div>{error}</div>;
-
   // 실제 렌더링 부분
   return (
     <>
@@ -109,52 +107,74 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
         description="대시보드에 새로운 일정을 추가해보세요!"
       />
       <DashBoardLayout>
-        {!loading ? (
-          <div>
-            <div className="columns flex flex-col lg:flex-row">
-              {/* 각 칼럼 데이터를 Column 컴포넌트로 렌더링 */}
-              {columns.map((item) => (
-                <Column
-                  key={item.id}
-                  id={item.id}
-                  title={item.title}
-                  dashboardId={Number(dashboardsId)}
+        {loading ? (
+          <div className="flex justify-center items-center min-h-screen">
+            <LoadingSpinner text={"로딩중입니다! 잠시만 기다려주세요🙂‍↕️"} />
+          </div>
+        ) : error ? (
+          <div className="flex justify-center items-center min-h-screen text-lg">
+            <Custom404 />
+          </div>
+        ) : !columns.length ? (
+          <div className="columns flex flex-col lg:flex-row">
+            <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 border-r border-[gray600]">
+              <button
+                type="button"
+                className="flex justify-center items-center gap-3 w-full sm:h-[66px] h-[70px] lg:mt-12 border border-gray400 rounded-md bg-white100 text-black300 font-bold"
+                onClick={handleAddColumn}
+              >
+                새로운 컬럼 추가하기
+                <Image
+                  src="/images/icons/icon_add_column.svg"
+                  width={16}
+                  height={16}
+                  alt="할 일 추가"
                 />
-              ))}
-              <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 border-r border-[gray600]">
-                <button
-                  type="button"
-                  className="flex justify-center items-center gap-3 w-full sm:h-[66px] h-[70px] lg:mt-12 border border-gray400 rounded-md bg-white100 text-black300 font-bold"
-                  onClick={handleAddColumn}
-                >
-                  새로운 컬럼 추가하기
-                  <Image
-                    src="/images/icons/icon_add_column.svg"
-                    width={16}
-                    height={16}
-                    alt="할 일 추가"
-                  />
-                </button>
-              </div>
-              <Portal>
-                <OneInputModal
-                  isOpen={isOpen}
-                  modalTitle="새 칼럼 생성"
-                  inputLabel="이름"
-                  inputPlaceholder="컬럼 이름을 입력해주세요"
-                  onCancel={closeModal}
-                  cancelButtonText="취소"
-                  onConfirm={() => handleModalConfirm(handleConfirm)}
-                  confirmButtonText="생성"
-                  inputValue={inputValue}
-                  onInputChange={handleInputChange}
-                />
-              </Portal>
+              </button>
             </div>
           </div>
         ) : (
-          <LoadingSpinner text={"로딩중입니다! 잠시만 기다려주세요🙂‍↕️"} />
+          <div className="columns flex flex-col lg:flex-row">
+            {columns.map((item) => (
+              <Column
+                key={item.id}
+                id={item.id}
+                title={item.title}
+                dashboardId={Number(dashboardsId)}
+                onRefresh={fetchColumns}
+              />
+            ))}
+            <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 border-r border-[gray600]">
+              <button
+                type="button"
+                className="flex justify-center items-center gap-3 w-full sm:h-[66px] h-[70px] lg:mt-12 border border-gray400 rounded-md bg-white100 text-black300 font-bold"
+                onClick={handleAddColumn}
+              >
+                새로운 컬럼 추가하기
+                <Image
+                  src="/images/icons/icon_add_column.svg"
+                  width={16}
+                  height={16}
+                  alt="할 일 추가"
+                />
+              </button>
+            </div>
+          </div>
         )}
+        <Portal>
+          <OneInputModal
+            isOpen={isOpen}
+            modalTitle="새 칼럼 생성"
+            inputLabel="이름"
+            inputPlaceholder="컬럼 이름을 입력해주세요"
+            onCancel={closeModal}
+            cancelButtonText="취소"
+            onConfirm={() => handleModalConfirm(handleConfirm)}
+            confirmButtonText="생성"
+            inputValue={inputValue}
+            onInputChange={handleInputChange}
+          />
+        </Portal>
       </DashBoardLayout>
     </>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getMembers } from "@/utils/api/dashboardsApi";
 import { boxStyle, inputStyle, labelStyle } from "../styles";
-import { MemberProps } from "@/types/dashboards";
+import { Member } from "@/types/dashboards";
 
 interface UserInputProps {
   value: number;
@@ -10,12 +10,12 @@ interface UserInputProps {
 }
 
 const UserInput = ({ value, onChange, dashboardId }: UserInputProps) => {
-  const [members, setMembers] = useState<MemberProps[]>([]);
+  const [members, setMembers] = useState<Member[]>([]);
 
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const { members } = await getMembers(Number(dashboardId));
+        const { members } = await getMembers({ dashboardId });
         setMembers(members);
       } catch (error) {
         console.error("Failed to fetch members:", error);

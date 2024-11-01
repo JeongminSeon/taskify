@@ -2,12 +2,12 @@ import { useState } from "react";
 
 interface UseModalReturn {
   isOpen: boolean;
-  openModal: (message?: string | Error | unknown) => void; // 수정
+  openModal: (message?: string | Error | unknown) => void;
   closeModal: () => void;
   inputValue: string;
   modalMessage: string;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleConfirm: (callback: (value: string) => void) => void;
+  handleConfirm: (callback: (() => void) | ((value: string) => void)) => void;
 }
 
 const useModal = (): UseModalReturn => {
@@ -40,8 +40,15 @@ const useModal = (): UseModalReturn => {
     setInputValue(e.target.value);
   };
 
-  const handleConfirm = (callback: (value: string) => void) => {
-    callback(inputValue);
+  // 콜백 함수가 인자를 받는지에 따라 다르게 처리
+  const handleConfirm = (
+    callback: (() => void) | ((value: string) => void)
+  ) => {
+    if (callback.length === 0) {
+      (callback as () => void)();
+    } else {
+      (callback as (value: string) => void)(inputValue);
+    }
     closeModal();
   };
 
