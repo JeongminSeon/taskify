@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Dashboard } from "@/types/dashboards";
 import { getDashboards } from "@/utils/api/dashboardsApi";
 import { GetServerSideProps } from "next";
+import useResponsiveThreshold from "@/hooks/dashboard/useResponsiveThreshold";
 
 interface MyDashSideMenuProps {
   dashboards: Dashboard[];
@@ -29,8 +30,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
+  const itemsPerPage = useResponsiveThreshold(dashboards.length, 15);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 15;
 
   const totalPages = dashboards
     ? Math.ceil(dashboards.length / itemsPerPage)
@@ -50,7 +51,7 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
   );
 
   return (
-    <div className="sticky top-0 h-screen py-5 px-[14px] border-r border-gray400 bg-white lg:px-2 ">
+    <div className="sticky top-0 h-full py-5 px-[14px] border-r border-gray400 bg-white lg:px-2 ">
       <h1 className="md:hidden">
         <Link href="/mydashboard">
           <Image
@@ -102,7 +103,7 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
           ))}
         </ul>
       </div>
-      {dashboards && dashboards.length > 0 && (
+      {dashboards && dashboards.length > itemsPerPage && (
         <div className="mt-3">
           <Pagination
             currentPage={currentPage}
