@@ -22,7 +22,6 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
   const router = useRouter();
   const { dashboardsId } = router.query;
   const { user } = useAuthStore();
-  //const { dashboards } = useDashBoardStore();
   const [modalMessage, setModalMessage] = useState<string>("");
   const { loadInvitations } = useInvitationStore();
 
@@ -82,8 +81,7 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
 
   const handleManageClick = () => {
     if (currentDashboard && !currentDashboard.createdByMe) {
-      // createdByMe가 false일 경우 상세로 이동
-      alert("접근 권한이 없습니다.");
+      openMessageModal();
       router.push(`/dashboards/${dashboardsId}`);
     } else {
       // 관리 페이지로 이동
@@ -177,7 +175,7 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
         <ModalAlert
           isOpen={isMessageOpen}
           onClose={closeMessageModal}
-          text={modalMessage}
+          text={"접근 권한이 없습니다."}
         />
       )}
     </div>

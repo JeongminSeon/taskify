@@ -15,12 +15,13 @@ interface InviteeListProps {
   dashboardId: number | null;
 }
 
+const ITEMS_PER_PAGE = 5;
+
 const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
   const { loadInvitations, invitations, totalCount } = useInvitationStore();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [modalMessage, setModalMessage] = useState<string>("");
-  const ITEMS_PER_PAGE = 5;
 
   const {
     isOpen,

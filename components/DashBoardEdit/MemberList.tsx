@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Pagination from "../UI/pagination/Pagination";
-import MemberItem from "./components/MemberItem";
+import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
 import { Member, MemberResponse } from "@/types/members";
 import { deleteMember, getMembers } from "@/utils/api/membersApi";
+import Pagination from "../UI/pagination/Pagination";
+import MemberItem from "./components/MemberItem";
 
 interface MemberListProps {
   dashboardId: number;
