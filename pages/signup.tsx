@@ -105,7 +105,7 @@ const SignUp = () => {
       resetPWCheckInput();
 
       // 회원가입 성공 시 /mydashboard로 이동
-      router.push("/mydashboard");
+      router.push("/login");
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.status === 409) {
