@@ -115,6 +115,7 @@ const SignUp = () => {
       resetPWCheckInput();
 
       // 회원가입 성공 시 /mydashboard로 이동
+      openModal("가입이 완료되었습니다!");
       router.push("/login");
     } catch (error) {
       if (error instanceof AxiosError) {
