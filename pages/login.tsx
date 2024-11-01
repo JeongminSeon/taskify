@@ -10,14 +10,14 @@ import useInput from "@/hooks/useInput";
 import { useRouter } from "next/router";
 import { useAuthStore } from "@/store/authStore";
 import MetaHead from "@/components/MetaHead";
-import useErrorModal from "@/hooks/modal/useErrorModal"; // useErrorModal 훅을 가져옵니다.
+import useErrorModal from "@/hooks/modal/useErrorModal";
 import ModalAlert from "@/components/UI/modal/ModalAlert";
 
 const Login = () => {
   const router = useRouter();
   const [isShowPW, setIsShowPw] = useState(false);
   const login = useAuthStore((state) => state.login);
-  const { isOpen, errorMessage, handleError, handleClose } = useErrorModal(); // 에러 모달 훅 사용
+  const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
 
   const {
     enteredValue: emailValue,
@@ -120,15 +120,7 @@ const Login = () => {
         </div>
       </div>
       {isOpen && (
-        <div>
-          {isOpen && (
-            <ModalAlert
-              isOpen={isOpen}
-              onClose={handleClose}
-              text={errorMessage}
-            />
-          )}
-        </div>
+        <ModalAlert isOpen={isOpen} onClose={handleClose} text={errorMessage} />
       )}
     </>
   );
