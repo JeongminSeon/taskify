@@ -1,7 +1,7 @@
+import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { useEffect } from "react";
 import { useAuthStore } from "@/store/authStore";
-import "@/styles/globals.css";
 
 // app 컴포넌트에서 글로벌하게 인증 상태를 관리하여 모든 페이지에서 인증 상태를 자동으로 확인할 수 있습니다.
 export default function App({ Component, pageProps }: AppProps) {

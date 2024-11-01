@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { GetServerSidePropsContext } from "next";
 import {
   deleteDashboard,
   getDashboardDetail,
   updateDashboard,
 } from "@/utils/api/dashboardsApi";
-import { getMembers } from "@/utils/api/membersApi";
-import { Member, MemberResponse } from "@/types/members";
 import { useDashBoardStore } from "@/store/dashBoardStore";
 import { DashboardDetailResponse } from "@/types/dashboards";
+import { useInvitationStore } from "@/store/invitationStore";
+import { AxiosError } from "axios";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import MemberList from "@/components/DashBoardEdit/MemberList";
 import EditBox from "@/components/DashBoardEdit/EditBox";
@@ -17,64 +16,40 @@ import InputField from "@/components/My/InputField";
 import ColorChip from "@/components/UI/colorchip/ColorChip";
 import InviteeList from "@/components/DashBoardEdit/InviteeList";
 
-/* TO DO 
-HEADER > 관리 클릭 시, 권한 있는 지 없는 지 확인
-없을 경우 /dashboards/${dashboardsId} 
-*/
-
-interface EditDashboardProps {
-  dashboardId: number;
-  initialMembers: Member[];
-  totalCount: number;
-}
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { dashboardsId } = context.query;
-
-  let initialMembers: Member[] = [];
-  let totalCount = 0;
-
-  try {
-    const data: MemberResponse = await getMembers(1, 5, Number(dashboardsId));
-    initialMembers = data.members;
-    totalCount = data.totalCount;
-  } catch (error) {
-    console.error("Failed to fetch members:", error);
-  }
-
-  return {
-    props: {
-      dashboardId: Number(dashboardsId),
-      initialMembers,
-      totalCount,
-    },
-  };
-}
-
-const DashboardEdit: React.FC<EditDashboardProps> = ({
-  dashboardId,
-  initialMembers,
-  totalCount,
-}) => {
+const DashboardEdit = () => {
   const router = useRouter();
+  const { dashboardsId } = router.query;
+  const [dashboardId, setDashboardId] = useState<number | null>(null);
+  const { setDashboardsId } = useInvitationStore();
   const [dashboardDetail, setDashboardDetail] =
     useState<DashboardDetailResponse | null>(null);
   const [title, setTitle] = useState<string>("");
   const [color, setColor] = useState<string>("");
 
+  // 쿼리 값이 업데이트된 후에만 dashboardId 처리
+  // setDashboardId를 사용하여 쿼리값이 업데이트되었을 때 이를 상태에 저장
+  useEffect(() => {
+    if (dashboardsId) {
+      const id = Number(dashboardsId);
+      setDashboardId(id);
+      setDashboardsId(id); // 초대 스토어에 ID 설정
+    }
+  }, [dashboardsId, setDashboardsId]);
+
   // 대시보드 상세 가져오기
   useEffect(() => {
     const fetchDashboardDetail = async () => {
-      try {
-        const detail = await getDashboardDetail(dashboardId);
-        setDashboardDetail(detail);
-        setTitle(detail.title);
-        setColor(detail.color);
-      } catch (error) {
-        console.error("Failed to fetch dashboard detail:", error);
+      if (dashboardId !== null) {
+        try {
+          const detail = await getDashboardDetail(dashboardId);
+          setDashboardDetail(detail);
+          setTitle(detail.title);
+          setColor(detail.color);
+        } catch (error) {
+          console.error("대시보드 세부정보를 가져오는 데 실패했습니다:", error);
+        }
       }
     };
-
     fetchDashboardDetail();
   }, [dashboardId]);
 
@@ -84,7 +59,7 @@ const DashboardEdit: React.FC<EditDashboardProps> = ({
   };
 
   // 컬러칩 정의
-  const colorChips = [
+  const COLOR_CHIPS = [
     { id: 1, color: "#7AC555" },
     { id: 2, color: "#760DDE" },
     { id: 3, color: "#FFA500" },
@@ -108,25 +83,26 @@ const DashboardEdit: React.FC<EditDashboardProps> = ({
         );
         setColor(updatedDashboard.color);
         setDashboardDetail(updatedDashboard);
-
         await useDashBoardStore.getState().setDashboards(); // Zustand 스토어에서 대시보드 목록 업데이트
       } catch (error) {
-        console.error("Failed to update dashboard:", error);
+        const axiosError = error as AxiosError<{ message: string }>;
+        if (axiosError.response) {
+          alert(axiosError.response.data.message);
+        } else {
+          console.error("대시보드 변경하는 데 실패했습니다:", error);
+        }
       }
     }
   };
 
   // 대시보드 삭제 핸들러
   const handleDeleteDashboard = async () => {
-    if (dashboardId) {
-      const confirmDelete = confirm("이 대시보드를 정말 삭제하시겠습니까?");
-      if (confirmDelete) {
-        try {
-          await deleteDashboard(dashboardId);
-          router.push("/mydashboard");
-        } catch (error) {
-          console.error("Failed to delete dashboard:", error);
-        }
+    if (dashboardId && confirm("이 대시보드를 정말 삭제하시겠습니까?")) {
+      try {
+        await deleteDashboard(dashboardId);
+        router.push("/mydashboard");
+      } catch (error) {
+        console.error("대시보드 삭제하는 데 실패했습니다:", error);
       }
     }
   };
@@ -141,7 +117,7 @@ const DashboardEdit: React.FC<EditDashboardProps> = ({
           &lt; 돌아가기
         </button>
         <div className="flex flex-col gap-4">
-          <EditBox title={dashboardDetail ? dashboardDetail.title : ""}>
+          <EditBox title={dashboardDetail?.title || ""}>
             <div className="px-4 md:px-7">
               <InputField
                 label="대시보드 이름"
@@ -152,7 +128,7 @@ const DashboardEdit: React.FC<EditDashboardProps> = ({
                 onChange={(e) => setTitle(e.target.value)}
               />
               <div className="flex gap-2 pt-4">
-                {colorChips.map((chip) => (
+                {COLOR_CHIPS.map((chip) => (
                   <ColorChip
                     key={chip.id}
                     color={chip.color}
@@ -171,11 +147,11 @@ const DashboardEdit: React.FC<EditDashboardProps> = ({
             </div>
           </EditBox>
           <EditBox title="구성원">
-            <MemberList
-              dashboardId={dashboardId}
-              initialMembers={initialMembers}
-              totalCount={totalCount}
-            />
+            {dashboardId !== null ? (
+              <MemberList dashboardId={dashboardId} />
+            ) : (
+              <p>구성원이 없습니다.</p>
+            )}
           </EditBox>
           <EditBox title="초대 내역">
             <InviteeList dashboardId={dashboardId} />

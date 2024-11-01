@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from "react";
-import Pagination from "../UI/pagination/Pagination";
-import { deleteMember, getMembers } from "@/utils/api/membersApi";
+import { useEffect, useState } from "react";
+import { AxiosError } from "axios";
 import { Member, MemberResponse } from "@/types/members";
+import { deleteMember, getMembers } from "@/utils/api/membersApi";
+import Pagination from "../UI/pagination/Pagination";
 import MemberItem from "./components/MemberItem";
 
 interface MemberListProps {
   dashboardId: number;
-  initialMembers: Member[];
-  totalCount: number;
 }
 
-const MemberList: React.FC<MemberListProps> = ({
-  dashboardId,
-  initialMembers,
-  totalCount,
-}) => {
-  const [members, setMembers] = useState<Member[]>(initialMembers);
+const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
+  const [members, setMembers] = useState<Member[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(
-    Math.ceil(totalCount / 5)
-  );
+  const [totalPages, setTotalPages] = useState<number>(0);
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -46,7 +39,7 @@ const MemberList: React.FC<MemberListProps> = ({
   };
 
   const handlePreviousPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1)); // 1페이지 이하로는 내리지 않음
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
   };
 
   // 멤버 삭제 핸들러
@@ -59,7 +52,12 @@ const MemberList: React.FC<MemberListProps> = ({
           prevMembers.filter((member) => member.id !== memberId)
         ); // 삭제 후 상태 업데이트
       } catch (error) {
-        console.error("Failed to delete member:", error);
+        const axiosError = error as AxiosError<{ message: string }>;
+        if (axiosError.response) {
+          alert(axiosError.response.data.message);
+        } else {
+          console.error("Failed to delete member:", error);
+        }
       }
     }
   };
