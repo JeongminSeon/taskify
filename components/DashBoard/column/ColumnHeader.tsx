@@ -27,7 +27,7 @@ const ColumnHeader = ({
     try {
       await deleteColumn(columnId);
       closeModal();
-      onRefresh(); // 삭제 후 다시 렌더링
+      onRefresh();
     } catch (error) {
       console.error("컬럼 삭제 실패:", error);
     }
@@ -40,7 +40,7 @@ const ColumnHeader = ({
     try {
       await updateColumn({ columnId, title });
       closeModal();
-      onRefresh(); // 수정 후 다시 렌더링
+      onRefresh();
     } catch (error) {
       console.error("컬럼 수정 실패:", error);
     }

@@ -2,23 +2,12 @@ import CreateTodoForm from "@/components/DashBoard/todo/CreateTodoForm";
 import TodoModalLayout from "@/components/Layout/TodoModalLayout";
 import { TodoModalProps } from "@/types/dashboards";
 
-const CreateTodoModal = ({
-  columnId,
-  isOpen,
-  onClose,
-  dashboardId,
-  onCreateCard,
-}: TodoModalProps) => {
+const CreateTodoModal = ({ isOpen, onClose, onCreateCard }: TodoModalProps) => {
   if (!isOpen) return null;
 
   return (
     <TodoModalLayout text="할 일 생성">
-      <CreateTodoForm
-        columnId={columnId}
-        onClose={onClose}
-        dashboardId={dashboardId}
-        onCreateCard={onCreateCard}
-      />
+      <CreateTodoForm onClose={onClose} onCreateCard={onCreateCard} />
     </TodoModalLayout>
   );
 };
