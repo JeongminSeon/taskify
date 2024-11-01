@@ -1,6 +1,5 @@
 import { addInvitations, deleteInvitations } from "@/utils/api/dashboardsApi";
 import { useCallback, useEffect, useState } from "react";
-import { AxiosError } from "axios";
 import { useInvitationStore } from "@/store/invitationStore";
 import Image from "next/image";
 import Pagination from "../UI/pagination/Pagination";
@@ -10,6 +9,7 @@ import useModal from "@/hooks/modal/useModal";
 import Portal from "@/components/UI/modal/ModalPotal";
 import OneInputModal from "../UI/modal/InputModal/OneInputModal";
 import ModalAlert from "../UI/modal/ModalAlert";
+import useErrorModal from "@/hooks/modal/useErrorModal";
 
 interface InviteeListProps {
   dashboardId: number | null;
@@ -22,9 +22,10 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [modalMessage, setModalMessage] = useState<string>("");
+  const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
 
   const {
-    isOpen,
+    isOpen: isModalOpen,
     inputValue,
     openModal: handleAddInvite,
     closeModal,
@@ -63,15 +64,7 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
 
   const handleConfirm = useCallback(
     async (inputValue: string) => {
-      if (!inputValue) {
-        alert("이메일을 입력해주세요.");
-        return;
-      }
-
-      if (dashboardId === null) {
-        alert("대시보드 ID가 설정되어 있지 않습니다.");
-        return;
-      }
+      if (!dashboardId) return;
 
       try {
         await addInvitations(dashboardId, inputValue);
@@ -80,17 +73,17 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
         closeModal();
         loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE);
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        if (axiosError.response) {
-          setModalMessage(
-            axiosError.response.data.message ||
-              "초대 요청 중 오류가 발생했습니다."
-          );
-        }
-        openMessageModal();
+        handleError(error);
       }
     },
-    [dashboardId, closeModal, openMessageModal, currentPage, loadInvitations]
+    [
+      dashboardId,
+      closeModal,
+      openMessageModal,
+      currentPage,
+      loadInvitations,
+      handleError,
+    ]
   );
 
   const handleDeleteInvitation = async (invitationId: number) => {
@@ -104,7 +97,7 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
         await deleteInvitations(dashboardId, invitationId);
         loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE);
       } catch (error) {
-        console.error("초대 취소 중 오류 발생:", error);
+        handleError(error); // 에러 처리
       }
     }
   };
@@ -120,7 +113,7 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
         />
         <button
           type="button"
-          className="flex items-center gap-2 md:w-[105px] h-8 px-3 text-white100 text-sm bg-purple100  rounded-[4px]"
+          className="flex items-center gap-2 md:w-[105px] h-8 px-3 text-white100 text-sm bg-purple100 rounded-[4px]"
           onClick={handleAddInvite}
         >
           <Image
@@ -151,7 +144,7 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
       {/* 모달 관련 */}
       <Portal>
         <OneInputModal
-          isOpen={isOpen}
+          isOpen={isModalOpen}
           modalTitle="초대하기"
           inputLabel="이메일"
           inputPlaceholder="이메일을 입력해주세요"
@@ -171,6 +164,11 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
           onClose={closeMessageModal}
           text={modalMessage}
         />
+      )}
+
+      {/* 에러 모달 */}
+      {isOpen && (
+        <ModalAlert isOpen={isOpen} onClose={handleClose} text={errorMessage} />
       )}
     </div>
   );
