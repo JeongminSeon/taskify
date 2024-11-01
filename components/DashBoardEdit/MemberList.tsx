@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { AxiosError } from "axios";
 import { Member, MemberResponse } from "@/types/members";
 import { deleteMember, getMembers } from "@/utils/api/membersApi";
 import Pagination from "../UI/pagination/Pagination";
 import MemberItem from "./components/MemberItem";
+import ModalAlert from "../UI/modal/ModalAlert";
+import useErrorModal from "@/hooks/modal/useErrorModal";
 
 interface MemberListProps {
   dashboardId: number;
@@ -13,7 +14,7 @@ const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
   const [members, setMembers] = useState<Member[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
-
+  const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
   useEffect(() => {
     const fetchMembers = async () => {
       if (dashboardId) {
@@ -52,12 +53,7 @@ const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
           prevMembers.filter((member) => member.id !== memberId)
         ); // 삭제 후 상태 업데이트
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        if (axiosError.response) {
-          alert(axiosError.response.data.message);
-        } else {
-          console.error("Failed to delete member:", error);
-        }
+        handleError(error);
       }
     }
   };
@@ -81,6 +77,13 @@ const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
             handleDeleteMember={handleDeleteMember}
           />
         ))}
+        {isOpen && (
+          <ModalAlert
+            isOpen={isOpen}
+            onClose={handleClose}
+            text={errorMessage}
+          />
+        )}
       </ul>
     </>
   );

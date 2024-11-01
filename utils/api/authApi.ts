@@ -1,6 +1,5 @@
 import axiosInstance from "./axiosInstanceApi";
-import axios, { AxiosError } from "axios";
-import { onError } from "./error";
+import axios from "axios";
 
 import {
   ProfileImageParams,
@@ -30,23 +29,7 @@ export const createUser = async (formData: formData) => {
     const response = await axiosInstance.post("/users", formData);
     return response.data;
   } catch (error) {
-    //error가 AxiosError인 경우 처리
-    if (error instanceof AxiosError) {
-      const message = error.message;
-      const status = error.response?.status ?? 500; // status가 undefined면 500으로 설정
-
-      switch (status) {
-        case 400:
-          onError(status, "이메일 형식으로 작성해주세요.");
-          break;
-        case 409:
-          onError(status, "이미 사용중인 이메일입니다.");
-          break;
-        default:
-          onError(status, message);
-          break;
-      }
-    }
+    throw error;
   }
 };
 export const getLogin = async (loginData: loginData) => {
@@ -54,24 +37,18 @@ export const getLogin = async (loginData: loginData) => {
     const response = await axiosInstance.post("/auth/login", loginData);
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError) {
-      const message = error.response?.data?.message || error.message;
-      const status = error.response?.status ?? 500;
-      onError(status, message);
-    }
     throw error;
   }
 };
 
 // 내 정보 조회
-export const getUserInfo = async (token?: string): Promise<ProfileProps> => {
+export const getUserInfo = async (token?: string) => {
   try {
     const response = await axiosInstance.get("/users/me", {
       headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     });
     return response.data;
   } catch (error) {
-    console.error("Failed to fetch user info:", error);
     throw error;
   }
 };
@@ -91,7 +68,6 @@ export const updateUserInfo = async ({
     });
     return response.data;
   } catch (error) {
-    console.error("Failed to update user info:", error);
     throw error;
   }
 };
@@ -103,13 +79,6 @@ export const updatePassword = async (PasswordData: PasswordData) => {
     const response = await axiosInstance.put("/auth/password", PasswordData);
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError) {
-      const message = error.response?.data?.message || error.message;
-      const status = error.response?.status ?? 500;
-
-      console.error(`Error: ${status} - ${message}`);
-      throw new Error(message);
-    }
     throw error;
   }
 };
