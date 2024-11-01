@@ -115,6 +115,7 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
 
   const handleManageClick = () => {
     if (currentDashboard && !currentDashboard.createdByMe) {
+      setModalMessage("접근 권한이 없습니다.");
       openMessageModal();
       router.push(`/dashboards/${dashboardsId}`);
     } else {
@@ -163,7 +164,7 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
         <ModalAlert
           isOpen={isMessageOpen}
           onClose={closeMessageModal}
-          text={"접근 권한이 없습니다."}
+          text={modalMessage}
         />
       )}
     </div>
