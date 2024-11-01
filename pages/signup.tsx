@@ -10,20 +10,30 @@ import { createUser } from "../utils/api/authApi";
 import { AxiosError } from "axios";
 import MetaHead from "@/components/MetaHead";
 import { useRouter } from "next/router";
+import useModal from "@/hooks/modal/useModal";
+import ModalAlert from "@/components/UI/modal/ModalAlert";
 
 const SignUp = () => {
+  const router = useRouter();
+
   const [isShowPW, setIsShowPw] = useState<{ [key: string]: boolean }>({
     password: false,
     confirmPassword: false,
   });
   const [checked, setChecked] = useState(false);
-  const router = useRouter();
   const handleShowPW = (identifier: string) => {
     setIsShowPw((prevState) => ({
       ...prevState,
       [identifier]: !prevState[identifier],
     }));
   };
+
+  const {
+    isOpen: isModalOpen,
+    openModal,
+    closeModal,
+    modalMessage,
+  } = useModal();
 
   const {
     enteredValue: emailValue,
@@ -127,6 +137,11 @@ const SignUp = () => {
       />
       <div className="w-full h-full mx-auto md:max-w-[520px] sm:max-w-[351px] flex flex-col gap-3 justify-center items-center">
         <Logo />
+        <ModalAlert
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          text={modalMessage}
+        />
         <form className="flex flex-col w-full gap-3" onSubmit={handleSubmit}>
           <Input
             id="email"
