@@ -10,28 +10,14 @@ import useInput from "@/hooks/useInput";
 import { useRouter } from "next/router";
 import { useAuthStore } from "@/store/authStore";
 import MetaHead from "@/components/MetaHead";
-<<<<<<< HEAD
-import ModalAlert from "@/components/UI/modal/ModalAlert";
-import useModal from "@/hooks/modal/useModal";
-=======
 import useErrorModal from "@/hooks/modal/useErrorModal";
 import ModalAlert from "@/components/UI/modal/ModalAlert";
->>>>>>> develop
 
 const Login = () => {
   const router = useRouter();
   const [isShowPW, setIsShowPw] = useState(false);
   const login = useAuthStore((state) => state.login);
-<<<<<<< HEAD
-  const {
-    isOpen: isModalOpen,
-    openModal,
-    closeModal,
-    modalMessage,
-  } = useModal(); // useModal 훅 사용
-=======
   const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
->>>>>>> develop
 
   const {
     enteredValue: emailValue,
@@ -74,20 +60,7 @@ const Login = () => {
       await login(formData);
       router.push("/mydashboard");
     } catch (error) {
-<<<<<<< HEAD
-      if (error instanceof AxiosError) {
-        const status = error.status;
-        const message = error.message;
-
-        if (status === 400 || status === 404) {
-          openModal(message);
-        } else {
-          openModal("예기치 못한 에러가 발생했습니다.");
-        }
-      }
-=======
       handleError(error);
->>>>>>> develop
     }
   };
 
@@ -102,11 +75,6 @@ const Login = () => {
           <Image src={logoImage} width={200} height={280} alt="logo_main" />
           <p className="text-xl">오늘도 만나서 반가워요!</p>
         </div>
-        <ModalAlert
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          text={modalMessage}
-        />
         <form className="flex flex-col w-full gap-3" onSubmit={handleSubmit}>
           <Input
             id="email"
