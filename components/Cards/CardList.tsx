@@ -3,7 +3,6 @@ import CardListLayout from "../Layout/CardListLayout";
 import { Card as CardType } from "@/types/cards";
 
 interface CardListProps {
-  columnId: number;
   title: string;
   cards: CardType[];
   onUpdateCard: (card: CardType) => void;
