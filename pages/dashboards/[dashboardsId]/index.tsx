@@ -56,7 +56,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
     }
   }, [initialUser, setUser, checkAuth]);
 
-  // 칼럼 데이터를 가져오는 함수 - 비동기로 getColumns API 호출
+  // 칼럼 데이터를 가져오는 함수
   const fetchColumns = useCallback(async () => {
     const dashboardId = Number(dashboardsId); // dashboard ID를 숫자로 변환
     const params: ColoumnsParams = { dashboardId }; // API 호출에 필요한 파라미터 설정

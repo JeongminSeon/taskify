@@ -21,6 +21,7 @@ interface CardListLayoutProps {
     onEdit: () => void;
     onDelete: () => void;
     onUpdateCard: (card: CardType) => void;
+    onRefresh: () => void;
   };
   metaProps: { columnTitle: string; dashboardId: number };
 }
@@ -28,7 +29,7 @@ interface CardListLayoutProps {
 const CardListLayout: React.FC<CardListLayoutProps> = ({
   cardProps: { cards, selectedCard, tagColors },
   modalProps: { isDetailOpen, isUpdateOpen, onCloseDetail, onCloseUpdate },
-  actionProps: { onCardClick, onEdit, onDelete, onUpdateCard },
+  actionProps: { onCardClick, onEdit, onDelete, onUpdateCard, onRefresh },
   metaProps: { dashboardId, columnTitle },
 }) => {
   return (
@@ -60,6 +61,7 @@ const CardListLayout: React.FC<CardListLayoutProps> = ({
             onClose={onCloseUpdate}
             dashboardId={dashboardId}
             onUpdateCard={onUpdateCard}
+            onRefresh={onRefresh}
           />
         </Portal>
       )}

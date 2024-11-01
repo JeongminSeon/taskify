@@ -99,4 +99,5 @@ export interface TodoModalProps {
   dashboardId?: number;
   onUpdateCard?: (card: CardResponse) => void;
   onCreateCard?: (card: CardResponse) => void;
+  onRefresh?: () => void;
 }

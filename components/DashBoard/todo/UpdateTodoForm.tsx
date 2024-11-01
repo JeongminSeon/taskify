@@ -19,6 +19,7 @@ const UpdateTodoForm = ({
   onClose,
   dashboardId,
   onUpdateCard,
+  onRefresh,
 }: TodoModalProps) => {
   const [formData, setFormData] = useState<TodoFormProps>(INITIAL_VALUES);
   const preview = useImagePreview(formData.imageUrl ? formData.imageUrl : null);
@@ -70,6 +71,7 @@ const UpdateTodoForm = ({
         if (!cardId) return;
         const updatedCard = await updateCard({ cardId, formData: outputData });
         onUpdateCard?.(updatedCard);
+        onRefresh!();
         onClose();
       } catch (error) {
         console.error(error);

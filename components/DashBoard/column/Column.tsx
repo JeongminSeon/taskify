@@ -11,21 +11,26 @@ interface ColumnProps {
   id: number;
   title: string;
   dashboardId: number;
-  onRefresh: () => void; 
+  onRefresh: () => void;
 }
 
-const Column: React.FC<ColumnProps> = ({ id, title, dashboardId, onRefresh }) => {
+const Column: React.FC<ColumnProps> = ({
+  id,
+  title,
+  dashboardId,
+  onRefresh,
+}) => {
   const { isOpen, openModal, closeModal } = useModal();
   const { cards, fetchCards, addCard, updateCard, deleteCard } =
     useCardsStore();
-  
+
   useEffect(() => {
     fetchCards(id);
   }, [id, fetchCards]);
 
   return (
     <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 sm:border-b border-r border-[gray600]">
-      <ColumnHeader title={title}  columnId={id} onRefresh={onRefresh}  />
+      <ColumnHeader title={title} columnId={id} onRefresh={onRefresh} />
       <AddCardButton onClick={openModal} />
       <CardList
         cards={cards[id] || []}
@@ -34,6 +39,7 @@ const Column: React.FC<ColumnProps> = ({ id, title, dashboardId, onRefresh }) =>
         dashboardId={dashboardId}
         onUpdateCard={(updatedCard) => updateCard(id, updatedCard)}
         onDeleteCard={(cardId) => deleteCard(id, cardId)}
+        onRefresh={onRefresh}
       />
       {isOpen && (
         <Portal>

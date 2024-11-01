@@ -9,6 +9,7 @@ interface CardListProps {
   cards: CardType[];
   onUpdateCard: (card: CardType) => void;
   onDeleteCard: (cardId: number) => void;
+  onRefresh: () => void;
 }
 
 const CardList: React.FC<CardListProps> = ({
@@ -18,6 +19,7 @@ const CardList: React.FC<CardListProps> = ({
   cards: initialCards,
   onUpdateCard,
   onDeleteCard,
+  onRefresh,
 }) => {
   const {
     cards,
@@ -55,6 +57,7 @@ const CardList: React.FC<CardListProps> = ({
         onEdit: handleEditClick,
         onDelete: handleDeleteClick,
         onUpdateCard,
+        onRefresh,
       }}
       metaProps={{
         dashboardId,
