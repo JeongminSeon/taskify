@@ -34,7 +34,7 @@ const CardHeader: React.FC<HeaderProps> = ({
     <div className={styles.modalHeader}>
       <h1 className="text-xl font-bold">{card?.title}</h1>
       <div className="flex items-center">
-        <div
+        <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           className={`${styles.kebabButton} relative cursor-pointer`}
         >
@@ -45,7 +45,7 @@ const CardHeader: React.FC<HeaderProps> = ({
             alt="더보기"
           />
           <Dropdown isOpen={isDropdownOpen} items={dropdownItems} />
-        </div>
+        </button>
 
         <button className={styles.closeButton} onClick={onClose}>
           <Image
