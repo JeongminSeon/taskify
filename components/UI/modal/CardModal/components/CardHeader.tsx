@@ -27,22 +27,16 @@ const CardHeader: React.FC<HeaderProps> = ({
         onClose();
       },
     },
-    {
-      label: "삭제하기",
-      onClick: () => {
-        onDelete();
-        onClose();
-      },
-    },
+    { label: "삭제하기", onClick: () => onDelete() },
   ];
 
   return (
     <div className={styles.modalHeader}>
       <h1 className="text-xl font-bold">{card?.title}</h1>
       <div className="flex items-center">
-        <button
+        <div
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className={`${styles.kebabButton} relative`}
+          className={`${styles.kebabButton} relative cursor-pointer`}
         >
           <Image
             src="/images/icons/icon_kebab.svg"
@@ -51,7 +45,7 @@ const CardHeader: React.FC<HeaderProps> = ({
             alt="더보기"
           />
           <Dropdown isOpen={isDropdownOpen} items={dropdownItems} />
-        </button>
+        </div>
 
         <button className={styles.closeButton} onClick={onClose}>
           <Image

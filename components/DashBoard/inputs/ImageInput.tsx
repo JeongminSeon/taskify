@@ -23,7 +23,6 @@ const ImageInput = ({ setFormData, preview, columnId }: ImageUploadProps) => {
             imageUrl: response.imageUrl,
           }));
         }
-        console.log("이미지 생성 성공:", response);
       } catch (error) {
         console.error("이미지 생성 실패:", error);
       }

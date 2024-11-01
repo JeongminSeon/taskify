@@ -1,7 +1,8 @@
 import Image from "next/image";
+import React from "react";
 
 interface UnInvitedProps {
-  message?: string; // 기본값을 위해 optional로 설정
+  message?: string;
 }
 
 const UnInvited: React.FC<UnInvitedProps> = ({ message }) => {
