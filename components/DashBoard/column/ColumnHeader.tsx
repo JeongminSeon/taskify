@@ -24,7 +24,6 @@ const ColumnHeader = ({
   } = useModal();
 
   const handleDeleteColumn = async (columnId: number) => {
-    console.log("삭제하려는 컬럼 ID:", columnId);
     try {
       await deleteColumn(columnId);
       closeModal();
@@ -38,7 +37,6 @@ const ColumnHeader = ({
     columnId,
     title,
   }: ColumnsUpdateParams) => {
-    console.log("수정하려는 컬럼 ID:", columnId);
     try {
       await updateColumn({ columnId, title });
       closeModal();

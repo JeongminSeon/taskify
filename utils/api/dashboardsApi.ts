@@ -7,8 +7,6 @@ import {
   Invitation,
 } from "@/types/dashboards";
 import axiosInstance from "./axiosInstanceApi";
-import { AxiosError } from "axios";
-import { onError } from "./error";
 
 // 대시보드 목록 가져오기
 export const getDashboards = async (page: number, size: number) => {
@@ -43,19 +41,6 @@ export const createDashboard = async (
     );
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError) {
-      const message = error.message;
-      const status = error.response?.status ?? 500;
-
-      switch (status) {
-        case 401:
-          onError(status, "Unauthorizsed");
-          break;
-        default:
-          onError(status, message);
-          break;
-      }
-    }
     throw error;
   }
 };
