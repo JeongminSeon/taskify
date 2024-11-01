@@ -85,7 +85,6 @@ export const getMembers = async ({
   page?: number;
   size?: number;
 }): Promise<MembersResponse> => {
-  console.log(dashboardId);
   try {
     const response = await axiosInstance.get(
       `/members?page=${page}&size=${size}&dashboardId=${dashboardId}`
