@@ -110,6 +110,7 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
             totalPages={totalPages}
             onNextPage={handleNextPage}
             onPreviousPage={handlePreviousPage}
+            showPageInfo={false}
           />
         </div>
       )}
