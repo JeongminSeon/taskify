@@ -54,17 +54,12 @@ export const getLogin = async (loginData: loginData) => {
     const response = await axiosInstance.post("/auth/login", loginData);
     return response.data;
   } catch (error) {
-    if (error instanceof AxiosError) {
-      const message = error.response?.data?.message || error.message;
-      const status = error.response?.status ?? 500;
-      onError(status, message);
-    }
     throw error;
   }
 };
 
 // 내 정보 조회
-export const getUserInfo = async (token?: string): Promise<ProfileProps> => {
+export const getUserInfo = async (token?: string) => {
   try {
     const response = await axiosInstance.get("/users/me", {
       headers: token ? { Authorization: `Bearer ${token}` } : undefined,
