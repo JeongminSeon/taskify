@@ -4,6 +4,7 @@ import {
   InvitationsResponse,
   MembersResponse,
   CreateDashboardResponse,
+  Invitation,
 } from "@/types/dashboards";
 import axiosInstance from "./axiosInstanceApi";
 import axios, { AxiosError } from "axios";
@@ -140,7 +141,6 @@ export const getInvitations = async (
       `/dashboards/${dashboardId}/invitations`,
       {
         params: {
-          dashboardId,
           page,
           size,
         },
@@ -149,6 +149,26 @@ export const getInvitations = async (
     return response.data;
   } catch (error) {
     console.error("초대 목록을 가져오는 데 실패했습니다:", error);
+    throw error;
+  }
+};
+
+// 대시보드 초대하기
+export const addInvitations = async (
+  dashboardId: number,
+  email: string
+): Promise<Invitation> => {
+  try {
+    const response = await axiosInstance.post<Invitation>(
+      `/dashboards/${dashboardId}/invitations`,
+      {
+        dashboardId,
+        email,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("초대하는 데 실패했습니다.:", error);
     throw error;
   }
 };

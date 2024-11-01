@@ -1,55 +1,107 @@
-import { deleteInvitations, getInvitations } from "@/utils/api/dashboardsApi";
-import { Invitation, InvitationsResponse } from "@/types/dashboards";
-import { useEffect, useState } from "react";
+import { addInvitations, deleteInvitations } from "@/utils/api/dashboardsApi";
+import { useCallback, useEffect, useState } from "react";
+import { AxiosError } from "axios";
+import { useInvitationStore } from "@/store/invitationStore";
+import Image from "next/image";
 import Pagination from "../UI/pagination/Pagination";
 import UnInvited from "../MyDashBoard/UnInvited";
 import InviteeItem from "./components/InviteeItem";
+import useModal from "@/hooks/modal/useModal";
+import Portal from "@/components/UI/modal/ModalPotal";
+import OneInputModal from "../UI/modal/InputModal/OneInputModal";
+import ModalAlert from "../UI/modal/ModalAlert";
 
 interface InviteeListProps {
-  dashboardId: number; // dashboardId의 타입 정의
+  dashboardId: number | null;
 }
 
 const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
-  const [invitations, setInvitations] = useState<Invitation[]>([]);
+  const { loadInvitations, invitations, totalCount } = useInvitationStore();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
+  const [modalMessage, setModalMessage] = useState<string>("");
+  const ITEMS_PER_PAGE = 5;
 
+  const {
+    isOpen,
+    inputValue,
+    openModal: handleAddInvite,
+    closeModal,
+    handleInputChange,
+    handleConfirm: handleModalConfirm,
+  } = useModal();
+
+  // 메세지 모달
+  const {
+    isOpen: isMessageOpen,
+    openModal: openMessageModal,
+    closeModal: closeMessageModal,
+  } = useModal();
+
+  // totalCount가 업데이트되면 totalPages 계산
   useEffect(() => {
-    const fetchInvitations = async () => {
-      if (dashboardId) {
-        try {
-          const data: InvitationsResponse = await getInvitations(
-            dashboardId,
-            currentPage,
-            5
-          );
-          setInvitations(data.invitations);
-          setTotalPages(Math.ceil(data.totalCount / 5));
-        } catch (error) {
-          console.error("Error fetching invitations:", error);
-        }
-      }
-    };
-    fetchInvitations();
-  }, [currentPage, dashboardId]);
+    if (totalCount) {
+      setTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE));
+    }
+  }, [totalCount]);
+
+  // 초대 목록을 불러오기
+  useEffect(() => {
+    if (dashboardId !== null) {
+      loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE);
+    }
+  }, [dashboardId, currentPage, loadInvitations]);
 
   const handleNextPage = () => {
     setCurrentPage((prev) => prev + 1);
   };
 
   const handlePreviousPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1)); // 1페이지 이하로는 내리지 않음
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
   };
 
-  // 초대하기 취소 핸들러
+  const handleConfirm = useCallback(
+    async (inputValue: string) => {
+      if (!inputValue) {
+        alert("이메일을 입력해주세요.");
+        return;
+      }
+
+      if (dashboardId === null) {
+        alert("대시보드 ID가 설정되어 있지 않습니다.");
+        return;
+      }
+
+      try {
+        await addInvitations(dashboardId, inputValue);
+        setModalMessage("초대 요청을 보냈습니다.");
+        openMessageModal();
+        closeModal();
+        loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE);
+      } catch (error) {
+        const axiosError = error as AxiosError<{ message: string }>;
+        if (axiosError.response) {
+          setModalMessage(
+            axiosError.response.data.message ||
+              "초대 요청 중 오류가 발생했습니다."
+          );
+        }
+        openMessageModal();
+      }
+    },
+    [dashboardId, closeModal, openMessageModal, currentPage, loadInvitations]
+  );
+
   const handleDeleteInvitation = async (invitationId: number) => {
-    const confirmDelete = confirm("해당 이메일을 삭제하시겠습니까?");
-    if (confirmDelete) {
+    if (confirm("해당 이메일을 삭제하시겠습니까?")) {
+      if (dashboardId === null) {
+        alert("대시보드 ID가 설정되어 있지 않습니다.");
+        return;
+      }
+
       try {
         await deleteInvitations(dashboardId, invitationId);
-        setInvitations((prevInvitations) =>
-          prevInvitations.filter((invitation) => invitation.id !== invitationId)
-        );
+        loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE);
       } catch (error) {
         console.error("초대 취소 중 오류 발생:", error);
       }
@@ -57,7 +109,7 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
   };
 
   return (
-    <>
+    <div>
       <div className="overflow-hidden absolute right-4 md:right-7 top-5 flex flex-col items-end md:flex-row md:items-center gap-4">
         <Pagination
           currentPage={currentPage}
@@ -67,41 +119,59 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
         />
         <button
           type="button"
-          className="float-right flex items-center gap-[6px] md:gap-2 md:w-[105px] h-[26px] md:h-8 px-3 text-white100 text-xs md:text-sm bg-purple100 rounded-[4px]"
+          className="flex items-center gap-2 md:w-[105px] h-8 px-3 text-white100 text-sm bg-purple100  rounded-[4px]"
+          onClick={handleAddInvite}
         >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="#fff"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M9.37508 10.7083V13.4166C9.37508 13.594 9.43491 13.7425 9.55456 13.8621C9.67421 13.9818 9.82271 14.0416 10.0001 14.0416C10.1774 14.0416 10.3259 13.9818 10.4456 13.8621C10.5652 13.7425 10.625 13.594 10.625 13.4166V10.7083H13.3334C13.5107 10.7083 13.6592 10.6485 13.7789 10.5288C13.8985 10.4092 13.9584 10.2607 13.9584 10.0833C13.9584 9.90597 13.8985 9.75747 13.7789 9.63781C13.6592 9.51816 13.5107 9.45833 13.3334 9.45833H10.625V6.74998C10.625 6.57263 10.5652 6.42413 10.4456 6.30448C10.3259 6.18483 10.1774 6.125 10.0001 6.125C9.82271 6.125 9.67421 6.18483 9.55456 6.30448C9.43491 6.42413 9.37508 6.57263 9.37508 6.74998V9.45833H6.66673C6.48938 9.45833 6.34088 9.51816 6.22123 9.63781C6.10157 9.75747 6.04175 9.90597 6.04175 10.0833C6.04175 10.2607 6.10157 10.4092 6.22123 10.5288C6.34088 10.6485 6.48938 10.7083 6.66673 10.7083H9.37508ZM4.42316 17.1666C4.00222 17.1666 3.64591 17.0208 3.35425 16.7291C3.06258 16.4375 2.91675 16.0812 2.91675 15.6602V4.50642C2.91675 4.08547 3.06258 3.72917 3.35425 3.4375C3.64591 3.14583 4.00222 3 4.42316 3H15.577C15.9979 3 16.3542 3.14583 16.6459 3.4375C16.9375 3.72917 17.0834 4.08547 17.0834 4.50642V15.6602C17.0834 16.0812 16.9375 16.4375 16.6459 16.7291C16.3542 17.0208 15.9979 17.1666 15.577 17.1666H4.42316ZM4.42316 15.9166H15.577C15.6411 15.9166 15.6998 15.8899 15.7533 15.8365C15.8067 15.7831 15.8334 15.7243 15.8334 15.6602V4.50642C15.8334 4.44231 15.8067 4.38354 15.7533 4.3301C15.6998 4.27669 15.6411 4.24998 15.577 4.24998H4.42316C4.35905 4.24998 4.30028 4.27669 4.24685 4.3301C4.19344 4.38354 4.16673 4.44231 4.16673 4.50642V15.6602C4.16673 15.7243 4.19344 15.7831 4.24685 15.8365C4.30028 15.8899 4.35905 15.9166 4.42316 15.9166Z"
-              fill="#fff"
-            />
-          </svg>
+          <Image
+            src="/images/icons/icon_add_box_white.svg"
+            width={16}
+            height={16}
+            alt="초대하기"
+          />
           초대하기
         </button>
       </div>
-      <p className="px-4 md:px-7 text-xs md:text-sm text-gray300">이메일</p>
-
+      <p className="px-4 md:px-7 text-xs md:text-sm text-gray-300">이메일</p>
       {invitations.length === 0 ? (
-        <div className="px-4 md:px-7 text-sm text-gray-500">
-          <UnInvited message="초대 목록이 없어요." />
-        </div>
+        <UnInvited message="초대 목록이 없어요." />
       ) : (
-        <ul className="pt-[26px] md:pt-4">
-          {invitations.map((invitation) => (
-            <InviteeItem
-              key={invitation.id}
-              invitation={invitation}
-              handleDeleteInvitation={handleDeleteInvitation}
-            />
-          ))}
+        <ul className="pt-4">
+          {Array.isArray(invitations) &&
+            invitations.map((invitation) => (
+              <InviteeItem
+                key={invitation.id}
+                invitation={invitation}
+                handleDeleteInvitation={handleDeleteInvitation}
+              />
+            ))}
         </ul>
       )}
-    </>
+
+      {/* 모달 관련 */}
+      <Portal>
+        <OneInputModal
+          isOpen={isOpen}
+          modalTitle="초대하기"
+          inputLabel="이메일"
+          inputPlaceholder="이메일을 입력해주세요"
+          onCancel={closeModal}
+          cancelButtonText="취소"
+          onConfirm={() => handleModalConfirm(handleConfirm)}
+          confirmButtonText="생성"
+          inputValue={inputValue}
+          onInputChange={handleInputChange}
+        />
+      </Portal>
+
+      {/* 메세지 모달창 */}
+      {isMessageOpen && (
+        <ModalAlert
+          isOpen={isMessageOpen}
+          onClose={closeMessageModal}
+          text={modalMessage}
+        />
+      )}
+    </div>
   );
 };
 

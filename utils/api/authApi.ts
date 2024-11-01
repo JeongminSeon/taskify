@@ -2,7 +2,11 @@ import axiosInstance from "./axiosInstanceApi";
 import axios, { AxiosError } from "axios";
 import { onError } from "./error";
 
-import { ProfileImageParams, ProfileImageResponse } from "@/types/my";
+import {
+  ProfileImageParams,
+  ProfileImageResponse,
+  ProfileProps,
+} from "@/types/my";
 
 interface formData {
   email: string;
@@ -60,7 +64,7 @@ export const getLogin = async (loginData: loginData) => {
 };
 
 // 내 정보 조회
-export const getUserInfo = async (token?: string) => {
+export const getUserInfo = async (token?: string): Promise<ProfileProps> => {
   try {
     const response = await axiosInstance.get("/users/me", {
       headers: token ? { Authorization: `Bearer ${token}` } : undefined,
@@ -73,13 +77,13 @@ export const getUserInfo = async (token?: string) => {
 };
 
 //내 정보 수정
-export const UpdateUserInfo = async ({
+export const updateUserInfo = async ({
   nickname,
   profileImageUrl,
 }: {
   nickname: string;
   profileImageUrl?: string;
-}) => {
+}): Promise<ProfileProps> => {
   try {
     const response = await axiosInstance.put("/users/me", {
       nickname,

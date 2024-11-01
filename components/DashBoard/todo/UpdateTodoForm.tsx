@@ -4,8 +4,6 @@ import TodoButton from "./TodoButton";
 import "react-datepicker/dist/react-datepicker.css";
 import { INITIAL_VALUES, validateForm } from "@/utils/TodoForm";
 import useImagePreview from "@/hooks/dashboard/useImagePreview";
-
-import { getCard, updateCard } from "@/utils/api/cardsApi";
 import { CreateCardBody } from "@/types/cards";
 import TitleInput from "../inputs/TitleInput";
 import DescriptionInput from "../inputs/DescriptionInput";
@@ -14,8 +12,14 @@ import TagInput from "../inputs/TagInput";
 import ImageInput from "../inputs/ImageInput";
 import UserInput from "../inputs/UserInput";
 import ColumnInput from "../inputs/ColumnInput";
+import { getCard, updateCard } from "@/utils/api/cardsApi";
 
-const UpdateTodoForm = ({ cardId, onClose, dashboardId }: TodoModalProps) => {
+const UpdateTodoForm = ({
+  cardId,
+  onClose,
+  dashboardId,
+  onUpdateCard,
+}: TodoModalProps) => {
   const [formData, setFormData] = useState<TodoFormProps>(INITIAL_VALUES);
   const preview = useImagePreview(formData.imageUrl ? formData.imageUrl : null);
 
@@ -64,7 +68,8 @@ const UpdateTodoForm = ({ cardId, onClose, dashboardId }: TodoModalProps) => {
 
       try {
         if (!cardId) return;
-        await updateCard({ cardId, formData: outputData });
+        const updatedCard = await updateCard({ cardId, formData: outputData });
+        onUpdateCard?.(updatedCard);
         onClose();
       } catch (error) {
         console.error(error);

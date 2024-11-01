@@ -7,6 +7,7 @@ const UpdateTodoModal = ({
   isOpen,
   onClose,
   dashboardId,
+  onUpdateCard,
 }: TodoModalProps) => {
   if (!isOpen) return null;
 
@@ -16,6 +17,7 @@ const UpdateTodoModal = ({
         cardId={cardId}
         onClose={onClose}
         dashboardId={dashboardId}
+        onUpdateCard={onUpdateCard}
       />
     </TodoModalLayout>
   );

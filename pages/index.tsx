@@ -1,19 +1,27 @@
-import LandingLayout from "./Landing/LandingLayout";
-import LandingHeader from "./Landing/LandingHeader";
-import LandingBanner from "./Landing/LandingBanner";
-import LandingInfo from "./Landing/LandingInfo";
-import LandingFooter from "./Landing/LandingFooter";
+import LandingLayout from "../components/Landing/LandingLayout";
+import LandingHeader from "../components/Landing/LandingHeader";
+import LandingBanner from "../components/Landing/LandingBanner";
+import LandingInfo from "../components/Landing/LandingInfo";
+import LandingFooter from "../components/Landing/LandingFooter";
+import MetaHead from "@/components/MetaHead";
 
 const index = () => {
   return (
-    <div className="bg-black100 h-vh">
-      <LandingHeader />
-      <LandingLayout>
-        <LandingBanner />
-        <LandingInfo />
-      </LandingLayout>
-      <LandingFooter />
-    </div>
+    <>
+      <MetaHead
+        title="새로운 일정 관리🎯 Taskify"
+        description="Taskify를 통해 일정을 관리해보세요"
+      />
+
+      <div className="bg-black100 h-vh">
+        <LandingHeader />
+        <LandingLayout>
+          <LandingBanner />
+          <LandingInfo />
+        </LandingLayout>
+        <LandingFooter />
+      </div>
+    </>
   );
 };
 

@@ -5,7 +5,7 @@ import axiosInstance from "@/utils/api/axiosInstanceApi";
 import UnInvited from "./UnInvited";
 import SearchBox from "../UI/search/SearchBox";
 import InvitationList from "./invitationsList/InvitationList";
-import Loading from "../UI/loading/Loading";
+import LoadingSpinner from "../UI/loading/LoadingSpinner";
 import NoResults from "../UI/search/NoResults";
 import useDebounce from "@/hooks/dashboard/useDebounce";
 
@@ -85,7 +85,7 @@ const InvitedList = () => {
         </>
       )}
       {isLoadingMore && displayCount < filteredInvitations.length && (
-        <Loading />
+        <LoadingSpinner />
       )}
     </div>
   );
