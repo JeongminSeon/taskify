@@ -8,13 +8,13 @@ import {
 import { useDashBoardStore } from "@/store/dashBoardStore";
 import { DashboardDetailResponse } from "@/types/dashboards";
 import { useInvitationStore } from "@/store/invitationStore";
+import { AxiosError } from "axios";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import MemberList from "@/components/DashBoardEdit/MemberList";
 import EditBox from "@/components/DashBoardEdit/EditBox";
 import InputField from "@/components/My/InputField";
 import ColorChip from "@/components/UI/colorchip/ColorChip";
 import InviteeList from "@/components/DashBoardEdit/InviteeList";
-import { AxiosError } from "axios";
 
 const DashboardEdit = () => {
   const router = useRouter();
@@ -46,7 +46,7 @@ const DashboardEdit = () => {
           setTitle(detail.title);
           setColor(detail.color);
         } catch (error) {
-          console.error("Failed to fetch dashboard detail:", error);
+          console.error("대시보드 세부정보를 가져오는 데 실패했습니다:", error);
         }
       }
     };
@@ -89,7 +89,7 @@ const DashboardEdit = () => {
         if (axiosError.response) {
           alert(axiosError.response.data.message);
         } else {
-          console.error("Failed to update dashboard:", error);
+          console.error("대시보드 변경하는 데 실패했습니다:", error);
         }
       }
     }
@@ -102,7 +102,7 @@ const DashboardEdit = () => {
         await deleteDashboard(dashboardId);
         router.push("/mydashboard");
       } catch (error) {
-        console.error("Failed to delete dashboard:", error);
+        console.error("대시보드 삭제하는 데 실패했습니다:", error);
       }
     }
   };
