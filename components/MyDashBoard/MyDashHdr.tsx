@@ -1,6 +1,8 @@
 import { hdMenuBtn, hdMenuBtnIcon } from "./MyDashStyle";
 import { useRouter } from "next/router";
 import { useAuthStore } from "@/store/authStore";
+import AvatarGroup from "./AvatarGroup";
+
 import { addInvitations } from "@/utils/api/dashboardsApi";
 import { useCallback, useState } from "react";
 import { useInvitationStore } from "@/store/invitationStore";
@@ -128,6 +130,9 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
                   </span>
                   초대하기
                 </button>
+              </li>
+              <li>
+                <AvatarGroup />
               </li>
             </ul>
           )}
