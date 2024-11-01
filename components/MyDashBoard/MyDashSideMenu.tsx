@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       props: { initialDashboards: data.dashboards },
     };
   } catch (error) {
-    console.error("Error fetching user info:", error);
+    console.error("대시보드 목록을 가져오는 데 실패했습니다:", error);
     return {
       redirect: {
         destination: "/login",
