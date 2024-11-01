@@ -8,13 +8,14 @@ import {
 import { useDashBoardStore } from "@/store/dashBoardStore";
 import { DashboardDetailResponse } from "@/types/dashboards";
 import { useInvitationStore } from "@/store/invitationStore";
-import { AxiosError } from "axios";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import MemberList from "@/components/DashBoardEdit/MemberList";
 import EditBox from "@/components/DashBoardEdit/EditBox";
 import InputField from "@/components/My/InputField";
 import ColorChip from "@/components/UI/colorchip/ColorChip";
 import InviteeList from "@/components/DashBoardEdit/InviteeList";
+import useErrorModal from "@/hooks/modal/useErrorModal";
+import ModalAlert from "@/components/UI/modal/ModalAlert";
 
 const DashboardEdit = () => {
   const router = useRouter();
@@ -25,6 +26,7 @@ const DashboardEdit = () => {
     useState<DashboardDetailResponse | null>(null);
   const [title, setTitle] = useState<string>("");
   const [color, setColor] = useState<string>("");
+  const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
 
   // 쿼리 값이 업데이트된 후에만 dashboardId 처리
   // setDashboardId를 사용하여 쿼리값이 업데이트되었을 때 이를 상태에 저장
@@ -85,12 +87,7 @@ const DashboardEdit = () => {
         setDashboardDetail(updatedDashboard);
         await useDashBoardStore.getState().setDashboards(); // Zustand 스토어에서 대시보드 목록 업데이트
       } catch (error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        if (axiosError.response) {
-          alert(axiosError.response.data.message);
-        } else {
-          console.error("대시보드 변경하는 데 실패했습니다:", error);
-        }
+        handleError(error);
       }
     }
   };
@@ -164,6 +161,14 @@ const DashboardEdit = () => {
         >
           대시보드 삭제하기
         </button>
+        {/* 에러 모달 */}
+        {isOpen && (
+          <ModalAlert
+            isOpen={isOpen}
+            onClose={handleClose}
+            text={errorMessage}
+          />
+        )}
       </div>
     </DashBoardLayout>
   );

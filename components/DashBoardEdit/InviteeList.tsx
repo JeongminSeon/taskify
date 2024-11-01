@@ -88,16 +88,13 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
 
   const handleDeleteInvitation = async (invitationId: number) => {
     if (confirm("해당 이메일을 삭제하시겠습니까?")) {
-      if (dashboardId === null) {
-        alert("대시보드 ID가 설정되어 있지 않습니다.");
-        return;
-      }
+      if (!dashboardId) return;
 
       try {
         await deleteInvitations(dashboardId, invitationId);
         loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE);
       } catch (error) {
-        handleError(error); // 에러 처리
+        handleError(error);
       }
     }
   };
