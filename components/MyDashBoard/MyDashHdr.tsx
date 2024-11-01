@@ -15,8 +15,8 @@ import useErrorModal from "@/hooks/modal/useErrorModal";
 
 interface MyDashSideMenuProps {
   dashboards: Dashboard[];
-  onEdit: () => void;
-  onDelete: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 const ITEMS_PER_PAGE = 5;
