@@ -117,7 +117,7 @@ const MyDashSideMenu: React.FC = () => {
           ))}
         </ul>
       </div>
-      <div className="mt-3">
+      <div className="mt-3 hidden md:block">
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
