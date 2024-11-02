@@ -127,7 +127,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
                 onRefresh={fetchColumns}
               />
             ))}
-            <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 border-r border-[gray600]">
+            <div className="columnList flex-1 h-full py-4 px-3 md:p-5 border-r border-[gray600]">
               <button
                 type="button"
                 className="flex justify-center items-center gap-3 w-full sm:h-[66px] h-[70px] lg:mt-12 border border-gray400 rounded-md bg-white100 text-black300 font-bold"
