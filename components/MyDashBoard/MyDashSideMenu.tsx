@@ -15,8 +15,9 @@ interface MyDashSideMenuProps {
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
     const data = await getDashboards(1, 20); // 대시보드 목록 가져오기
+    console.log("이것도?", data);
     return {
-      props: { initialDashboards: data.dashboards },
+      props: { dashboards: data.dashboards || [] },
     };
   } catch (error) {
     console.error("대시보드 목록을 가져오는 데 실패했습니다:", error);
@@ -30,6 +31,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
+  console.log(dashboards);
+
   const itemsPerPage = useResponsiveThreshold(dashboards.length, 15);
   const [currentPage, setCurrentPage] = useState(1);
 

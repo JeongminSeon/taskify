@@ -8,7 +8,13 @@ const DashBoardLayout = ({ children }: { children: ReactNode }) => {
 
   // setDashboards() 호출되고, 상태 업데이트
   useEffect(() => {
-    setDashboards();
+    const fetchDashboards = async () => {
+      await setDashboards();
+      // 상태가 업데이트된 후 dashboards 확인
+      console.log("빈배열", dashboards);
+    };
+
+    fetchDashboards();
   }, [setDashboards]);
 
   return (
