@@ -22,6 +22,7 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [modalMessage, setModalMessage] = useState<string>("");
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null); // 삭제 확인용 ID 상태
   const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
 
   const {
@@ -86,16 +87,15 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
     ]
   );
 
-  const handleDeleteInvitation = async (invitationId: number) => {
-    if (confirm("해당 이메일을 삭제하시겠습니까?")) {
-      if (!dashboardId) return;
+  const handleDeleteInvitation = async () => {
+    if (!dashboardId || confirmDeleteId === null) return;
 
-      try {
-        await deleteInvitations(dashboardId, invitationId);
-        loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE);
-      } catch (error) {
-        handleError(error);
-      }
+    try {
+      await deleteInvitations(dashboardId, confirmDeleteId);
+      setConfirmDeleteId(null); // 확인 후 초기화
+      loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE);
+    } catch (error) {
+      handleError(error);
     }
   };
 
@@ -132,13 +132,13 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
               <InviteeItem
                 key={invitation.id}
                 invitation={invitation}
-                handleDeleteInvitation={handleDeleteInvitation}
+                handleDeleteInvitation={() => setConfirmDeleteId(invitation.id)} // 확인 모달 열기
               />
             ))}
         </ul>
       )}
 
-      {/* 모달 관련 */}
+      {/* 초대 모달 */}
       <Portal>
         <OneInputModal
           isOpen={isModalOpen}
@@ -154,12 +154,23 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
         />
       </Portal>
 
-      {/* 메세지 모달창 */}
+      {/* 메시지 모달 */}
       {isMessageOpen && (
         <ModalAlert
           isOpen={isMessageOpen}
           onClose={closeMessageModal}
           text={modalMessage}
+        />
+      )}
+
+      {/* 삭제 확인 모달 */}
+      {confirmDeleteId !== null && (
+        <ModalAlert
+          isOpen={confirmDeleteId !== null}
+          type="confirm"
+          text="해당 이메일을 삭제하시겠습니까?"
+          onClose={() => setConfirmDeleteId(null)}
+          onConfirm={handleDeleteInvitation}
         />
       )}
 
