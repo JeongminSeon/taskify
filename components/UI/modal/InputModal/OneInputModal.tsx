@@ -60,8 +60,8 @@ const OneInputModal: React.FC<OneInputModalProps> = ({
           >
             <Image
               src="/images/icons/icon_close.svg"
-              width={14}
-              height={14}
+              width={20}
+              height={20}
               alt="닫기"
             />
           </button>

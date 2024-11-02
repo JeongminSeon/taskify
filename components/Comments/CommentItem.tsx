@@ -4,6 +4,7 @@ import { formatInTimeZone } from "date-fns-tz";
 import { Comment } from "@/types/comments";
 import InputField from "@/components/My/InputField";
 import { styles } from "../UI/modal/CardModal/styles";
+import { useAuthStore } from "@/store/authStore";
 
 interface CommentItemProps {
   comment: Comment;
@@ -24,6 +25,9 @@ export const CommentItem = ({
   onCommentChange,
   onCommentDelete,
 }: CommentItemProps) => {
+  const currentUser = useAuthStore((state) => state.user);
+  const isAuthor = currentUser?.id === comment.author.id;
+
   return (
     <div className={styles.commentItem}>
       <Image
@@ -61,28 +65,30 @@ export const CommentItem = ({
           <p className="mt-1">{comment.content}</p>
         )}
 
-        <div className="mt-2">
-          <button
-            className={styles.commentActionButton}
-            onClick={() => {
-              // 수정 중인 댓글인지 확인
-              if (editCommentId === comment.id) {
-                onCommentChange();
-              } else {
-                // 수정 중이 아닌 경우 수정 버튼 클릭
-                onEditClick(comment);
-              }
-            }}
-          >
-            {editCommentId === comment.id ? "저장" : "수정"}
-          </button>
-          <button
-            className={styles.commentActionButton}
-            onClick={() => onCommentDelete(comment.id)}
-          >
-            삭제
-          </button>
-        </div>
+        {isAuthor && (
+          <div className="mt-2">
+            <button
+              className={styles.commentActionButton}
+              onClick={() => {
+                // 수정 중인 댓글인지 확인
+                if (editCommentId === comment.id) {
+                  onCommentChange();
+                } else {
+                  // 수정 중이 아닌 경우 수정 버튼 클릭
+                  onEditClick(comment);
+                }
+              }}
+            >
+              {editCommentId === comment.id ? "저장" : "수정"}
+            </button>
+            <button
+              className={styles.commentActionButton}
+              onClick={() => onCommentDelete(comment.id)}
+            >
+              삭제
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
