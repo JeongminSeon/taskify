@@ -12,8 +12,20 @@ export const CommentInput = ({
   onChange,
   onSubmit,
 }: CommentInputProps) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key === "Enter") {
+      onSubmit();
+    } else {
+      return;
+    }
+  };
+
   return (
-    <div className="mb-6 relative w-full">
+    <div
+      className="mb-6 relative w-full"
+      onSubmit={onSubmit}
+      onKeyDown={handleKeyDown}
+    >
       <InputField
         label=""
         name="content"
@@ -21,11 +33,7 @@ export const CommentInput = ({
         value={content}
         onChange={onChange}
       />
-      <button
-        className={styles.commentSubmitButton}
-        type="submit"
-        onClick={onSubmit}
-      >
+      <button className={styles.commentSubmitButton} type="submit">
         입력
       </button>
     </div>
