@@ -1,16 +1,16 @@
-import { InviteListResponse, InviteList } from "@/types/invitedList";
+import { MyInviteListResponse, MyInviteList } from "@/types/invitedList";
 import { useCallback, useEffect, useState } from "react";
 import axiosInstance from "@/utils/api/axiosInstanceApi";
 
 export const useGetInvitedList = (size: number = 10) => {
-  const [invitations, setInvitations] = useState<InviteList[]>([]); // 초대 목록 상태
+  const [invitations, setInvitations] = useState<MyInviteList[]>([]); // 초대 목록 상태
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   const getInvitedboard = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await axiosInstance.get<InviteListResponse>(
+      const response = await axiosInstance.get<MyInviteListResponse>(
         `invitations?size=${size}`
       );
       setInvitations(response.data.invitations);
