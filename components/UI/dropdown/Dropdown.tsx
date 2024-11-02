@@ -16,7 +16,7 @@ const Dropdown: React.FC<DropdownProps> = ({ isOpen, items }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute top-[20px] right-0 w-[100px] bg-white rounded-md shadow-lg z-10">
+    <div className="absolute top-[35px] right-0 w-[100px] bg-white rounded-md shadow-lg z-10">
       {items.map((item, index) =>
         item.href ? ( // Link 사용 경우
           <Link
