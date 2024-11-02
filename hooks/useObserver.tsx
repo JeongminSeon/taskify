@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
 
 const useObserver = (
+  // Intersection Observer가 요소의 교차 상태가 변경될 때 호출되는 콜백 함수
   callback: IntersectionObserverCallback,
+  // Intersection Observer를 설정하는 옵션을 담는 객체
   options?: IntersectionObserverInit
 ) => {
   const observerRef = useRef<IntersectionObserver | null>(null);

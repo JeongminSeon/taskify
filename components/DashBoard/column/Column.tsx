@@ -26,7 +26,7 @@ const Column: React.FC<ColumnProps> = ({ id, title, onRefresh }) => {
   }, [id, fetchCards, setColumnId]);
 
   return (
-    <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 sm:border-b border-r border-[gray600]">
+    <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 sm:border-b border-r border-[gray600] overflow-auto">
       <ColumnHeader title={title} columnId={id} onRefresh={onRefresh} />
       <AddCardButton onClick={openModal} />
       <CardList

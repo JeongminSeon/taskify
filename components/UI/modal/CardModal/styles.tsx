@@ -6,8 +6,8 @@ export const styles = {
   modalContent: "h-full overflow-y-auto pt-6 pl-2 pr-3 md:pl-4 md:pr-5",
   modalHeader:
     "bg-white pt-4 md:pt-8 p-2 md:p-4 flex justify-between items-center",
-  kebabButton: "flex text-gray-500 hover:text-gray-700 mr-2 w-6",
-  closeButton: "text-gray-500 hover:text-gray-700 w-6 h-6",
+  kebabButton: "flex text-gray-500 hover:text-gray-700 mr-2 ",
+  closeButton: "text-gray-500 hover:text-gray-700 ",
   tagContainer: "flex flex-wrap items-center gap-2 p-2 md:p-4",
   tagBase: "px-2 md:px-3 py-1 text-sm rounded-md",
   tagDivider: "h-6 w-px bg-gray-300 mx-2",

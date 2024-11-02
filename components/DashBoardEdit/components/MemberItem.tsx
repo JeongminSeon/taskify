@@ -17,7 +17,7 @@ const MemberItem: React.FC<MemberItemProps> = ({
       key={member.id}
       className="flex items-center gap-2 md:gap-3 py-3 md:py-4 px-4 md:px-7 border-b border-gray500"
     >
-      <span className="overflow-hidden relative w-[34px] h-[34px] rounded-full bg-slate-500"></span>
+      <p className="overflow-hidden relative w-[34px] h-[34px] rounded-full bg-slate-500"></p>
       <p className="flex-1 text-sm md:text-[16px]">{member.nickname}</p>
       <button
         type="button"
