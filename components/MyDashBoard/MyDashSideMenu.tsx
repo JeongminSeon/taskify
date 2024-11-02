@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { useDashBoardStore } from "@/store/dashBoardStore";
 import Link from "next/link";
 import Image from "next/image";
@@ -102,7 +101,7 @@ const MyDashSideMenu: React.FC = () => {
         <ul className="flex flex-col gap-2">
           {currentDashboards?.map((dashboard) => (
             <li
-              key={dashboard.id ? dashboard.id : uuidv4()}
+              key={dashboard.id}
               className={`md:px-[10px] lg:px-3 ${
                 activeDashboardId === dashboard.id ? "bg-violet200" : ""
               }`}
