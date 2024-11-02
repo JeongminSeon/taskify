@@ -241,7 +241,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // 로그인 상태일 경우 /mydashboard로 리다이렉트
   if (accessToken) {
     try {
-      const user = await getUserInfo(accessToken);
+      await getUserInfo(accessToken);
       return {
         redirect: {
           destination: "/mydashboard",
