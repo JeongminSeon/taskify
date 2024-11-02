@@ -24,15 +24,17 @@ const InvitedList = () => {
     try {
       const data = await getMyInvitations();
 
-      const uniqueInvitationsSet = new Set();
-      const uniqueInvitations = data.invitations.filter((invite) => {
-        const identifier = `${invite.invitee.id}-${invite.dashboard.id}`;
-        if (uniqueInvitationsSet.has(identifier)) {
-          return false; // 중복이면 제거
-        }
-        uniqueInvitationsSet.add(identifier);
-        return true; // 유일한 초대만 유지
-      });
+      const uniqueInvitations = data.invitations
+        .filter(
+          (invite, index, self) =>
+            index ===
+            self.findIndex(
+              (t) =>
+                t.invitee.id === invite.invitee.id &&
+                t.dashboard.id === invite.dashboard.id
+            )
+        )
+        .filter((invite): invite is MyInviteList => invite !== undefined); // undefined 필터링
 
       setInvitations(uniqueInvitations);
     } catch (err) {
@@ -54,20 +56,9 @@ const InvitedList = () => {
         inviteAccepted: accepted,
       });
 
-      // 초대 목록에서 해당 초대 제거
-      setInvitations((prevInvitations) => {
-        const updatedInvitations = prevInvitations.filter(
-          (invite) => invite.id !== invitationId
-        );
-
-        // 새로 고침할 때 필요한 상태를 저장
-        // 만약 accepted가 true일 경우 대시보드를 다시 가져올 수 있도록 관리
-        if (accepted) {
-          setDashboards(); // 대시보드 목록 업데이트
-        }
-
-        return updatedInvitations;
-      });
+      if (accepted) {
+        setDashboards(); // 대시보드 목록 업데이트
+      }
 
       // 초대 목록 다시 가져오기
       await fetchInvitations(); // 호출하지 않음
