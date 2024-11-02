@@ -26,6 +26,7 @@ const MemberItem: React.FC<MemberItemProps> = ({
         width="38"
         height="38"
       />
+
       <p className="flex-1 text-sm md:text-[16px]">{member.nickname}</p>
       <button
         type="button"

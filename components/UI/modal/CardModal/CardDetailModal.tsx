@@ -32,7 +32,7 @@ const CardDetailModal: React.FC<CardDetailModalProps> = ({
     <>
       <div className={styles.modalOverlay} onClick={onClose}>
         <div
-          className={styles.modalContainer}
+          className={`${styles.modalContainer} custom-scrollbar`}
           onClick={(e) => e.stopPropagation()}
         >
           <CardHeader
