@@ -102,7 +102,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
     setDashboardId(Number(dashboardsId));
   }, [dashboardsId, fetchColumns, setDashboardId]);
 
-  // 실제 렌더링 부분
   return (
     <>
       <MetaHead
@@ -118,26 +117,8 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
           <div className="flex justify-center items-center min-h-screen text-lg">
             <Custom404 />
           </div>
-        ) : !columns.length ? (
-          <div className="columns flex flex-col lg:flex-row">
-            <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 border-r border-[gray600]">
-              <button
-                type="button"
-                className="flex justify-center items-center gap-3 w-full sm:h-[66px] h-[70px] lg:mt-12 border border-gray400 rounded-md bg-white100 text-black300 font-bold"
-                onClick={handleAddColumn}
-              >
-                새로운 컬럼 추가하기
-                <Image
-                  src="/images/icons/icon_add_column.svg"
-                  width={16}
-                  height={16}
-                  alt="할 일 추가"
-                />
-              </button>
-            </div>
-          </div>
         ) : (
-          <div className="columns flex flex-col lg:flex-row">
+          <div className="h-srceen columns flex flex-col lg:flex-row">
             {columns.map((item) => (
               <Column
                 key={item.id}
@@ -146,7 +127,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
                 onRefresh={fetchColumns}
               />
             ))}
-            <div className="columnList flex-1 h-screen py-4 px-3 md:p-5 border-r border-[gray600]">
+            <div className="columnList flex-1 h-full py-4 px-3 md:p-5 border-r border-[gray600]">
               <button
                 type="button"
                 className="flex justify-center items-center gap-3 w-full sm:h-[66px] h-[70px] lg:mt-12 border border-gray400 rounded-md bg-white100 text-black300 font-bold"
