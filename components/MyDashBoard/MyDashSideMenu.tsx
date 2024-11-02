@@ -1,10 +1,10 @@
+import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { useDashBoardStore } from "@/store/dashBoardStore";
 import Link from "next/link";
 import Image from "next/image";
 import DashBoardLink from "./DashBoardLink";
 import Pagination from "../UI/pagination/Pagination";
-import { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { useDashBoardStore } from "@/store/dashBoardStore";
 import useResponsiveThreshold from "@/hooks/dashboard/useResponsiveThreshold";
 import useModal from "@/hooks/modal/useModal";
 import CreateDashBoard from "./CreateDashBoard";
@@ -22,14 +22,16 @@ const MyDashSideMenu: React.FC = () => {
   useEffect(() => {
     const fetchDashboards = async () => {
       await setDashboards(); // 대시보드 목록을 가져옴
-
-      if (dashboardId) {
-        setActiveDashboardId(Number(dashboardId));
-      }
     };
 
     fetchDashboards();
   }, [setDashboards]);
+
+  useEffect(() => {
+    if (dashboardId) {
+      setActiveDashboardId(Number(dashboardId));
+    }
+  }, [dashboardId]);
 
   const totalPages = dashboards ? Math.ceil(totalCount / itemsPerPage) : 0;
 

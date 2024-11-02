@@ -62,6 +62,10 @@ const InvitationsList: React.FC<InvitationsListProps> = ({
     setIsLoadingMore,
   ]);
 
+  const uniqueInvitations = Array.from(
+    new Map(filteredInvitations.map((invite) => [invite.id, invite])).values()
+  );
+
   return (
     <div className="py-3 md:py-6">
       <div className="hidden px-4 md:px-7 md:flex lg:px-20">
@@ -69,7 +73,7 @@ const InvitationsList: React.FC<InvitationsListProps> = ({
         <div className={`${tableHd}`}>초대자</div>
         <div className={`${tableHd}`}>수락 여부</div>
       </div>
-      {filteredInvitations.slice(0, displayCount).map((invite) => (
+      {uniqueInvitations.slice(0, displayCount).map((invite) => (
         <InvitationItem
           key={invite.id ? invite.id : uuidv4()}
           invite={invite}

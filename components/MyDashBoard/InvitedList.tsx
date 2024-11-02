@@ -25,15 +25,17 @@ const InvitedList = () => {
       const data = await getMyInvitations();
 
       // 중복 초대 제거
-      const uniqueInvitations = data.invitations.filter(
-        (invite, index, self) =>
-          index ===
-          self.findIndex(
-            (t) =>
-              t.invitee.id === invite.invitee.id &&
-              t.dashboard.id === invite.dashboard.id
-          )
-      );
+      const uniqueInvitations = data.invitations
+        .filter(
+          (invite, index, self) =>
+            index ===
+            self.findIndex(
+              (t) =>
+                t.invitee.id === invite.invitee.id &&
+                t.dashboard.id === invite.dashboard.id
+            )
+        )
+        .filter((invite): invite is MyInviteList => invite !== undefined); // undefined 필터링
 
       setInvitations(uniqueInvitations);
     } catch (err) {
@@ -55,12 +57,17 @@ const InvitedList = () => {
         inviteAccepted: accepted,
       });
 
+      // 초대 목록에서 해당 초대 제거
+      setInvitations((prevInvitations) =>
+        prevInvitations.filter((invite) => invite.id !== invitationId)
+      );
+
       if (accepted) {
         await setDashboards(); // 대시보드 목록 업데이트
       }
 
       // 초대 목록도 갱신
-      fetchInvitations();
+      //fetchInvitations();
     } catch (err) {
       console.error("초대 상태 업데이트 중 오류 발생:", err);
     }
