@@ -33,7 +33,7 @@ const CardListLayout: React.FC<CardListLayoutProps> = ({
   metaProps: { columnTitle },
 }) => {
   return (
-    <ul className="flex flex-col gap-4 mt-[10px] h-[886px] overflow-y-auto">
+    <ul className="flex flex-col gap-4 mt-[10px] h-[886px] overflow-y-auto custom-scrollbar">
       {cards.map((card) => (
         <li key={card.id}>
           <Card
