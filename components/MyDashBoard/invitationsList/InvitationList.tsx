@@ -3,6 +3,7 @@ import { MyInviteList } from "@/types/invitedList";
 import { tableHd } from "../MyDashStyle";
 import InvitationItem from "./InvitationItem";
 import useObserver from "@/hooks/useObserver"; // 경로 조정 필요
+import { v4 as uuidv4 } from "uuid";
 
 interface InvitationsListProps {
   filteredInvitations: MyInviteList[];
@@ -63,7 +64,7 @@ const InvitationsList: React.FC<InvitationsListProps> = ({
       </div>
       {uniqueInvitations.slice(0, displayCount).map((invite) => (
         <InvitationItem
-          key={invite.id}
+          key={uuidv4()}
           invite={invite}
           handleInviteResponse={handleInviteResponse}
         />

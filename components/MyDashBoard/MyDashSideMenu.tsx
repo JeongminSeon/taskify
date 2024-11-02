@@ -7,6 +7,7 @@ import Pagination from "../UI/pagination/Pagination";
 import useResponsiveThreshold from "@/hooks/dashboard/useResponsiveThreshold";
 import useModal from "@/hooks/modal/useModal";
 import CreateDashBoard from "./CreateDashBoard";
+import { v4 as uuidv4 } from "uuid";
 
 const MyDashSideMenu: React.FC = () => {
   const { isOpen, openModal, closeModal } = useModal();
@@ -101,7 +102,7 @@ const MyDashSideMenu: React.FC = () => {
         <ul className="flex flex-col gap-2">
           {currentDashboards?.map((dashboard) => (
             <li
-              key={dashboard.id}
+              key={uuidv4()}
               className={`md:px-[10px] lg:px-3 ${
                 activeDashboardId === dashboard.id ? "bg-violet200" : ""
               }`}
