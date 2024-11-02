@@ -6,9 +6,16 @@ interface ModalAlertProps {
   onClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onConfirm?: () => void;
   text: string;
+  type?: "alert" | "confirm";
 }
 
-const ModalAlert = ({ isOpen, onClose, onConfirm, text }: ModalAlertProps) => {
+const ModalAlert = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  text,
+  type = "alert",
+}: ModalAlertProps) => {
   if (!isOpen) return null;
 
   const handleConfirmClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -26,12 +33,26 @@ const ModalAlert = ({ isOpen, onClose, onConfirm, text }: ModalAlertProps) => {
           <p className="md:text-[20px] sm:text-[16px] font-[500] mb-8">
             {text}
           </p>
-          <button
-            className="bg-purple100 text-white md:px-[106px] md:py-[11px] sm:px-[84px] sm:py-[9px] rounded-lg hover:opacity-85"
-            onClick={handleConfirmClick}
-          >
-            닫기
-          </button>
+          <div className="flex gap-2">
+            <button
+              className={`md:px-[40px] md:py-[11px] sm:px-[30px] sm:py-[9px] rounded-lg hover:opacity-85 ${
+                type === "confirm"
+                  ? "bg-white100 text-black border border-[gray500]"
+                  : "bg-purple100 text-white"
+              }`}
+              onClick={onClose}
+            >
+              닫기
+            </button>
+            {type === "confirm" && (
+              <button
+                className="bg-purple100 text-white md:px-[40px] md:py-[11px] sm:px-[30px] sm:py-[9px] rounded-lg hover:opacity-85"
+                onClick={handleConfirmClick}
+              >
+                확인
+              </button>
+            )}
+          </div>
         </div>
       </ModalLayout>
     </Portal>
