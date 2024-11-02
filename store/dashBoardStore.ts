@@ -4,16 +4,19 @@ import { create } from "zustand";
 
 interface DashboardStore {
   dashboards: Dashboard[];
+  dashboardId: number;
   cursorId: number;
   totalCount: number;
   setDashboards: () => Promise<void>; // 대시보드를 가져오는 비동기 함수
-  addDashboard: (dashboard: Dashboard) => void; // 대시보드를 추가하는 함수 (추후 생성하고 연동 필요)
+  setDashboardId: (id: number) => void;
+  addDashboard: (dashboard: Dashboard) => void; // 대시보드를 추가하는 함수
 }
 
 // 대시보드 관련 상태 관리
 export const useDashBoardStore = create<DashboardStore>((set) => ({
   // 초기 상태
   dashboards: [],
+  dashboardId: 0,
   cursorId: 0,
   totalCount: 0,
 
@@ -36,4 +39,7 @@ export const useDashBoardStore = create<DashboardStore>((set) => ({
     set((state) => ({
       dashboards: [...state.dashboards, dashboard],
     })),
+
+  // 대시보드 ID를 설정하는 함수
+  setDashboardId: (id: number) => set({ dashboardId: id }),
 }));

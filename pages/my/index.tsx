@@ -23,6 +23,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     console.error("프로필 정보를 불러오는 중 오류 발생했습니다.", error);
     return {
       props: { profileData: null }, // 오류 발생 시 null 전달
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
     };
   }
 };

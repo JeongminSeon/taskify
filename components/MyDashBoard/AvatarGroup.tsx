@@ -32,7 +32,7 @@ const AvatarGroup = () => {
   }, [dashboardsId]);
 
   return (
-    <div className="flex items-center ml-4">
+    <div className="flex items-center ml-4 relative z-0">
       {avatars.slice(0, showCountThreshold).map((member, index) => (
         <div
           key={member.id}
