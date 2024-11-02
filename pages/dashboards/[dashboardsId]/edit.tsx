@@ -33,6 +33,7 @@ const DashboardEdit = () => {
   const [title, setTitle] = useState<string>("");
   const [color, setColor] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false); // 삭제 확인 모달 상태 추가
   const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
 
   useEffect(() => {
@@ -96,7 +97,13 @@ const DashboardEdit = () => {
   };
 
   const handleDeleteDashboard = async () => {
-    if (dashboardId && confirm("이 대시보드를 정말 삭제하시겠습니까?")) {
+    if (dashboardId) {
+      setIsDeleteAlertOpen(true); // 삭제 확인 모달 열기
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (dashboardId) {
       try {
         await deleteDashboard(dashboardId);
         router.push("/mydashboard");
@@ -180,6 +187,16 @@ const DashboardEdit = () => {
                   isOpen={isOpen}
                   onClose={handleClose}
                   text={errorMessage}
+                />
+              )}
+              {/* 삭제 확인 모달 */}
+              {isDeleteAlertOpen && (
+                <ModalAlert
+                  isOpen={isDeleteAlertOpen}
+                  onClose={() => setIsDeleteAlertOpen(false)}
+                  onConfirm={confirmDelete} // 삭제 확인 시 호출되는 함수
+                  text="이 대시보드를 정말 삭제하시겠습니까?"
+                  type="confirm" // confirm 타입으로 설정
                 />
               )}
             </>
