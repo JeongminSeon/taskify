@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import { useAuthStore } from "@/store/authStore";
 import { addInvitations } from "@/utils/api/dashboardsApi";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useInvitationStore } from "@/store/invitationStore";
-import { Dashboard } from "@/types/dashboards";
 import { removeAccessToken } from "@/utils/api/cookie";
+import { useDashBoardStore } from "@/store/dashBoardStore";
 import useModal from "@/hooks/modal/useModal";
 import Portal from "@/components/UI/modal/ModalPotal";
 import OneInputModal from "../UI/modal/InputModal/OneInputModal";
@@ -12,21 +12,33 @@ import ModalAlert from "../UI/modal/ModalAlert";
 import ActionButton from "./dashHeader/ActionButton";
 import UserMenu from "./dashHeader/UserMenu";
 import useErrorModal from "@/hooks/modal/useErrorModal";
+import useResponsiveThreshold from "@/hooks/dashboard/useResponsiveThreshold";
 
 interface MyDashSideMenuProps {
-  dashboards: Dashboard[];
   onEdit?: () => void;
   onDelete?: () => void;
 }
 
 const ITEMS_PER_PAGE = 5;
+const SMALL_SCREEN_THRESHOLD = 768;
+const LARGE_SCREEN_THRESHOLD = 1200;
 
-const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
+const MyDashHdr: React.FC<MyDashSideMenuProps> = () => {
   const router = useRouter();
   const { dashboardsId } = router.query;
+  const { dashboards, setDashboardId } = useDashBoardStore();
   const { loadInvitations } = useInvitationStore();
   const { user } = useAuthStore();
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const threshold = useResponsiveThreshold(
+    SMALL_SCREEN_THRESHOLD,
+    LARGE_SCREEN_THRESHOLD
+  );
+
+  useEffect(() => {
+    setDashboardId(Number(dashboardsId));
+  }, [dashboardsId, setDashboardId]);
 
   const {
     isOpen: isInviteModalOpen,
@@ -50,7 +62,6 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
   const currentDashboard = dashboards.find(
     (dashboard) => dashboard.id === Number(dashboardsId)
   );
-
   const dashboardTitle = currentDashboard
     ? currentDashboard.title
     : "내 대시보드";
@@ -105,7 +116,11 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
       <div className="border-b border-gray400 bg-white">
         <div className="headerWrap flex justify-between items-center w-full p-[13px_8px_13px_18px] md:px-10 md:py-[15px]">
           <h2 className="pageTitle flex-1 text-x font-bold md:text-xl lg:text-[2rem]">
-            {dashboardTitle}
+            {isMyDashboardPage
+              ? "내 대시보드"
+              : threshold === LARGE_SCREEN_THRESHOLD
+              ? dashboardTitle
+              : null}
           </h2>
           <ActionButton
             onManageClick={handleManageClick}

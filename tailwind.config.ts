@@ -27,6 +27,7 @@ const config: Config = {
         violet100: "var(--purple200)",
         blue100: "var(--blue100)",
         orange100: "var(--orange100)",
+        violet200: "var(--violet200)",
       },
       screens: {
         sm: "375px",

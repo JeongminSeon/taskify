@@ -6,6 +6,7 @@ import Image from "next/image";
 import CreateDashBoard from "./CreateDashBoard";
 import useModal from "@/hooks/modal/useModal";
 import Pagination from "../UI/pagination/Pagination";
+import { v4 as uuidv4 } from "uuid";
 
 const MyDashList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,7 +52,7 @@ const MyDashList: React.FC = () => {
           {isOpen && <CreateDashBoard isOpen={isOpen} onClose={closeModal} />}
         </div>
         {currentDashboards?.map((dashboard) => (
-          <div key={dashboard.id} className={`${boardCardBtn}`}>
+          <div key={uuidv4()} className={`${boardCardBtn}`}>
             <Link
               href={`/dashboards/${dashboard.id}`}
               className={`flex items-center gap-3 ${boardCardBtnBox}`}
