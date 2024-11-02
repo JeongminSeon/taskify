@@ -1,5 +1,7 @@
+import React, { useState } from "react";
 import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
 import Portal from "@/components/UI/modal/ModalPotal";
+import ModalAlert from "@/components/UI/modal/ModalAlert";
 import useModal from "@/hooks/modal/useModal";
 import { ColumnsUpdateParams } from "@/types/columns";
 import { deleteColumn, updateColumn } from "@/utils/api/columnsApi";
@@ -14,16 +16,17 @@ const ColumnHeader = ({
   columnId: number;
   onRefresh: () => void;
 }) => {
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
   const {
     isOpen,
     inputValue,
     openModal: handleSettingColumn,
     closeModal,
     handleInputChange,
-    handleConfirm: handleModalConfirm,
   } = useModal();
 
-  const handleDeleteColumn = async (columnId: number) => {
+  const handleDeleteColumn = async () => {
     try {
       await deleteColumn(columnId);
       closeModal();
@@ -46,6 +49,11 @@ const ColumnHeader = ({
     }
   };
 
+  const handleConfirmUpdate = () => {
+    handleUpdateColumn({ columnId, title: inputValue });
+    setIsAlertOpen(false);
+  };
+
   return (
     <h2 className="flex items-center gap-2 text-black100 font-bold">
       <span className="block w-2 h-2 rounded-full bg-purple100"></span>
@@ -66,16 +74,34 @@ const ColumnHeader = ({
             inputLabel="이름"
             inputPlaceholder={title}
             onCancel={closeModal} // X 버튼용 기본 닫기
-            cancelAction={() => handleDeleteColumn(columnId)}
+            cancelAction={() => setIsDeleteAlertOpen(true)}
             cancelButtonText="삭제"
-            onConfirm={() =>
-              handleModalConfirm(() =>
-                handleUpdateColumn({ columnId, title: inputValue })
-              )
-            }
+            onConfirm={() => setIsAlertOpen(true)}
             confirmButtonText="변경"
             inputValue={inputValue}
             onInputChange={handleInputChange}
+          />
+        </Portal>
+      )}
+      {isAlertOpen && (
+        <Portal>
+          <ModalAlert
+            isOpen={isAlertOpen}
+            type="confirm"
+            text="컬럼을 수정하시겠습니까?"
+            onClose={() => setIsAlertOpen(false)}
+            onConfirm={handleConfirmUpdate}
+          />
+        </Portal>
+      )}
+      {isDeleteAlertOpen && (
+        <Portal>
+          <ModalAlert
+            isOpen={isDeleteAlertOpen}
+            type="confirm"
+            text="컬럼을 삭제하시겠습니까?"
+            onClose={() => setIsDeleteAlertOpen(false)}
+            onConfirm={handleDeleteColumn}
           />
         </Portal>
       )}
