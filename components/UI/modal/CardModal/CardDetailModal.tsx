@@ -7,6 +7,7 @@ import CardTagList from "./components/CardTagList";
 import CardBody from "./components/CardBody";
 import CardSidebar from "./components/CardSidebar";
 import CardCommentList from "./components/CardCommentList";
+import ModalLayout from "@/components/Layout/ModalLayout";
 
 interface CardDetailModalProps {
   card: Card;
@@ -28,34 +29,33 @@ const CardDetailModal: React.FC<CardDetailModalProps> = ({
   tagColors,
 }) => {
   if (!isOpen) return null;
+
   return (
-    <>
-      <div className={styles.modalOverlay} onClick={onClose}>
-        <div
-          className={`${styles.modalContainer} custom-scrollbar`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <CardHeader
-            card={card}
-            onClose={onClose}
-            onEdit={onEdit}
-            onDelete={onDelete}
-          />
-          <div className="flex flex-col md:flex-row">
-            <div className="flex-grow pr-0 md:pr-4">
-              <CardTagList
-                card={card}
-                columnTitle={columnTitle}
-                tagColors={tagColors}
-              />
-              <CardBody card={card} />
-            </div>
-            <CardSidebar card={card} />
+    <ModalLayout>
+      <CardHeader
+        card={card}
+        onClose={onClose}
+        onEdit={onEdit}
+        onDelete={onDelete}
+      />
+      <div
+        className={`${styles.modalContainer} custom-scrollbar`}
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
+      >
+        <div className="flex flex-col md:flex-row">
+          <div className="flex-grow pr-0 md:pr-4">
+            <CardTagList
+              card={card}
+              columnTitle={columnTitle}
+              tagColors={tagColors}
+            />
+            <CardBody card={card} />
           </div>
-          <CardCommentList card={card} />
+          <CardSidebar card={card} />
         </div>
+        <CardCommentList card={card} />
       </div>
-    </>
+    </ModalLayout>
   );
 };
 
