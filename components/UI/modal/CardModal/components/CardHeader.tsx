@@ -40,8 +40,8 @@ const CardHeader: React.FC<HeaderProps> = ({
         >
           <Image
             src="/images/icons/icon_kebab.svg"
-            width={4}
-            height={16}
+            width={30}
+            height={30}
             alt="더보기"
           />
           <Dropdown isOpen={isDropdownOpen} items={dropdownItems} />
@@ -50,8 +50,8 @@ const CardHeader: React.FC<HeaderProps> = ({
         <button className={styles.closeButton} onClick={onClose}>
           <Image
             src="/images/icons/icon_close.svg"
-            width={16}
-            height={16}
+            width={30}
+            height={30}
             alt="닫기"
           />
         </button>
