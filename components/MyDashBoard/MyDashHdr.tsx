@@ -116,7 +116,11 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = () => {
       <div className="border-b border-gray400 bg-white">
         <div className="headerWrap flex justify-between items-center w-full p-[13px_8px_13px_18px] md:px-10 md:py-[15px]">
           <h2 className="pageTitle flex-1 text-x font-bold md:text-xl lg:text-[2rem]">
-            {threshold === SMALL_SCREEN_THRESHOLD ? "" : dashboardTitle}
+            {isMyDashboardPage
+              ? "내 대시보드"
+              : threshold === LARGE_SCREEN_THRESHOLD
+              ? dashboardTitle
+              : null}
           </h2>
           <ActionButton
             onManageClick={handleManageClick}
