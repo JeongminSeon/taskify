@@ -41,7 +41,6 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
     closeModal: closeMessageModal,
   } = useModal();
 
-  // totalCount가 업데이트되면 totalPages 계산
   useEffect(() => {
     if (totalCount) {
       setTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE));
