@@ -2,24 +2,36 @@ import Link from "next/link";
 import Image from "next/image";
 import DashBoardLink from "./DashBoardLink";
 import Pagination from "../UI/pagination/Pagination";
-import { useState } from "react";
-import { Dashboard } from "@/types/dashboards";
+import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { useDashBoardStore } from "@/store/dashBoardStore";
 import useResponsiveThreshold from "@/hooks/dashboard/useResponsiveThreshold";
 import useModal from "@/hooks/modal/useModal";
 import CreateDashBoard from "./CreateDashBoard";
 
-interface MyDashSideMenuProps {
-  dashboards: Dashboard[];
-}
-
-const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
+const MyDashSideMenu: React.FC = () => {
   const { isOpen, openModal, closeModal } = useModal();
-  const itemsPerPage = useResponsiveThreshold(dashboards.length, 15);
+  const { dashboards, setDashboards, dashboardId, totalCount } =
+    useDashBoardStore();
+  const itemsPerPage = useResponsiveThreshold(totalCount, 15);
   const [currentPage, setCurrentPage] = useState(1);
+  const [activeDashboardId, setActiveDashboardId] = useState<number | null>(
+    null
+  );
 
-  const totalPages = dashboards
-    ? Math.ceil(dashboards.length / itemsPerPage)
-    : 0;
+  useEffect(() => {
+    const fetchDashboards = async () => {
+      await setDashboards(); // 대시보드 목록을 가져옴
+
+      if (dashboardId) {
+        setActiveDashboardId(Number(dashboardId));
+      }
+    };
+
+    fetchDashboards();
+  }, [setDashboards]);
+
+  const totalPages = dashboards ? Math.ceil(totalCount / itemsPerPage) : 0;
 
   const handleNextPage = () => {
     setCurrentPage((prev) => prev + 1);
@@ -36,6 +48,11 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
 
   const handleNewDashBoard = () => {
     openModal();
+  };
+
+  // 클릭한 대시보드 ID로 상태 업데이트
+  const handleDashboardClick = (id: number) => {
+    setActiveDashboardId(id);
   };
 
   return (
@@ -82,7 +99,13 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
         {isOpen && <CreateDashBoard isOpen={isOpen} onClose={closeModal} />}
         <ul className="flex flex-col gap-2">
           {currentDashboards?.map((dashboard) => (
-            <li key={dashboard.id} className="md:px-[10px] lg:px-3">
+            <li
+              key={dashboard.id ? dashboard.id : uuidv4()}
+              className={`md:px-[10px] lg:px-3 ${
+                activeDashboardId === dashboard.id ? "bg-violet200" : ""
+              }`}
+              onClick={() => handleDashboardClick(dashboard.id)}
+            >
               <DashBoardLink
                 id={dashboard.id}
                 title={dashboard.title}
@@ -93,17 +116,15 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
           ))}
         </ul>
       </div>
-      {dashboards && dashboards.length > itemsPerPage && (
-        <div className="mt-3">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onNextPage={handleNextPage}
-            onPreviousPage={handlePreviousPage}
-            showPageInfo={false}
-          />
-        </div>
-      )}
+      <div className="mt-3">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onNextPage={handleNextPage}
+          onPreviousPage={handlePreviousPage}
+          showPageInfo={false}
+        />
+      </div>
     </div>
   );
 };

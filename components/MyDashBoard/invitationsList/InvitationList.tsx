@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { MyInviteList } from "@/types/invitedList";
 import { tableHd } from "../MyDashStyle";
+import { v4 as uuidv4 } from "uuid";
 import InvitationItem from "./InvitationItem";
 
 interface InvitationsListProps {
@@ -70,7 +71,7 @@ const InvitationsList: React.FC<InvitationsListProps> = ({
       </div>
       {filteredInvitations.slice(0, displayCount).map((invite) => (
         <InvitationItem
-          key={invite.id}
+          key={invite.id ? invite.id : uuidv4()}
           invite={invite}
           handleInviteResponse={handleInviteResponse}
         />

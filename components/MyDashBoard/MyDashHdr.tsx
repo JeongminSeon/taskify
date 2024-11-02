@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import { useAuthStore } from "@/store/authStore";
 import { addInvitations } from "@/utils/api/dashboardsApi";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useInvitationStore } from "@/store/invitationStore";
-import { Dashboard } from "@/types/dashboards";
 import { removeAccessToken } from "@/utils/api/cookie";
+import { useDashBoardStore } from "@/store/dashBoardStore";
 import useModal from "@/hooks/modal/useModal";
 import Portal from "@/components/UI/modal/ModalPotal";
 import OneInputModal from "../UI/modal/InputModal/OneInputModal";
@@ -15,7 +15,6 @@ import useErrorModal from "@/hooks/modal/useErrorModal";
 import useResponsiveThreshold from "@/hooks/dashboard/useResponsiveThreshold";
 
 interface MyDashSideMenuProps {
-  dashboards: Dashboard[];
   onEdit?: () => void;
   onDelete?: () => void;
 }
@@ -24,9 +23,10 @@ const ITEMS_PER_PAGE = 5;
 const SMALL_SCREEN_THRESHOLD = 768;
 const LARGE_SCREEN_THRESHOLD = 1200;
 
-const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
+const MyDashHdr: React.FC<MyDashSideMenuProps> = () => {
   const router = useRouter();
   const { dashboardsId } = router.query;
+  const { dashboards, setDashboardId } = useDashBoardStore();
   const { loadInvitations } = useInvitationStore();
   const { user } = useAuthStore();
 
@@ -35,6 +35,10 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
     SMALL_SCREEN_THRESHOLD,
     LARGE_SCREEN_THRESHOLD
   );
+
+  useEffect(() => {
+    setDashboardId(Number(dashboardsId));
+  }, [dashboardsId, setDashboardId]);
 
   const {
     isOpen: isInviteModalOpen,
