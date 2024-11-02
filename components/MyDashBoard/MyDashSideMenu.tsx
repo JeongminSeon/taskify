@@ -7,6 +7,8 @@ import { Dashboard } from "@/types/dashboards";
 import { getDashboards } from "@/utils/api/dashboardsApi";
 import { GetServerSideProps } from "next";
 import useResponsiveThreshold from "@/hooks/dashboard/useResponsiveThreshold";
+import useModal from "@/hooks/modal/useModal";
+import CreateDashBoard from "./CreateDashBoard";
 
 interface MyDashSideMenuProps {
   dashboards: Dashboard[];
@@ -30,6 +32,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
+  const { isOpen, openModal, closeModal } = useModal();
   const itemsPerPage = useResponsiveThreshold(dashboards.length, 15);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -49,6 +52,10 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  const handleNewDashBoard = () => {
+    openModal();
+  };
 
   return (
     <div className="sticky top-0 h-full py-5 px-[14px] border-r border-gray400 bg-white lg:px-2 ">
@@ -78,6 +85,7 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
         <button
           type="button"
           className="flex justify-between items-center w-full py-4"
+          onClick={handleNewDashBoard}
         >
           <span className="hidden font-semibold md:inline-block">
             Dash Boards
@@ -90,6 +98,7 @@ const MyDashSideMenu: React.FC<MyDashSideMenuProps> = ({ dashboards }) => {
             className="mx-auto md:mx-0"
           />
         </button>
+        {isOpen && <CreateDashBoard isOpen={isOpen} onClose={closeModal} />}
         <ul className="flex flex-col gap-2">
           {currentDashboards?.map((dashboard) => (
             <li key={dashboard.id} className="md:px-[10px] lg:px-3">
