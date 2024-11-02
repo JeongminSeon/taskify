@@ -5,7 +5,7 @@ import Image from "next/image";
 interface DashboardLinkProps {
   id: number;
   title: string;
-  color: string;
+  color?: string;
   createdByMe: boolean;
 }
 

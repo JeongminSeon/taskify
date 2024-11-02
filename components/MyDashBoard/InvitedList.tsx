@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { MyInviteList } from "@/types/invitedList";
 import { getMyInvitations } from "@/utils/api/invitationsApi";
+import { useDashBoardStore } from "@/store/dashBoardStore";
 import axiosInstance from "@/utils/api/axiosInstanceApi";
 import UnInvited from "./UnInvited";
 import SearchBox from "../UI/search/SearchBox";
@@ -16,12 +17,26 @@ const InvitedList = () => {
   const [displayCount, setDisplayCount] = useState(size);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
+  const { setDashboards } = useDashBoardStore();
+
   // 초대 목록 조회
   const fetchInvitations = async () => {
     try {
       const data = await getMyInvitations();
-      setInvitations(data.invitations);
-      // setFilteredInvitations(data.invitations);
+
+      const uniqueInvitations = data.invitations
+        .filter(
+          (invite, index, self) =>
+            index ===
+            self.findIndex(
+              (t) =>
+                t.invitee.id === invite.invitee.id &&
+                t.dashboard.id === invite.dashboard.id
+            )
+        )
+        .filter((invite): invite is MyInviteList => invite !== undefined); // undefined 필터링
+
+      setInvitations(uniqueInvitations);
     } catch (err) {
       console.error(err);
     }
@@ -40,6 +55,13 @@ const InvitedList = () => {
       await axiosInstance.put(`/invitations/${invitationId}`, {
         inviteAccepted: accepted,
       });
+
+      if (accepted) {
+        setDashboards(); // 대시보드 목록 업데이트
+      }
+
+      // 초대 목록 다시 가져오기
+      await fetchInvitations(); // 호출하지 않음
     } catch (err) {
       console.error("초대 상태 업데이트 중 오류 발생:", err);
     }
