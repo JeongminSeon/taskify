@@ -30,7 +30,7 @@ export async function useAuth(
       },
     };
   } catch (error) {
-    console.error("Failed to fetch user info:", error);
+    console.error("사용자 정보를 불러오는데 실패했습니다. :", error);
     return {
       redirect: {
         destination: "/login",
@@ -56,7 +56,7 @@ export async function useGuest(
         },
       };
     } catch (error) {
-      console.error("Failed to fetch user info:", error);
+      console.error("사용자 정보를 불러오는데 실패했습니다. :", error);
       return {
         redirect: {
           destination: "/login",
