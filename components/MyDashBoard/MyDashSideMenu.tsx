@@ -52,6 +52,12 @@ const MyDashSideMenu: React.FC = () => {
     openModal();
   };
 
+  // 모달 닫기 후 대시보드 목록을 업데이트
+  const handleModalClose = async () => {
+    closeModal();
+    await setDashboards(); // 최신 대시보드 목록을 가져와 업데이트
+  };
+
   // 클릭한 대시보드 ID로 상태 업데이트
   const handleDashboardClick = (id: number) => {
     setActiveDashboardId(id);
@@ -98,7 +104,9 @@ const MyDashSideMenu: React.FC = () => {
             className="mx-auto md:mx-0"
           />
         </button>
-        {isOpen && <CreateDashBoard isOpen={isOpen} onClose={closeModal} />}
+        {isOpen && (
+          <CreateDashBoard isOpen={isOpen} onClose={handleModalClose} />
+        )}
         <ul className="flex flex-col gap-2">
           {currentDashboards?.map((dashboard) => (
             <li
