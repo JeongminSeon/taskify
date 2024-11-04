@@ -22,7 +22,13 @@ import ModalAlert from "@/components/UI/modal/ModalAlert";
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/utils/auth";
 
-const DashboardEdit = () => {
+interface DashboardEditProps {
+  initialUser: {
+    id: number;
+  };
+}
+
+const DashboardEdit: React.FC<DashboardEditProps> = ({ initialUser }) => {
   const router = useRouter();
   const { dashboardsId } = router.query;
   const [dashboardId, setDashboardId] = useState<number | null>(null);
@@ -164,7 +170,10 @@ const DashboardEdit = () => {
                 </EditBox>
                 <EditBox title="구성원">
                   {dashboardId !== null ? (
-                    <MemberList dashboardId={dashboardId} />
+                    <MemberList
+                      dashboardId={dashboardId}
+                      currentUserId={initialUser.id}
+                    />
                   ) : (
                     <p>구성원이 없습니다.</p>
                   )}
