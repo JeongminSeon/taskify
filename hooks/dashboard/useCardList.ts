@@ -3,12 +3,9 @@ import { Card as CardType } from "@/types/cards";
 import { getRandomColor } from "@/utils/TodoForm";
 import useModal from "@/hooks/modal/useModal";
 
-// UseCardListProps 인터페이스 정의
-// initialCards: 초기 카드 배열
-// onDeleteCard: 카드 삭제 함수 (카드 ID를 인자로 받음)
 interface UseCardListProps {
-  initialCards: CardType[];
-  onDeleteCard: (cardId: number) => void;
+  initialCards: CardType[]; // 초기 카드 배열
+  onDeleteCard: (cardId: number) => void; //카드 삭제 함수
 }
 
 // useCardList 커스텀 훅
@@ -16,14 +13,11 @@ export const useCardList = ({
   initialCards,
   onDeleteCard,
 }: UseCardListProps) => {
-  // cards: 카드 배열 상태, 초기값은 initialCards
-  const [cards, setCards] = useState<CardType[]>(initialCards);
+  const [cards, setCards] = useState<CardType[]>(initialCards); // 카드 배열 상태
 
-  // selectedCard: 선택된 카드 상태, 초기값은 null
-  const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
+  const [selectedCard, setSelectedCard] = useState<CardType | null>(null); // 선택된 카드 상태
 
-  // tagColors: 태그별 색상 객체 상태, 초기값은 빈 객체
-  const [tagColors, setTagColors] = useState<Record<string, string>>({});
+  const [tagColors, setTagColors] = useState<Record<string, string>>({}); // 태그별 색상 객체 상태
 
   // 상세 모달의 열림 상태와 관련된 함수
   const {
@@ -77,7 +71,6 @@ export const useCardList = ({
     setTagColors(newTagColors); // 태그 색상 업데이트
   }, [cards]);
 
-  // useCardList 훅에서 반환하는 값과 함수들
   return {
     cards,
     selectedCard,
