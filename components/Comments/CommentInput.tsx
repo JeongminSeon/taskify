@@ -1,10 +1,11 @@
-import InputField from "../My/InputField";
 import { styles } from "../UI/modal/CardModal/styles";
+import InputField from "../My/InputField";
 
+// CommentInput 컴포넌트의 props 타입 정의
 interface CommentInputProps {
-  content: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: () => void;
+  content: string; // 댓글 내용
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // 댓글 내용 변경 핸들러
+  onSubmit: () => void; // 댓글 제출 핸들러
 }
 
 export const CommentInput = ({
@@ -12,6 +13,7 @@ export const CommentInput = ({
   onChange,
   onSubmit,
 }: CommentInputProps) => {
+  // 키보드 입력 이벤트 핸들러
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (e.nativeEvent.isComposing) {
       return;

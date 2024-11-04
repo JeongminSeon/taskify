@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
+// UnInvitedProps 인터페이스 정의
 interface UnInvitedProps {
   message?: string;
 }

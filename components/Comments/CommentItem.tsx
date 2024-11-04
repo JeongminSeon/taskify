@@ -1,19 +1,20 @@
-import React from "react";
-import Image from "next/image";
 import { formatInTimeZone } from "date-fns-tz";
 import { Comment } from "@/types/comments";
-import InputField from "@/components/My/InputField";
 import { styles } from "../UI/modal/CardModal/styles";
 import { useAuthStore } from "@/store/authStore";
+import React from "react";
+import Image from "next/image";
+import InputField from "@/components/My/InputField";
 
+// CommentItemProps 인터페이스 정의
 interface CommentItemProps {
-  comment: Comment;
-  editCommentId: number | null;
-  editContent: string;
-  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onEditClick: (comment: Comment) => void;
-  onCommentChange: () => void;
-  onCommentDelete: (id: number) => void;
+  comment: Comment; // 댓글 객체
+  editCommentId: number | null; // 현재 수정 중인 댓글 ID
+  editContent: string; // 수정 중인 댓글 내용
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // 입력 변화 핸들러
+  onEditClick: (comment: Comment) => void; // 댓글 수정 버튼 핸들러
+  onCommentChange: () => void; // 댓글 변경 완료 핸들러
+  onCommentDelete: (id: number) => void; // 댓글 삭제 핸들러
 }
 
 export const CommentItem = ({
@@ -25,8 +26,8 @@ export const CommentItem = ({
   onCommentChange,
   onCommentDelete,
 }: CommentItemProps) => {
-  const currentUser = useAuthStore((state) => state.user);
-  const isAuthor = currentUser?.id === comment.author.id;
+  const currentUser = useAuthStore((state) => state.user); // 현재 사용자 정보 가져오기
+  const isAuthor = currentUser?.id === comment.author.id; // 댓글 작성자인지 확인
 
   return (
     <div className={styles.commentItem}>
@@ -43,7 +44,6 @@ export const CommentItem = ({
           <div className="text-sm text-gray-500 ml-2">
             <p className="text-sm text-gray-500 ml-2">
               <span className="text-sm text-gray-500 ml-2">
-                {/* 서버시간 기준으로 날짜 포맷 변경 */}
                 {formatInTimeZone(
                   new Date(comment.updatedAt || comment.createdAt),
                   "UTC",
@@ -65,16 +65,14 @@ export const CommentItem = ({
           <p className="mt-1">{comment.content}</p>
         )}
 
-        {isAuthor && (
+        {isAuthor && ( // 현재 사용자가 작성자일 경우 수정 및 삭제 버튼 표시
           <div className="mt-2">
             <button
               className={styles.commentActionButton}
               onClick={() => {
-                // 수정 중인 댓글인지 확인
                 if (editCommentId === comment.id) {
                   onCommentChange();
                 } else {
-                  // 수정 중이 아닌 경우 수정 버튼 클릭
                   onEditClick(comment);
                 }
               }}

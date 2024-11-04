@@ -1,10 +1,11 @@
 import Image from "next/image";
 
+// 카드 컴포넌트의 props 타입 정의
 interface CardProps {
-  imageSrc: string;
-  imageAlt: string;
-  title: string;
-  description: string;
+  imageSrc: string; // 이미지 소스 URL
+  imageAlt: string; // 이미지 대체 텍스트
+  title: string; // 카드 제목
+  description: string; // 카드 설명
 }
 
 const Card = ({ imageSrc, imageAlt, title, description }: CardProps) => {

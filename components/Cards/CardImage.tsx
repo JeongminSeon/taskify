@@ -1,8 +1,9 @@
 import React from "react";
 import Image from "next/image";
 
+// CardImage 컴포넌트의 props 타입 정의
 interface CardImageProps {
-  imageUrl: string;
+  imageUrl: string; // 카드에 표시될 이미지 URL
 }
 
 const CardImage: React.FC<CardImageProps> = ({ imageUrl }) => (

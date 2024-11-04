@@ -19,27 +19,30 @@ interface MyDashSideMenuProps {
   onDelete?: () => void;
 }
 
-const ITEMS_PER_PAGE = 5;
-const SMALL_SCREEN_THRESHOLD = 768;
-const LARGE_SCREEN_THRESHOLD = 1200;
+const ITEMS_PER_PAGE = 5; // 페이지당 아이템 수
+const SMALL_SCREEN_THRESHOLD = 768; // 작은 화면 임계값
+const LARGE_SCREEN_THRESHOLD = 1200; // 큰 화면 임계값
 
 const MyDashHdr: React.FC<MyDashSideMenuProps> = () => {
   const router = useRouter();
-  const { dashboardsId } = router.query;
-  const { dashboards, setDashboardId } = useDashBoardStore();
-  const { loadInvitations } = useInvitationStore();
-  const { user } = useAuthStore();
-
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { dashboardsId } = router.query; // URL에서 대시보드 ID 가져오기
+  const { dashboards, setDashboardId } = useDashBoardStore(); // 대시보드 상태 가져오기
+  const { loadInvitations } = useInvitationStore(); // 초대 상태 가져오기
+  const { user } = useAuthStore(); // 사용자 정보 가져오기
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태
+  const [modalMessage, setModalMessage] = useState<string>(""); // 모달 메시지 상태
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false); // 메시지 모달 열림 상태
   const threshold = useResponsiveThreshold(
     SMALL_SCREEN_THRESHOLD,
     LARGE_SCREEN_THRESHOLD
-  );
+  ); // 반응형 임계값
 
+  // 대시보드 ID 설정
   useEffect(() => {
     setDashboardId(Number(dashboardsId));
   }, [dashboardsId, setDashboardId]);
 
+  // 초대 모달
   const {
     isOpen: isInviteModalOpen,
     inputValue,
@@ -49,6 +52,7 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = () => {
     handleConfirm: handleModalConfirm,
   } = useModal();
 
+  // 에러 메세지 모달
   const {
     isOpen: isErrorModalOpen,
     errorMessage,
@@ -56,18 +60,20 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = () => {
     handleClose: closeErrorModal,
   } = useErrorModal();
 
-  const [modalMessage, setModalMessage] = useState<string>("");
-  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
-
+  // 현재 대시보드 찾기
   const currentDashboard = dashboards.find(
     (dashboard) => dashboard.id === Number(dashboardsId)
   );
+
+  // 대시보드 제목 설정
   const dashboardTitle = currentDashboard
     ? currentDashboard.title
     : "내 대시보드";
+
+  // 현재 페이지가 내 대시보드인지 확인
   const isMyDashboardPage = router.pathname === "/mydashboard";
 
-  // 유저 메뉴
+  // 유저 메뉴 항목
   const dropdownItems = [
     {
       label: "로그아웃",
@@ -86,14 +92,15 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = () => {
     },
   ];
 
+  // 초대 요청 핸들러
   const handleConfirm = useCallback(
     async (inputValue: string) => {
       try {
-        await addInvitations(Number(dashboardsId), inputValue);
-        setModalMessage("초대 요청을 보냈습니다.");
-        setIsMessageModalOpen(true);
-        closeInviteModal();
-        loadInvitations(Number(dashboardsId), 1, ITEMS_PER_PAGE);
+        await addInvitations(Number(dashboardsId), inputValue); // 초대 요청 API 호출
+        setModalMessage("초대 요청을 보냈습니다."); // 성공 메시지 설정
+        setIsMessageModalOpen(true); // 메시지 모달 열기
+        closeInviteModal(); // 초대 모달 닫기
+        loadInvitations(Number(dashboardsId), 1, ITEMS_PER_PAGE); // 초대 목록 로드
       } catch (error) {
         handleError(error);
       }
@@ -101,13 +108,14 @@ const MyDashHdr: React.FC<MyDashSideMenuProps> = () => {
     [dashboardsId, closeInviteModal, loadInvitations, handleError]
   );
 
+  // 관리 버튼 핸들러
   const handleManageClick = () => {
     if (currentDashboard && !currentDashboard.createdByMe) {
-      setModalMessage("접근 권한이 없습니다.");
-      setIsMessageModalOpen(true);
-      router.push(`/dashboards/${dashboardsId}`);
+      setModalMessage("접근 권한이 없습니다."); // 접근 권한 메시지 설정
+      setIsMessageModalOpen(true); // 메시지 모달 열기
+      router.push(`/dashboards/${dashboardsId}`); // 대시보드 페이지로 리다이렉트
     } else {
-      router.push(`/dashboards/${dashboardsId}/edit`);
+      router.push(`/dashboards/${dashboardsId}/edit`); // 대시보드 편집 페이지로 리다이렉트
     }
   };
 

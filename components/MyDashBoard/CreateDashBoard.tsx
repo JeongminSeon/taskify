@@ -1,21 +1,23 @@
 import React, { useState } from "react";
+import { isEntered } from "@/utils/validation";
+import { createDashboard } from "@/utils/api/dashboardsApi";
+import { useRouter } from "next/router";
 import Portal from "../UI/modal/ModalPotal";
 import ModalLayout from "../Layout/ModalLayout";
 import Input from "../Auth/Input";
 import useInput from "@/hooks/useInput";
-import { isEntered } from "@/utils/validation";
 import ColorInput from "../DashBoard/inputs/ColorInput";
-import { createDashboard } from "@/utils/api/dashboardsApi";
-import { AxiosError } from "axios";
-import { useRouter } from "next/router";
 
+// 색상 키 타입 정의
 type ColorKey = "green" | "violet" | "orange" | "blue" | "pink";
 
+// 컴포넌트 Props 인터페이스 정의
 interface DashBoardProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+// 색상 정의
 const COLOR: Record<ColorKey, string> = {
   green: "#7ac555",
   violet: "#760dde",
@@ -25,9 +27,10 @@ const COLOR: Record<ColorKey, string> = {
 };
 
 const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
-  const router = useRouter();
-  const [selectedColor, setSelectedColor] = useState<string>("");
+  const router = useRouter(); // 라우터 객체 생성
+  const [selectedColor, setSelectedColor] = useState<string>(""); // 선택된 색상 상태
 
+  // 입력 필드 상태 관리
   const {
     enteredValue: nameValue,
     handleInputChange,
@@ -35,27 +38,27 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
     error: isNameNotValid,
   } = useInput({
     defaultValue: "",
-    hasError: (enteredValue: string) => isEntered(enteredValue),
+    hasError: (enteredValue: string) => isEntered(enteredValue), // 입력 검증
   });
 
+  // 제출 가능 여부 체크
   const isSubmitEnabled = !isNameNotValid && selectedColor !== "";
+  const isDisabled = !isSubmitEnabled; // 버튼 비활성화 상태
 
-  const isDisabled = !isSubmitEnabled;
-
+  // 폼 제출 처리
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const response = await createDashboard(nameValue, selectedColor);
-      const { id } = response;
-      onClose();
-      router.push(`/dashboards/${id}`);
+      const response = await createDashboard(nameValue, selectedColor); // 대시보드 생성 API 호출
+      const { id } = response; // 생성된 대시보드 ID 추출
+      onClose(); // 모달 닫기
+      router.push(`/dashboards/${id}`); // 생성된 대시보드 페이지로 이동
     } catch (error) {
-      if (error instanceof AxiosError) {
-        throw error;
-      }
+      throw error;
     }
   };
 
+  // 모달이 닫혀 있으면 아무 것도 렌더링하지 않음
   if (!isOpen) {
     return null;
   } else {

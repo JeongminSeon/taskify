@@ -1,9 +1,10 @@
 import Head from "next/head";
 
+// MetaHeadProps 인터페이스 정의
 interface MetaHeadProps {
-  title: string;
-  description: string;
-  imageUrl?: string;
+  title: string; // 페이지 제목
+  description: string; // 페이지 설명
+  imageUrl?: string; // 페이지에 사용할 이미지 URL
 }
 
 const MetaHead: React.FC<MetaHeadProps> = ({

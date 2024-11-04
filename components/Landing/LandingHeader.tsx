@@ -1,6 +1,6 @@
+import { barStyle } from "./styles";
 import Image from "next/image";
 import Link from "next/link";
-import { barStyle } from "./styles";
 
 const LandingHeader = () => {
   return (

@@ -5,8 +5,8 @@ const TodoTagList = ({
   tags,
   onDelete,
 }: {
-  tags: TempTagsProps[];
-  onDelete: (id: string) => void;
+  tags: TempTagsProps[]; // 태그 객체 배열
+  onDelete: (id: string) => void; // 태그 삭제를 위한 함수
 }) => {
   return (
     <ul className="flex flex-wrap gap-[10px] mt-2">

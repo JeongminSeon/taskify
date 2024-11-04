@@ -6,10 +6,11 @@ import CardTags from "./CardTags";
 import CardDueDate from "./CardDueDate";
 import Image from "next/image";
 
+// 카드 컴포넌트의 props 타입 정의
 interface CardProps {
-  card: CardType;
-  tagColors: Record<string, string>;
-  onClick: () => void;
+  card: CardType; // 카드 데이터
+  tagColors: Record<string, string>; // 태그 색상 정보
+  onClick: () => void; // 카드 클릭 시 실행될 함수
 }
 
 const Card: React.FC<CardProps> = ({ card, tagColors, onClick }) => (

@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
+// CardDueDate 컴포넌트의 props 타입 정의
 interface CardDueDateProps {
   dueDate: string;
 }
@@ -21,7 +22,7 @@ const CardDueDate: React.FC<CardDueDateProps> = ({ dueDate }) => (
         month: "numeric",
         day: "numeric",
       })
-      .replace(/\.$/, "")}
+      .replace(/\.$/, "")}{" "}
   </p>
 );
 
