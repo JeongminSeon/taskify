@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { infoHeadingStyle, infoSectionStyle, infoTextStyle } from "./styles";
+import Image from "next/image";
 import Card from "./Card";
 
 const LandingInfo = () => {
