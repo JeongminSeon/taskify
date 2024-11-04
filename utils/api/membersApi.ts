@@ -1,5 +1,5 @@
-import axiosInstance from "./axiosInstanceApi"; // Axios 인스턴스 임포트
-import { MemberResponse } from "@/types/members"; // 멤버 응답 타입 임포트
+import axiosInstance from "./axiosInstanceApi"; // Axios 인스턴스 가져오기
+import { MemberResponse } from "@/types/members"; // 멤버 응답 타입 가져오기
 
 // 대시보드 멤버 목록 가져오기
 export const getMembers = async (
