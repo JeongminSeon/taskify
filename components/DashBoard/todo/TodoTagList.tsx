@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { TempTagsProps } from "../inputs/TagInput";
 
-// TodoTagList 컴포넌트 정의
 const TodoTagList = ({
   tags,
   onDelete,
