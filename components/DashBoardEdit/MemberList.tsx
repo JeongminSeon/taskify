@@ -8,13 +8,18 @@ import useErrorModal from "@/hooks/modal/useErrorModal";
 
 interface MemberListProps {
   dashboardId: number;
+  currentUserId: number;
 }
 
-const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
+const MemberList: React.FC<MemberListProps> = ({
+  dashboardId,
+  currentUserId,
+}) => {
   const [members, setMembers] = useState<Member[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
+
   useEffect(() => {
     const fetchMembers = async () => {
       if (dashboardId) {
@@ -75,6 +80,7 @@ const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
             key={member.id}
             member={member}
             handleDeleteMember={handleDeleteMember}
+            currentUserId={currentUserId}
           />
         ))}
         {isOpen && (
