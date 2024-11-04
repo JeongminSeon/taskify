@@ -20,8 +20,8 @@ const useCardsStore = create<CardsStore>((set) => ({
       set((state) => ({
         cards: { ...state.cards, [columnId]: cardData.cards },
       }));
-    } catch (err) {
-      console.error("카드를 불러오는데 실패했습니다.", err);
+    } catch (error) {
+      throw error;
     }
   },
 
@@ -54,8 +54,8 @@ const useCardsStore = create<CardsStore>((set) => ({
           ),
         },
       }));
-    } catch (err) {
-      console.error("카드를 삭제하는 데 실패했습니다.", err);
+    } catch (error) {
+      throw error;
     }
   },
 }));

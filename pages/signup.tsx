@@ -6,14 +6,14 @@ import Input from "@/components/Auth/Input";
 import { isEmailValid, isEntered, isPWValid, isSame } from "@/utils/validation";
 import useInput from "@/hooks/useInput";
 import Logo from "@/components/Auth/Logo";
-import { createUser, getUserInfo } from "../utils/api/authApi";
+import { createUser } from "../utils/api/authApi";
 import MetaHead from "@/components/MetaHead";
 import { useRouter } from "next/router";
 import useErrorModal from "@/hooks/modal/useErrorModal";
 import ModalAlert from "@/components/UI/modal/ModalAlert";
 import useModal from "@/hooks/modal/useModal";
 import { GetServerSideProps } from "next";
-import { parse } from "cookie";
+import { withGuest } from "@/utils/auth";
 
 const SignUp = () => {
   const router = useRouter();
@@ -116,7 +116,7 @@ const SignUp = () => {
       resetNameInput();
       resetPasswordInput();
       resetPWCheckInput();
-
+      setChecked(false);
       // 회원가입 성공 시 /mydashboard로 이동
       openModal("가입이 완료되었습니다!");
     } catch (error) {
@@ -124,8 +124,10 @@ const SignUp = () => {
     }
   };
 
-  const handleModalConfirm = () => {
-    closeModal();
+  const handleModalConfirm = async () => {
+    console.log("Before closing modal"); // 디버깅 로그
+    await closeModal();
+    console.log("Modal closed, now pushing to login"); // 디버깅 로그
     router.push("/login");
   };
 
@@ -142,6 +144,7 @@ const SignUp = () => {
           onClose={closeModal}
           onConfirm={handleModalConfirm}
           text={modalMessage}
+          type="confirm"
         />
         <form className="flex flex-col w-full gap-3" onSubmit={handleSubmit}>
           <Input
@@ -234,35 +237,7 @@ const SignUp = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req } = context;
-  const cookies = parse(req.headers.cookie || "");
-  const accessToken = cookies.accessToken;
-
-  // 로그인 상태일 경우 /mydashboard로 리다이렉트
-  if (accessToken) {
-    try {
-      await getUserInfo(accessToken);
-      return {
-        redirect: {
-          destination: "/mydashboard",
-          permanent: false,
-        },
-      };
-    } catch (error) {
-      console.error("Failed to fetch user info:", error);
-      return {
-        redirect: {
-          destination: "/login",
-          permanent: false,
-        },
-      };
-    }
-  }
-
-  // 로그인 상태가 아닌 경우 페이지에 접근 허용
-  return {
-    props: {},
-  };
+  return withGuest(context);
 };
 
 export default SignUp;

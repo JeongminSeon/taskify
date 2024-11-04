@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { getUserInfo, getLogin } from "@/utils/api/authApi";
 import { setAccessToken } from "@/utils/api/cookie";
-interface User {
+export interface User {
   id: number;
   email: string;
   nickname: string;
@@ -45,6 +45,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     // store 상태 업데이트
     useAuthStore.getState();
   },
+
   checkAuth: async () => {
     try {
       const user = await getUserInfo();
@@ -53,7 +54,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       useAuthStore.getState();
     } catch (error) {
       set({ user: null, isAuthenticated: false });
-      console.error("인증 실패:", error);
+      throw error;
     }
   },
 }));

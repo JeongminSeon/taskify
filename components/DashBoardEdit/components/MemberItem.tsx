@@ -6,13 +6,16 @@ interface MemberItemProps {
     id: number;
     nickname: string;
     profileImageUrl?: string;
+    userId: number;
   };
   handleDeleteMember: (id: number) => void;
+  currentUserId: number;
 }
 
 const MemberItem: React.FC<MemberItemProps> = ({
   member,
   handleDeleteMember,
+  currentUserId,
 }) => {
   return (
     <li
@@ -28,13 +31,15 @@ const MemberItem: React.FC<MemberItemProps> = ({
       />
 
       <p className="flex-1 text-sm md:text-[16px]">{member.nickname}</p>
-      <button
-        type="button"
-        className="sm:w-[52px] md:w-[84px] h-8 border border-gray400 rounded-[4px] text-xs md:text-sm text-purple100 font-medium leading-8"
-        onClick={() => handleDeleteMember(member.id)}
-      >
-        삭제하기
-      </button>
+      {member.userId !== currentUserId && (
+        <button
+          type="button"
+          className="sm:w-[52px] md:w-[84px] h-8 border border-gray400 rounded-[4px] text-xs md:text-sm text-purple100 font-medium leading-8"
+          onClick={() => handleDeleteMember(member.id)}
+        >
+          삭제하기
+        </button>
+      )}
     </li>
   );
 };

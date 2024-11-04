@@ -3,43 +3,20 @@ import InvitedList from "@/components/MyDashBoard/InvitedList";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import MetaHead from "@/components/MetaHead";
 import { GetServerSideProps } from "next";
-import { parse } from "cookie";
-import { getUserInfo } from "@/utils/api/authApi";
+import { withAuth } from "@/utils/auth";
+import { useAuthStore } from "@/store/authStore";
+import { useEffect } from "react";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req } = context;
-  const cookies = parse(req.headers.cookie || "");
-  const accessToken = cookies.accessToken;
-
-  if (!accessToken) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-
-  try {
-    // 로그인 토큰이 있을 경우 사용자 정보 가져오기
-    const user = await getUserInfo(accessToken);
-    return {
-      props: {
-        initialUser: user,
-      },
-    };
-  } catch (error) {
-    console.error("Failed to fetch user info:", error);
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
+  return withAuth(context);
 };
 
 const MyDashBoardPage = () => {
+  const checkAuth = useAuthStore((state) => state.checkAuth);
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
   return (
     <>
       <MetaHead
