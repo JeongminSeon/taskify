@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { getUserInfo, getLogin } from "@/utils/api/authApi";
 import { setAccessToken } from "@/utils/api/cookie";
-interface User {
+export interface User {
   id: number;
   email: string;
   nickname: string;
