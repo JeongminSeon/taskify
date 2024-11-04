@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { styles } from "./styles";
 
+// OneInputModal 컴포넌트의 props 인터페이스 정의
 interface OneInputModalProps {
   isOpen: boolean;
   modalTitle: string;

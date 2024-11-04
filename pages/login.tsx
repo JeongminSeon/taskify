@@ -17,10 +17,17 @@ import { withGuest } from "@/utils/auth";
 
 const Login = () => {
   const router = useRouter();
+
+  // 비밀번호 가시성 토글 상태
   const [isShowPW, setIsShowPw] = useState(false);
+
+  // 로그인 상태를 관리하는 함수 (전역 상태에서 가져옴)
   const login = useAuthStore((state) => state.login);
+
+  // 에러모달 관리 훅
   const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
 
+  // 이메일 입력 관리 훅
   const {
     enteredValue: emailValue,
     handleInputChange: handleEmailInputChange,
@@ -31,6 +38,7 @@ const Login = () => {
     hasError: (value) => isEmailValid(value),
   });
 
+  // 비밀번호 입력 관리 훅
   const {
     enteredValue: passwordValue,
     handleInputChange: handlePWInputChange,
@@ -41,13 +49,21 @@ const Login = () => {
     hasError: (value) => isPWValid(value),
   });
 
+  // 비밀번호 가시성 토글 함수
   const handleShowPW = () => {
     setIsShowPw((prev) => !prev);
   };
 
+  // 모든 필드가 입력되었는지 확인
   const allFieldsFilled = isEntered(emailValue) && isEntered(passwordValue);
+
+  // 에러가 존재하는지 확인
   const hasErrors = isEmailNotValid || isPWNotValid;
+
+  // 로그인 버튼 활성화 상태
   const isSubmitEnabled = allFieldsFilled && !hasErrors;
+
+  // 로그인 버특 색상
   const buttonColor = isSubmitEnabled ? "bg-purple100" : "bg-gray300";
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -60,9 +76,9 @@ const Login = () => {
 
     try {
       await login(formData);
-      router.push("/mydashboard");
+      router.push("/mydashboard"); // 로그인 성공 시 대시보드로 이동
     } catch (error) {
-      handleError(error);
+      handleError(error); // 에러 발생 시 모달 표시
     }
   };
   return (

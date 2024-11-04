@@ -91,7 +91,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
     [dashboardsId, fetchColumns]
   );
 
-  // 컴포넌트가 마운트되거나 dashboardsId가 변경될 때 칼럼 데이터 가져오기
+  // 컴포넌트가 마운트되거나 dashboardsId가 변경될 때 칼럼 데이터 가져옴
   useEffect(() => {
     if (dashboardsId) {
       fetchColumns();

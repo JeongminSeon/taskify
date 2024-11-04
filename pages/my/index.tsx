@@ -13,6 +13,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const MyPage = ({ profileData }: { profileData: ProfileProps }) => {
   const router = useRouter();
+
+  // 이전 페이지로 돌아감
   const returnButton = () => {
     router.back();
   };

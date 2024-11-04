@@ -11,14 +11,16 @@ interface HeaderProps {
   onDelete: () => void;
 }
 
+// CardHeader 컴포넌트의 props 인터페이스 정의
 const CardHeader: React.FC<HeaderProps> = ({
-  card,
-  onClose,
-  onEdit,
-  onDelete,
+  card, // 카드 정보
+  onClose, // 모달 닫기 함수
+  onEdit, // 카드 수정 함수
+  onDelete, // 카드 삭제 함수
 }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 열심 상태
 
+  // 드롭다운 메뉴 항목 정의
   const dropdownItems = [
     {
       label: "수정하기",

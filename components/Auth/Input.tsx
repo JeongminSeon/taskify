@@ -33,6 +33,7 @@ const Input = ({
   labelStyle,
   ...props
 }: InputProps) => {
+  // 에러가 있을 경우 border 색상 변경
   const isFail = error ? "border-red100" : "";
   return (
     <>
