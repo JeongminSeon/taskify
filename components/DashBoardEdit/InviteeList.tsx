@@ -15,15 +15,15 @@ interface InviteeListProps {
   dashboardId: number | null;
 }
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 5; // 페이지당 아이템 수
 
 const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
-  const { loadInvitations, invitations, totalCount } = useInvitationStore();
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(0);
-  const [modalMessage, setModalMessage] = useState<string>("");
+  const { loadInvitations, invitations, totalCount } = useInvitationStore(); // 초대 상태 불러오기
+  const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지 상태
+  const [totalPages, setTotalPages] = useState<number>(0); // 총 페이지 수 상태
+  const [modalMessage, setModalMessage] = useState<string>(""); // 모달 메시지 상태
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null); // 삭제 확인용 ID 상태
-  const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
+  const { isOpen, errorMessage, handleError, handleClose } = useErrorModal(); // 에러 모달 훅
 
   const {
     isOpen: isModalOpen,
@@ -32,7 +32,7 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
     closeModal,
     handleInputChange,
     handleConfirm: handleModalConfirm,
-  } = useModal();
+  } = useModal(); // 초대 추가 모달 훅
 
   // 메세지 모달
   const {
@@ -43,23 +43,23 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
 
   useEffect(() => {
     if (totalCount) {
-      setTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE));
+      setTotalPages(Math.ceil(totalCount / ITEMS_PER_PAGE)); // 총 페이지 수 계산
     }
   }, [totalCount]);
 
   // 초대 목록을 불러오기
   useEffect(() => {
     if (dashboardId !== null) {
-      loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE);
+      loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE); // 초대 목록 불러오기
     }
   }, [dashboardId, currentPage, loadInvitations]);
 
   const handleNextPage = () => {
-    setCurrentPage((prev) => prev + 1);
+    setCurrentPage((prev) => prev + 1); // 다음 페이지로 이동
   };
 
   const handlePreviousPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
+    setCurrentPage((prev) => Math.max(prev - 1, 1)); // 이전 페이지로 이동
   };
 
   const handleConfirm = useCallback(
@@ -67,11 +67,11 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
       if (!dashboardId) return;
 
       try {
-        await addInvitations(dashboardId, inputValue);
-        setModalMessage("초대 요청을 보냈습니다.");
-        openMessageModal();
-        closeModal();
-        loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE);
+        await addInvitations(dashboardId, inputValue); // 초대 추가
+        setModalMessage("초대 요청을 보냈습니다."); // 메시지 설정
+        openMessageModal(); // 메시지 모달 열기
+        closeModal(); // 초대 추가 모달 닫기
+        loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE); // 초대 목록 갱신
       } catch (error) {
         handleError(error);
       }
@@ -90,9 +90,9 @@ const InviteeList: React.FC<InviteeListProps> = ({ dashboardId }) => {
     if (!dashboardId || confirmDeleteId === null) return;
 
     try {
-      await deleteInvitations(dashboardId, confirmDeleteId);
+      await deleteInvitations(dashboardId, confirmDeleteId); // 초대 삭제
       setConfirmDeleteId(null); // 확인 후 초기화
-      loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE);
+      loadInvitations(dashboardId, currentPage, ITEMS_PER_PAGE); // 초대 목록 갱신
     } catch (error) {
       handleError(error);
     }
