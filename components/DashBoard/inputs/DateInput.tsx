@@ -1,13 +1,14 @@
-import React from "react";
-import DatePicker from "react-datepicker";
-import Image from "next/image";
 import { ko } from "date-fns/locale";
 import { boxStyle, inputStyle } from "../styles";
 import { format } from "date-fns";
+import React from "react";
+import DatePicker from "react-datepicker";
+import Image from "next/image";
 
+// DateInput 컴포넌트의 props 인터페이스 정의
 interface DateInputProps {
   value: string; // value를 string 또는 null로 설정
-  onChange: (date: string) => void;
+  onChange: (date: string) => void; // 날짜 변경 시 호출되는 함수
 }
 
 const DateInput = ({ value, onChange }: DateInputProps) => {
