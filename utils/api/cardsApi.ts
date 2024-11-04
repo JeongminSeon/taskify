@@ -12,7 +12,6 @@ export const createCard = async (cardData: CreateCardBody) => {
     const response = await axiosInstance.post("/cards", cardData);
     return response.data;
   } catch (error) {
-    console.error("카드 생성 중 오류가 발생했습니다:", error);
     throw error;
   }
 };
@@ -32,7 +31,6 @@ export const getCards = async ({
     });
     return response.data;
   } catch (error) {
-    console.error("카드 목록을 가져오는 중 오류가 발생했습니다:", error);
     throw error;
   }
 };
@@ -47,7 +45,6 @@ export const getCard = async ({
     const response = await axiosInstance.get(`/cards/${cardId}`);
     return response.data;
   } catch (error) {
-    console.error("카드를 조회하는 중 오류가 발생했습니다:", error);
     throw error;
   }
 };
@@ -64,7 +61,6 @@ export const updateCard = async ({
     const response = await axiosInstance.put(`/cards/${cardId}`, formData);
     return response.data;
   } catch (error) {
-    console.error("카드를 조회하는 중 오류가 발생했습니다:", error);
     throw error;
   }
 };
@@ -76,7 +72,6 @@ export const deleteCard = async (id: number) => {
     const response = await axiosInstance.delete(`/cards/${id}`);
     return response.data;
   } catch (error) {
-    console.error("카드를 삭제하는 중 오류가 발생했습니다:", error);
     throw error;
   }
 };

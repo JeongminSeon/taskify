@@ -56,7 +56,7 @@ export const useComments = ({
       });
       setComments(response.comments);
     } catch (error) {
-      console.error("Failed to fetch comments:", error);
+      throw error;
     }
   }, [card.id]);
 
@@ -106,7 +106,7 @@ export const useComments = ({
       setEditContent("");
       await fetchComments();
     } catch (error) {
-      console.error("Failed to update comment:", error);
+      throw error;
     }
   };
 
@@ -120,7 +120,7 @@ export const useComments = ({
       await deleteComment(commentId);
       await fetchComments();
     } catch (error) {
-      console.error("Failed to delete comment:", error);
+      throw error;
     }
   };
 

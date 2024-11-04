@@ -20,8 +20,7 @@ import useErrorModal from "@/hooks/modal/useErrorModal";
 import MetaHead from "@/components/MetaHead";
 import ModalAlert from "@/components/UI/modal/ModalAlert";
 import { GetServerSideProps } from "next";
-import { parse } from "cookie";
-import { getUserInfo } from "@/utils/api/authApi";
+import { useAuth } from "@/utils/auth";
 
 interface DashboardEditProps {
   initialUser: {
@@ -39,6 +38,7 @@ const DashboardEdit: React.FC<DashboardEditProps> = ({ initialUser }) => {
   const [title, setTitle] = useState<string>("");
   const [color, setColor] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false); // 삭제 확인 모달 상태 추가
   const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const DashboardEdit: React.FC<DashboardEditProps> = ({ initialUser }) => {
           setTitle(detail.title);
           setColor(detail.color);
         } catch (error) {
-          console.error("대시보드 세부정보를 가져오는 데 실패했습니다:", error);
+          throw error;
         } finally {
           setIsLoading(false);
         }
@@ -102,12 +102,18 @@ const DashboardEdit: React.FC<DashboardEditProps> = ({ initialUser }) => {
   };
 
   const handleDeleteDashboard = async () => {
-    if (dashboardId && confirm("이 대시보드를 정말 삭제하시겠습니까?")) {
+    if (dashboardId) {
+      setIsDeleteAlertOpen(true); // 삭제 확인 모달 열기
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (dashboardId) {
       try {
         await deleteDashboard(dashboardId);
         router.push("/mydashboard");
       } catch (error) {
-        console.error("대시보드 삭제하는 데 실패했습니다:", error);
+        throw error;
       }
     }
   };
@@ -191,6 +197,16 @@ const DashboardEdit: React.FC<DashboardEditProps> = ({ initialUser }) => {
                   text={errorMessage}
                 />
               )}
+              {/* 삭제 확인 모달 */}
+              {isDeleteAlertOpen && (
+                <ModalAlert
+                  isOpen={isDeleteAlertOpen}
+                  onClose={() => setIsDeleteAlertOpen(false)}
+                  onConfirm={confirmDelete} // 삭제 확인 시 호출되는 함수
+                  text="이 대시보드를 정말 삭제하시겠습니까?"
+                  type="confirm" // confirm 타입으로 설정
+                />
+              )}
             </>
           )}
         </div>
@@ -200,36 +216,7 @@ const DashboardEdit: React.FC<DashboardEditProps> = ({ initialUser }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req } = context;
-  const cookies = parse(req.headers.cookie || "");
-  const accessToken = cookies.accessToken;
-
-  if (!accessToken) {
-    // 로그인 토큰이 없으면 로그인 페이지로 리다이렉트
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-
-  try {
-    // 로그인 토큰이 있을 경우 사용자 정보 가져오기
-    const user = await getUserInfo(accessToken);
-    return {
-      props: {
-        initialUser: user,
-      },
-    };
-  } catch (error) {
-    console.error("Failed to fetch user info:", error);
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
+  return useAuth(context);
 };
+
 export default DashboardEdit;
