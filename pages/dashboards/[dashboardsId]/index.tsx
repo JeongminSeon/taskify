@@ -14,7 +14,6 @@ import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
 import useModal from "@/hooks/modal/useModal";
 import LoadingSpinner from "@/components/UI/loading/LoadingSpinner";
 import MetaHead from "@/components/MetaHead";
-import Custom404 from "@/pages/404";
 import { useDashBoardStore } from "@/store/dashBoardStore";
 import { withAuth } from "@/utils/auth";
 

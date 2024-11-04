@@ -6,17 +6,24 @@ import { GetServerSideProps } from "next";
 import { ProfileProps } from "@/types/my";
 import MetaHead from "@/components/MetaHead";
 import { withAuth } from "@/utils/auth";
+import { useEffect } from "react";
+import { useAuthStore } from "@/store/authStore";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return withAuth(context);
 };
 
-const MyPage = ({ profileData }: { profileData: ProfileProps }) => {
+const MyPage = ({ initialUser }: { initialUser: ProfileProps }) => {
   const router = useRouter();
   const returnButton = () => {
     router.back();
   };
 
+  const checkAuth = useAuthStore((state) => state.checkAuth);
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
   return (
     <>
       <MetaHead
@@ -31,7 +38,7 @@ const MyPage = ({ profileData }: { profileData: ProfileProps }) => {
           >
             &lt; 돌아가기
           </button>
-          <MyProfile profileData={profileData} />
+          <MyProfile profileData={initialUser} />
           <MyPassWord />
         </div>
       </DashBoardLayout>
