@@ -18,7 +18,7 @@ const Dropdown: React.FC<DropdownProps> = ({ isOpen, items }) => {
   return (
     <div className="absolute top-[35px] right-0 w-[100px] bg-white rounded-md shadow-lg z-10">
       {items.map((item, index) =>
-        item.href ? ( // Link 사용 경우
+        item.href ? ( // href가 있으면 Link로 렌더링
           <Link
             key={index}
             href={item.href}
@@ -27,6 +27,7 @@ const Dropdown: React.FC<DropdownProps> = ({ isOpen, items }) => {
             {item.label}
           </Link>
         ) : (
+          // href가 없으면 버튼으로 렌더링
           <button
             key={index}
             onClick={item.onClick}

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import visibilityOff from "@/public/images/icons/icon_visibility_off.svg?url";
 import visibilityOn from "@/public/images/icons/icon_visibility.svg?url";
@@ -6,7 +6,7 @@ import Input from "@/components/Auth/Input";
 import { isEmailValid, isEntered, isPWValid, isSame } from "@/utils/validation";
 import useInput from "@/hooks/useInput";
 import Logo from "@/components/Auth/Logo";
-import { createUser, getUserInfo } from "../utils/api/authApi";
+import { createUser } from "../utils/api/authApi";
 import MetaHead from "@/components/MetaHead";
 import { useRouter } from "next/router";
 import useErrorModal from "@/hooks/modal/useErrorModal";
@@ -18,12 +18,19 @@ import { withGuest } from "@/utils/auth";
 const SignUp = () => {
   const router = useRouter();
 
+  // 비밀번호 가시성 토글 상태
   const [isShowPW, setIsShowPw] = useState<{ [key: string]: boolean }>({
     password: false,
     confirmPassword: false,
   });
+
+  // 이용약관 동의 체크 상태
   const [checked, setChecked] = useState(false);
+
+  // 에러 모달 관리 훅
   const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
+
+  // 비밀번호 가시성 토글 함수
   const handleShowPW = (identifier: string) => {
     setIsShowPw((prevState) => ({
       ...prevState,
@@ -38,6 +45,7 @@ const SignUp = () => {
     modalMessage,
   } = useModal();
 
+  // 이메일 입력값 관리 훅
   const {
     enteredValue: emailValue,
     handleInputChange: handleEmailInputChange,
@@ -49,6 +57,7 @@ const SignUp = () => {
     hasError: (value) => isEmailValid(value),
   });
 
+  // 닉네임 입력값 관리 훅
   const {
     enteredValue: nameValue,
     handleInputChange: handleNameInputChange,
@@ -60,6 +69,7 @@ const SignUp = () => {
     hasError: (value) => isEntered(value),
   });
 
+  // 비밀번호 입력 값 관리 훅
   const {
     enteredValue: passwordValue,
     handleInputChange: handlePWInputChange,
@@ -71,6 +81,7 @@ const SignUp = () => {
     hasError: (value) => isPWValid(value),
   });
 
+  // 비밀번호 확인 입력 값 관리 훅
   const {
     enteredValue: passwordCheckValue,
     handleInputChange: handlePWCheckInputChange,
@@ -83,21 +94,26 @@ const SignUp = () => {
     hasError: (password, confirmPassword) => isSame(password, confirmPassword),
   });
 
+  // 모든 필드가 입력되었는지 확인
   const allFieldsFilled =
     isEntered(emailValue) &&
     isEntered(nameValue) &&
     isEntered(passwordValue) &&
     isEntered(passwordCheckValue);
 
+  // 에러가 존재 하는지 확인
   const hasErrors =
     isEmailNotValid || isNameNotValid || isPWNotValid || isPWCheckNotValid;
 
+  // 가입 버튼 활성화 상태
   const isSubmitEnabled = allFieldsFilled && !hasErrors && checked;
 
+  // 버튼 색상 설정
   const buttonColor = isSubmitEnabled
     ? "bg-purple100 text-white"
     : "bg-gray300";
 
+  // 가입 버튼 비활성화 상태
   const isDisabled = !isSubmitEnabled;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -124,6 +140,7 @@ const SignUp = () => {
     }
   };
 
+  // 모달 확인 버튼 클릭 시 로그인 페이지로 이동
   const handleModalConfirm = () => {
     closeModal();
     router.push("/login");
@@ -233,6 +250,7 @@ const SignUp = () => {
   );
 };
 
+// 게스트 사용자만 접근 가능한 페이지로 설정
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return withGuest(context);
 };
