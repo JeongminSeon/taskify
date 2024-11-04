@@ -20,7 +20,7 @@ import useErrorModal from "@/hooks/modal/useErrorModal";
 import MetaHead from "@/components/MetaHead";
 import ModalAlert from "@/components/UI/modal/ModalAlert";
 import { GetServerSideProps } from "next";
-import { useAuth } from "@/utils/auth";
+import { withAuth } from "@/utils/auth";
 
 const DashboardEdit = () => {
   const router = useRouter();
@@ -207,7 +207,7 @@ const DashboardEdit = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  return useAuth(context);
+  return withAuth(context);
 };
 
 export default DashboardEdit;
