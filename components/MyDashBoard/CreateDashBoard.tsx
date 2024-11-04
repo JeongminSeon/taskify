@@ -44,7 +44,7 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
   const isDisabled = !isSubmitEnabled;
 
   // useDashBoardStore에서 addDashboard와 setDashboards 함수를 가져오기
-  const { addDashboard, setDashboards } = useDashBoardStore();
+  const { addDashboard } = useDashBoardStore();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -68,7 +68,7 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
     } catch (error) {
       if (error instanceof AxiosError) {
         const { message } = error;
-        console.error(error.message, error);
+        console.error(message, error);
       }
     }
   };
