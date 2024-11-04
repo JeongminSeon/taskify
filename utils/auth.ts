@@ -7,8 +7,7 @@ interface AuthProps {
   initialUser: User | null; // 초기 사용자 정보
 }
 
-// 인증된 사용자 정보를 가져오는 함수
-export async function useAuth(
+export async function withAuth(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<AuthProps>> {
   const cookies = parse(context.req.headers.cookie || ""); // 쿠키 파싱
@@ -43,7 +42,7 @@ export async function useAuth(
 }
 
 // 게스트 사용자 상태를 확인하는 함수
-export async function useGuest(
+export async function withGuest(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<{}>> {
   const cookies = parse(context.req.headers.cookie || ""); // 쿠키 파싱

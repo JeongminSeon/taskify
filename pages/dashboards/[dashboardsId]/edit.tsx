@@ -20,9 +20,15 @@ import useErrorModal from "@/hooks/modal/useErrorModal";
 import MetaHead from "@/components/MetaHead";
 import ModalAlert from "@/components/UI/modal/ModalAlert";
 import { GetServerSideProps } from "next";
-import { useAuth } from "@/utils/auth";
+import { withAuth } from "@/utils/auth";
 
-const DashboardEdit = () => {
+interface DashboardEditProps {
+  initialUser: {
+    id: number;
+  };
+}
+
+const DashboardEdit: React.FC<DashboardEditProps> = ({ initialUser }) => {
   const router = useRouter();
   const { dashboardsId } = router.query;
   const [dashboardId, setDashboardId] = useState<number | null>(null);
@@ -164,7 +170,10 @@ const DashboardEdit = () => {
                 </EditBox>
                 <EditBox title="구성원">
                   {dashboardId !== null ? (
-                    <MemberList dashboardId={dashboardId} />
+                    <MemberList
+                      dashboardId={dashboardId}
+                      currentUserId={initialUser.id}
+                    />
                   ) : (
                     <p>구성원이 없습니다.</p>
                   )}
@@ -207,7 +216,7 @@ const DashboardEdit = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  return useAuth(context);
+  return withAuth(context);
 };
 
 export default DashboardEdit;

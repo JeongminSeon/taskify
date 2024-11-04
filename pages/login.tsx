@@ -13,9 +13,7 @@ import MetaHead from "@/components/MetaHead";
 import useErrorModal from "@/hooks/modal/useErrorModal";
 import ModalAlert from "@/components/UI/modal/ModalAlert";
 import { GetServerSideProps } from "next";
-import { parse } from "cookie";
-import { getUserInfo } from "@/utils/api/authApi";
-import { useGuest } from "@/utils/auth";
+import { withGuest } from "@/utils/auth";
 
 const Login = () => {
   const router = useRouter();
@@ -131,7 +129,7 @@ const Login = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  return useGuest(context);
+  return withGuest(context);
 };
 
 export default Login;
