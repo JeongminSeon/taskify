@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-// 컴포넌트의 props 타입 정의
+// CardDueDate 컴포넌트의 props 타입 정의
 interface CardDueDateProps {
   dueDate: string;
 }
