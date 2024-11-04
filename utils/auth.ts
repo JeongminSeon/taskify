@@ -10,19 +10,19 @@ interface AuthProps {
 export async function withAuth(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<AuthProps>> {
-  const cookies = parse(context.req.headers.cookie || "");
-  const accessToken = cookies.accessToken;
-
-  if (!accessToken) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-
   try {
+    const cookies = parse(context.req.headers.cookie || "");
+    const accessToken = cookies.accessToken;
+
+    if (!accessToken) {
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
+    }
+
     const user = await getUserInfo(accessToken);
     return {
       props: {
@@ -30,7 +30,7 @@ export async function withAuth(
       },
     };
   } catch (error) {
-    console.error("사용자 정보를 불러오는데 실패했습니다. :", error);
+    console.error("사용자 정보를 불러오는데 실패했습니다:", error);
     return {
       redirect: {
         destination: "/login",
@@ -43,30 +43,32 @@ export async function withAuth(
 export async function withGuest(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<{}>> {
-  const cookies = parse(context.req.headers.cookie || "");
-  const accessToken = cookies.accessToken;
+  try {
+    const cookies = parse(context.req.headers.cookie || "");
+    const accessToken = cookies.accessToken;
 
-  if (accessToken) {
-    try {
-      await getUserInfo(accessToken);
-      return {
-        redirect: {
-          destination: "/mydashboard",
-          permanent: false,
-        },
-      };
-    } catch (error) {
-      console.error("사용자 정보를 불러오는데 실패했습니다. :", error);
-      return {
-        redirect: {
-          destination: "/login",
-          permanent: false,
-        },
-      };
+    if (accessToken) {
+      const user = await getUserInfo(accessToken);
+      if (user) {
+        return {
+          redirect: {
+            destination: "/mydashboard",
+            permanent: false,
+          },
+        };
+      }
     }
-  }
 
-  return {
-    props: {},
-  };
+    return {
+      props: {},
+    };
+  } catch (error) {
+    console.error("게스트 접근에 실패했습니다:", error);
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
 }

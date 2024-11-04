@@ -11,12 +11,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return withAuth(context);
 };
 
-const MyPage = ({ profileData }: { profileData: ProfileProps }) => {
+const MyPage = ({ initialUser }: { initialUser: ProfileProps }) => {
   const router = useRouter();
   const returnButton = () => {
     router.back();
   };
-
   return (
     <>
       <MetaHead
@@ -31,7 +30,7 @@ const MyPage = ({ profileData }: { profileData: ProfileProps }) => {
           >
             &lt; 돌아가기
           </button>
-          <MyProfile profileData={profileData} />
+          <MyProfile profileData={initialUser} />
           <MyPassWord />
         </div>
       </DashBoardLayout>

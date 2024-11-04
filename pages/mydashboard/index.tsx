@@ -4,12 +4,19 @@ import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import MetaHead from "@/components/MetaHead";
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/utils/auth";
+import { useAuthStore } from "@/store/authStore";
+import { useEffect } from "react";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return withAuth(context);
 };
 
 const MyDashBoardPage = () => {
+  const checkAuth = useAuthStore((state) => state.checkAuth);
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
   return (
     <>
       <MetaHead

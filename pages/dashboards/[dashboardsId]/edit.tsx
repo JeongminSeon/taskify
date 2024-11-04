@@ -21,6 +21,7 @@ import MetaHead from "@/components/MetaHead";
 import ModalAlert from "@/components/UI/modal/ModalAlert";
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/utils/auth";
+import { useAuthStore } from "@/store/authStore";
 
 interface DashboardEditProps {
   initialUser: {
@@ -117,6 +118,12 @@ const DashboardEdit: React.FC<DashboardEditProps> = ({ initialUser }) => {
       }
     }
   };
+
+  const checkAuth = useAuthStore((state) => state.checkAuth);
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   return (
     <>
