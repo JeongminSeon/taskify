@@ -14,23 +14,24 @@ import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
 import useModal from "@/hooks/modal/useModal";
 import LoadingSpinner from "@/components/UI/loading/LoadingSpinner";
 import MetaHead from "@/components/MetaHead";
+import Custom404 from "@/pages/404";
 import { useDashBoardStore } from "@/store/dashBoardStore";
 import { withAuth } from "@/utils/auth";
 
-// 초기 유저 정보를 받는 props 인터페이스 정의
+// DashboardDetailProps 인터페이스 정의 - 초기 유저 정보를 받는 props
 interface DashboardDetailProps {
   initialUser: UserResponse | null;
 }
 
-// DashboardDetail 컴포넌트 정의, initialUser라는 props를 받아 유저 정보를 설정
+// DashboardDetail 컴포넌트 정의, initialUser라는 props를 받아 사용
 const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
-  const router = useRouter();
-  const { dashboardsId } = router.query; // 쿼리에서 dashboard ID 추출
-  const { setDashboardId } = useDashBoardStore(); // 대시보드 ID 상태 설정
+  const router = useRouter(); // Next.js의 useRouter 훅 사용
+  const { dashboardsId } = router.query; // 쿼리 파라미터에서 dashboard ID 추출
+  const { setDashboardId } = useDashBoardStore();
   const [columns, setColumns] = useState<Columns[]>([]); // 칼럼 데이터 상태
-  const [loading, setLoading] = useState<boolean>(false); // 로딩 상태 관리
+  const [loading, setLoading] = useState<boolean>(false); // 로딩 상태
 
-  // 모달 관련 상태 및 메서드 가져옴 (열기, 닫기, 입력값, 확인 동작)
+  // 모달 관련 훅 사용 (모달 열기, 닫기, 입력값 제어, 확인 함수 설정)
   const {
     isOpen,
     inputValue,
@@ -40,10 +41,10 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
     handleConfirm: handleModalConfirm,
   } = useModal();
 
-  // 인증 관련 상태 및 메서드 불러오기
+  // 인증 관련 상태와 메서드 불러오기
   const { setUser, checkAuth } = useAuthStore();
 
-  // 컴포넌트 마운트 시 초기 유저 정보 설정, 없으면 인증 체크
+  // 컴포넌트가 마운트될 때 initialUser가 있으면 유저 정보 설정, 없으면 인증 체크
   useEffect(() => {
     if (initialUser) {
       setUser({
@@ -55,7 +56,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
     }
   }, [initialUser, setUser, checkAuth]);
 
-  // 칼럼 데이터 불러오는 함수
+  // 칼럼 데이터를 가져오는 함수
   const fetchColumns = useCallback(async () => {
     const dashboardId = Number(dashboardsId); // dashboard ID를 숫자로 변환
     const params: ColoumnsParams = { dashboardId }; // API 호출에 필요한 파라미터 설정
@@ -90,7 +91,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
     [dashboardsId, fetchColumns]
   );
 
-  // 컴포넌트가 마운트되거나 dashboardsId가 변경될 때 칼럼 데이터 가져오기
+  // 컴포넌트가 마운트되거나 dashboardsId가 변경될 때 칼럼 데이터 가져옴
   useEffect(() => {
     if (dashboardsId) {
       fetchColumns();
