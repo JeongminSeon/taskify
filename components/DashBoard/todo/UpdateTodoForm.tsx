@@ -41,7 +41,7 @@ const UpdateTodoForm = ({
           columnId: data.columnId,
         });
       } catch (error) {
-        console.error("카드 데이터를 가져오는 중 오류 발생:", error);
+        throw error;
       }
     };
 
@@ -51,7 +51,6 @@ const UpdateTodoForm = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateForm(formData)) {
-      console.error("폼 유효성 검사 실패");
       return;
     }
 
@@ -75,10 +74,10 @@ const UpdateTodoForm = ({
         onRefresh!();
         onClose();
       } catch (error) {
-        console.error(error);
+        throw error;
       }
     } catch (error) {
-      console.error("제출 중 오류가 발생했습니다:", error);
+      throw error;
     }
   };
 

@@ -18,7 +18,7 @@ const UserInput = ({ value, onChange, dashboardId }: UserInputProps) => {
         const { members } = await getMembers({ dashboardId });
         setMembers(members);
       } catch (error) {
-        console.error("Failed to fetch members:", error);
+        throw error;
       }
     };
     fetchMembers();

@@ -53,7 +53,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       useAuthStore.getState();
     } catch (error) {
       set({ user: null, isAuthenticated: false });
-      console.error("인증 실패:", error);
+      throw error;
     }
   },
 }));

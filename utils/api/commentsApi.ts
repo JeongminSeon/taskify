@@ -20,8 +20,6 @@ export const getComments = async (
     if (error instanceof AxiosError) {
       const message = error.response?.data?.message || error.message;
       const status = error.response?.status ?? 500;
-
-      console.error(`Error: ${status} - ${message}`);
       throw new Error(message);
     }
     throw error;
@@ -43,7 +41,6 @@ export const createComment = async (
       const message = error.response?.data?.message || error.message;
       const status = error.response?.status ?? 500;
 
-      console.error(`Error: ${status} - ${message}`);
       throw new Error(message);
     }
     throw error;
@@ -67,9 +64,6 @@ export const updateComment = async ({
   } catch (error) {
     if (error instanceof AxiosError) {
       const message = error.response?.data?.message || error.message;
-      const status = error.response?.status ?? 500;
-
-      console.error(`Error: ${status} - ${message}`);
       throw new Error(message);
     }
     throw error;
@@ -85,7 +79,6 @@ export const deleteComment = async (commentId: number): Promise<void> => {
       const message = error.response?.data?.message || error.message;
       const status = error.response?.status ?? 500;
 
-      console.error(`Error: ${status} - ${message}`);
       throw new Error(message);
     }
     throw error;

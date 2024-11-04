@@ -28,7 +28,6 @@ const CreateTodoForm = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateForm(formData)) {
-      console.error("폼 유효성 검사 실패");
       return;
     }
 
@@ -52,10 +51,10 @@ const CreateTodoForm = ({
         setFormData(INITIAL_VALUES);
         onClose();
       } catch (error) {
-        console.error(error);
+        throw error;
       }
     } catch (error) {
-      console.error("제출 중 오류가 발생했습니다:", error);
+      throw error;
     }
   };
 

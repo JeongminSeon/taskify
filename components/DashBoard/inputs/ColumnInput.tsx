@@ -18,7 +18,7 @@ const ColumnInput = ({ value, onChange, dashboardId }: ColumnInputProps) => {
         const { data } = await getColumns({ dashboardId });
         setColumns(data);
       } catch (error) {
-        console.error("Failed to fetch columns:", error);
+        throw error;
       }
     };
 
