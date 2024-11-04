@@ -1,6 +1,7 @@
-import InputField from "../My/InputField";
 import { styles } from "../UI/modal/CardModal/styles";
+import InputField from "../My/InputField";
 
+// CommentInput 컴포넌트의 props 타입 정의
 interface CommentInputProps {
   content: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
