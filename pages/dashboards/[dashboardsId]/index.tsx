@@ -31,7 +31,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
   const { setDashboardId } = useDashBoardStore();
   const [columns, setColumns] = useState<Columns[]>([]); // 칼럼 데이터 상태
   const [loading, setLoading] = useState<boolean>(false); // 로딩 상태
-  const [error, setError] = useState<string | null>(null); // 에러 상태
 
   // 모달 관련 훅 사용 (모달 열기, 닫기, 입력값 제어, 확인 함수 설정)
   const {
@@ -67,9 +66,8 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
       setLoading(true);
       const columnsData: ColumnsResponse = await getColumns(params); // 칼럼 데이터 API 호출
       setColumns(columnsData.data); // 상태에 칼럼 데이터 설정
-    } catch (err) {
-      console.error("Error fetching columns:", err);
-      setError("Failed to fetch columns. Please try again later."); // 에러 발생 시 에러 메시지 설정
+    } catch (error) {
+      throw error;
     } finally {
       setLoading(false); // 로딩 상태 업데이트
     }
@@ -112,10 +110,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
         {loading ? (
           <div className="flex justify-center items-center min-h-screen">
             <LoadingSpinner text={"로딩중입니다! 잠시만 기다려주세요🙂‍↕️"} />
-          </div>
-        ) : error ? (
-          <div className="flex justify-center items-center min-h-screen text-lg">
-            <Custom404 />
           </div>
         ) : (
           <div className="h-srceen columns flex flex-col lg:flex-row">
@@ -183,7 +177,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: { initialUser: user }, // 유저 정보를 initialUser로 전달
     };
   } catch (error) {
-    console.error("Error fetching user info:", error);
     // 에러 발생 시 로그인 페이지로 리다이렉트
     return {
       redirect: {

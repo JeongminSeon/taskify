@@ -32,7 +32,7 @@ export const useProfileStore = create<ProfileState>((set) => ({
         profileImageUrl: res.profileImageUrl,
       });
     } catch (error) {
-      console.error("프로필 정보를 불러오는 중 오류 발생했습니다.", error);
+      throw error;
     }
   },
 
@@ -57,7 +57,7 @@ export const useProfileStore = create<ProfileState>((set) => ({
         profileImageUrl: profileImageUrl ?? state.profileImageUrl, // 기존 URL을 유지
       }));
     } catch (error) {
-      console.error("프로필 업데이트 중 오류 발생했습니다.", error);
+      throw error;
     }
   },
 }));

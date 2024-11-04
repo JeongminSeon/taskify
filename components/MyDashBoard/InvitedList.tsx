@@ -37,8 +37,8 @@ const InvitedList = () => {
         .filter((invite): invite is MyInviteList => invite !== undefined); // undefined 필터링
 
       setInvitations(uniqueInvitations);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      throw error;
     }
   };
 
@@ -62,8 +62,8 @@ const InvitedList = () => {
 
       // 초대 목록 다시 가져오기
       await fetchInvitations(); // 호출하지 않음
-    } catch (err) {
-      console.error("초대 상태 업데이트 중 오류 발생:", err);
+    } catch (error) {
+      throw error;
     }
   };
 

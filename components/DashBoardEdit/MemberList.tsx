@@ -14,7 +14,9 @@ const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
   const [members, setMembers] = useState<Member[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
+  const [deleteMemberId, setDeleteMemberId] = useState<number | null>(null);
   const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
+
   useEffect(() => {
     const fetchMembers = async () => {
       if (dashboardId) {
@@ -27,7 +29,7 @@ const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
           setMembers(data.members);
           setTotalPages(Math.ceil(data.totalCount / 5));
         } catch (error) {
-          console.error("Failed to dashboard memeber:", error);
+          throw error;
         }
       }
     };
@@ -44,16 +46,21 @@ const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
   };
 
   // 멤버 삭제 핸들러
-  const handleDeleteMember = async (memberId: number) => {
-    const confirmDelete = confirm("해당 구성원을 삭제하시겠습니까?");
-    if (confirmDelete) {
+  const handleDeleteMember = (memberId: number) => {
+    setDeleteMemberId(memberId); // 삭제할 멤버 ID 설정
+  };
+
+  const confirmDeleteMember = async () => {
+    if (deleteMemberId !== null) {
       try {
-        await deleteMember(memberId);
+        await deleteMember(deleteMemberId);
         setMembers((prevMembers) =>
-          prevMembers.filter((member) => member.id !== memberId)
+          prevMembers.filter((member) => member.id !== deleteMemberId)
         ); // 삭제 후 상태 업데이트
       } catch (error) {
         handleError(error);
+      } finally {
+        setDeleteMemberId(null); // 삭제 후 ID 초기화
       }
     }
   };
@@ -77,14 +84,20 @@ const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
             handleDeleteMember={handleDeleteMember}
           />
         ))}
-        {isOpen && (
-          <ModalAlert
-            isOpen={isOpen}
-            onClose={handleClose}
-            text={errorMessage}
-          />
-        )}
       </ul>
+
+      {isOpen && (
+        <ModalAlert isOpen={isOpen} onClose={handleClose} text={errorMessage} />
+      )}
+
+      {/* 삭제 확인 모달 */}
+      <ModalAlert
+        isOpen={deleteMemberId !== null}
+        onClose={() => setDeleteMemberId(null)}
+        text="해당 구성원을 삭제하시겠습니까?"
+        onConfirm={confirmDeleteMember} // 확인 시 삭제 실행
+        type="confirm"
+      />
     </>
   );
 };

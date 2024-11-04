@@ -24,7 +24,7 @@ const ImageInput = ({ setFormData, preview, columnId }: ImageUploadProps) => {
           }));
         }
       } catch (error) {
-        console.error("이미지 생성 실패:", error);
+        throw error;
       }
     }
   };
