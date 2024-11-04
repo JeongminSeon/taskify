@@ -1,4 +1,4 @@
-![할일생성](https://github.com/user-attachments/assets/16de5480-a5fa-4f29-9b0f-08b10d095a56)# 할 일 관리 Taskify
+# 할 일 관리 Taskify
 
 ![image](https://github.com/user-attachments/assets/1ba8117c-3dc6-4c7c-9fd3-94213db8272a)
 
