@@ -1,17 +1,17 @@
-# 할 일 관리 Taskify
+# 📖 할 일 관리 Taskify
 
 ![image](https://github.com/user-attachments/assets/1ba8117c-3dc6-4c7c-9fd3-94213db8272a)
 
 
 <br/>
 
-# 배포 사이트
+# 🔗 배포 사이트
 
 https://fandom-k-9-4.netlify.app/
 
 <br/>
 
-# 웹 서비스 소개
+# 🎀 웹 서비스 소개
 
 -   'Taskify'는 **일정 관리와 공유 기능을 제공하는 웹 애플리케이션**입니다.
 -   사용자는 가족, 회사 등 다양한 커뮤니티를 생성하고, 멤버를 초대하여 일정과 할 일 목록을 함께 관리할 수 있습니다.
@@ -20,7 +20,7 @@ https://fandom-k-9-4.netlify.app/
 
 <br/>
 
-# 개발 팀 소개
+# 👨‍💻 개발 팀 소개
 
 |![image](https://github.com/user-attachments/assets/520afd17-12e7-488f-a0cc-766a77f8e1e9)|![image](https://github.com/user-attachments/assets/ba8fe0b3-9244-4b1e-a3b2-c0cbdb3e6a4c)|![image](https://github.com/user-attachments/assets/9aa5b3dd-b669-42e7-8b09-ebd20acc6efc)|![image](https://github.com/user-attachments/assets/ad471dbb-4491-477c-b26a-a51fcc95e60a)|
 |---|---|---|---|
@@ -29,7 +29,7 @@ https://fandom-k-9-4.netlify.app/
 
 <br/>
 
-# 기술 스택
+# ⚒️ 기술 스택
 
 |<img src="https://github.com/user-attachments/assets/215587a1-fb56-4dfd-87c4-5bb85517017a" width='100'/>|<img src="https://github.com/user-attachments/assets/ddf2f58e-6d06-4de1-8cda-d7d0660054f4" width='100'/>|<img src="https://github.com/user-attachments/assets/68263649-2ef8-46ae-82b5-51c9f617b7e6" width="100" /> |
 |:---:|:---:|:---:|
@@ -49,10 +49,10 @@ https://fandom-k-9-4.netlify.app/
 
 <br/>
 
-# 페이지 기능
+# 🔨 페이지 기능
 
 
-### 로그인 페이지
+### ✅ 로그인 페이지
 
 -    로고 버튼'을 클릭하면 / 페이지로 이동합니다.
 -    '회원가입하기' 버튼을 클릭하면 /signup 페이지로 이동합니다.
@@ -61,19 +61,19 @@ https://fandom-k-9-4.netlify.app/
 -    로그인 성공시 엑세스 토큰이 발급됩니다.
 <br />
 
-### 회원가입 페이지
+### ✅ 회원가입 페이지
 
 -   로고 버튼'을 클릭하면 / 페이지로 이동합니다.
 -   '로그인하기' 버튼을 클릭하면 /login 페이지로 이동합니다.
 <br />
 
-### 나의 대시보드 페이지 
+### ✅ 나의 대시보드 페이지 
 
 -   내가 만든 대시보드 끝에는 👑 이 생성됩니다.
 -   내 대시보드는 페이지네이션으로 구현했습니다.
 <br />
 
-### 대시보드 상세 페이지
+### ✅ 대시보드 상세 페이지
 
 -   네비게이션 상단 오른쪽에 초대받은 멤버가 보이도록 하였습니다.  
 -   내가 만든 보드에는 상단에 '관리' 버튼이 보이도록 하였습니다.
@@ -82,7 +82,7 @@ https://fandom-k-9-4.netlify.app/
 -   내가 만든 대시보드 이름 우측에는 왕관 모양이 보이도록 하였습니다. 
 <br />
 
-### 대시보드 수정 페이지 
+### ✅ 대시보드 수정 페이지 
 
 -   대시보드 이름이나 색을 바꾸고 '변경' 버튼을 누르면 대시보드가 수정됩니다.
 -   '돌아가기' 버튼을 누르면 `/boardid`로 이동합니다.
@@ -93,7 +93,7 @@ https://fandom-k-9-4.netlify.app/
     - 초대 내역 각 오른쪽의 '취소'버튼을 누르면 해당 초대는 취소가 됩니다.
 <br />
 
-### 마이 페이지
+### ✅ 마이 페이지
 
 - '+' 버튼을 누르면 이미지를 업로드 할 수 있습니다.
 - 이메일은 수정할 수 없습니다.
@@ -102,24 +102,24 @@ https://fandom-k-9-4.netlify.app/
 - 정확한 현재 비밀번호 값을 입력하고 '변경' 버튼을 누르면 비밀번호가 변경이 됩니다.
 <br />
 
-# 데모영상
+# 📝 데모영상
 
-### 랜딩페이지
+### 📌 랜딩페이지
   
 ![랜딩페이지](https://github.com/user-attachments/assets/9f654817-972b-43c3-b075-b79c79455a08)
 <br />
 
-### 할 일 카드 모달
+### 📌 할 일 카드 모달
 
 ![할일카드](https://github.com/user-attachments/assets/cf7ccb30-62ca-4db0-8457-bf70f2b42a1f)
 <br />
 
-### 할 일 생성 모달 
+### 📌 할 일 생성 모달 
 
 ![할일생성](https://github.com/user-attachments/assets/4ac3610c-9d6f-47ef-8be5-1615c182d232)
 <br />
 
-### 할 일 수정 모달 
+### 📌 할 일 수정 모달 
 
 ![할일수정](https://github.com/user-attachments/assets/71df4187-10ab-4553-9bae-dc7dac1621b5)
 <br />
