@@ -116,7 +116,7 @@ const SignUp = () => {
       resetNameInput();
       resetPasswordInput();
       resetPWCheckInput();
-
+      setChecked(false);
       // 회원가입 성공 시 /mydashboard로 이동
       openModal("가입이 완료되었습니다!");
     } catch (error) {
@@ -125,8 +125,8 @@ const SignUp = () => {
   };
 
   const handleModalConfirm = () => {
-    closeModal();
     router.push("/login");
+    closeModal();
   };
 
   return (
