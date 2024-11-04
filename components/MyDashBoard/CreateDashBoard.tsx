@@ -47,7 +47,9 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
     try {
       const response = await createDashboard(nameValue, selectedColor);
       const { id } = response;
+      console.log("제출 성공");
       router.push(`/dashboards/${id}`);
+      onClose();
     } catch (error) {
       if (error instanceof AxiosError) {
         const { message } = error;
