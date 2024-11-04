@@ -1,8 +1,9 @@
-import Image from "next/image";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const LandingBanner = () => {
-  const router = useRouter();
+  const router = useRouter(); // 라우터 객체 생성
+
   return (
     <div className="md:pt-[94px] md:pb-[180px] sm:pt-[42px] sm:pb-[76px]">
       <div className="flex flex-col items-center">
