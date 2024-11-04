@@ -28,7 +28,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
   const { dashboardsId } = router.query;
   const { setDashboardId, columns, loading, error, fetchColumns, addColumn } =
     useDashBoardStore();
-
   const {
     isOpen,
     inputValue,
@@ -105,6 +104,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
             </div>
           </div>
         )}
+        {error && <Custom404 />}
         <Portal>
           <OneInputModal
             isOpen={isOpen}
