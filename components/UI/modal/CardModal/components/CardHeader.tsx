@@ -38,13 +38,15 @@ const CardHeader: React.FC<HeaderProps> = ({
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           className={`${styles.kebabButton} relative cursor-pointer`}
         >
-          <Image
-            src="/images/icons/icon_kebab.svg"
-            width={30}
-            height={30}
-            alt="더보기"
-          />
-          <Dropdown isOpen={isDropdownOpen} items={dropdownItems} />
+          <div>
+            <Image
+              src="/images/icons/icon_kebab.svg"
+              width={30}
+              height={30}
+              alt="더보기"
+            />
+            <Dropdown isOpen={isDropdownOpen} items={dropdownItems} />
+          </div>
         </button>
 
         <button className={styles.closeButton} onClick={onClose}>

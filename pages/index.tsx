@@ -15,7 +15,7 @@ const index = () => {
   return (
     <>
       <MetaHead
-        title="새로운 일정 관리🎯 Taskify"
+        title="새로운 일정 관리 🎯 Taskify"
         description="Taskify를 통해 일정을 관리해보세요"
       />
 
