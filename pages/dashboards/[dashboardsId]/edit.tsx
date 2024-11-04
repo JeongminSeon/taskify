@@ -109,7 +109,7 @@ const DashboardEdit = () => {
   return (
     <>
       <MetaHead
-        title="대시보드 수정🎯"
+        title="대시보드 수정 🦋"
         description="대시보드를 수정하여 일정관리해보세요!"
       />
       <DashBoardLayout>

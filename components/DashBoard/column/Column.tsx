@@ -3,10 +3,10 @@ import CreateTodoModal from "@/components/UI/modal/CreateTodoModal";
 import Portal from "../../UI/modal/ModalPotal";
 import useModal from "@/hooks/modal/useModal";
 import { useEffect } from "react";
-import useCardsStore from "@/store/cardsStore";
 import AddCardButton from "./AddCardButton";
 import ColumnHeader from "./ColumnHeader";
 import { useColumnStore } from "@/store/columnStore";
+import useCardsStore from "@/store/cardsStore";
 
 interface ColumnProps {
   id: number;

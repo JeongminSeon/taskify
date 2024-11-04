@@ -43,7 +43,7 @@ const MyDashBoardPage = () => {
   return (
     <>
       <MetaHead
-        title="내 대시보드🎯"
+        title="내 대시보드 🎯"
         description="나의 대시보드에 새로운 일정을 추가해보세요!"
       />
       <DashBoardLayout>

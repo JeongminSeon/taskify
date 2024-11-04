@@ -132,7 +132,7 @@ const SignUp = () => {
   return (
     <>
       <MetaHead
-        title="회원가입🎯"
+        title="회원가입 📋"
         description="회원가입 후 Taskify를 이용해보세요!"
       />
       <div className="w-full h-full mx-auto md:max-w-[520px] sm:max-w-[351px] flex flex-col gap-3 justify-center items-center">
