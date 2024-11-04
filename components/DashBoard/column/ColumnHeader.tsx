@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { ColumnsUpdateParams } from "@/types/columns";
+import { deleteColumn, updateColumn } from "@/utils/api/columnsApi";
 import OneInputModal from "@/components/UI/modal/InputModal/OneInputModal";
 import Portal from "@/components/UI/modal/ModalPotal";
 import ModalAlert from "@/components/UI/modal/ModalAlert";
 import useModal from "@/hooks/modal/useModal";
-import { ColumnsUpdateParams } from "@/types/columns";
-import { deleteColumn, updateColumn } from "@/utils/api/columnsApi";
 import Image from "next/image";
 
-// ColumnHeader 컴포넌트 정의
 const ColumnHeader = ({
   title,
   columnId,
