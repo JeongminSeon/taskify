@@ -3,10 +3,10 @@ import InvitedList from "@/components/MyDashBoard/InvitedList";
 import DashBoardLayout from "@/components/Layout/DashBoardLayout";
 import MetaHead from "@/components/MetaHead";
 import { GetServerSideProps } from "next";
-import { useAuth } from "@/utils/auth";
+import { withAuth } from "@/utils/auth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  return useAuth(context);
+  return withAuth(context);
 };
 
 const MyDashBoardPage = () => {

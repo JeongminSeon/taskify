@@ -5,10 +5,10 @@ import LandingInfo from "../components/Landing/LandingInfo";
 import LandingFooter from "../components/Landing/LandingFooter";
 import MetaHead from "@/components/MetaHead";
 import { GetServerSideProps } from "next";
-import { useGuest } from "@/utils/auth";
+import { withGuest } from "@/utils/auth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  return useGuest(context);
+  return withGuest(context);
 };
 
 const index = () => {
