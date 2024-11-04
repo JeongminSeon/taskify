@@ -8,7 +8,6 @@ interface CommentInputProps {
   onSubmit: () => void; // 댓글 제출 핸들러
 }
 
-// CommentInput 컴포넌트 정의
 export const CommentInput = ({
   content,
   onChange,
@@ -17,7 +16,7 @@ export const CommentInput = ({
   // 키보드 입력 이벤트 핸들러
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (e.key === "Enter") {
-      onSubmit(); // Enter 키를 누르면 onSubmit 호출
+      onSubmit();
     } else {
       return;
     }

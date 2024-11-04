@@ -13,27 +13,21 @@ interface CardProps {
   onClick: () => void; // 카드 클릭 시 실행될 함수
 }
 
-// 카드 컴포넌트 정의
 const Card: React.FC<CardProps> = ({ card, tagColors, onClick }) => (
   <div
     className="w-full p-3 border rounded-md bg-white border-gray400 lg:block md:flex md:gap-5 cursor-pointer"
     onClick={onClick}
   >
-    {/* 카드 이미지 컴포넌트 */}
     <CardImage imageUrl={card.imageUrl} />
     <div className="w-full pt-1 lg:pt-[15px] md:pt-0">
-      {/* 카드 제목 */}
       <h2 className="text-left font-medium sm:text-sm md:text-[16px]">
         {card.title}
       </h2>
       <div className="gap-4 md:flex lg:block">
-        {/* 카드 태그 컴포넌트 */}
         <CardTags tags={card.tags} tagColors={tagColors} />
         <div className="flex items-center justify-between pt-[6px] md:flex-1">
-          {/* 카드 마감일 컴포넌트 */}
           <CardDueDate dueDate={card.dueDate} />
           <div className="relative w-[34px] h-[34px] overflow-hidden rounded-full">
-            {/* 카드 담당자 프로필 이미지 */}
             <Image
               src={card.assignee.profileImageUrl || "/default-profile.png"}
               alt={`${card.assignee.nickname}의 프로필`}

@@ -17,7 +17,6 @@ interface CommentItemProps {
   onCommentDelete: (id: number) => void; // 댓글 삭제 핸들러
 }
 
-// CommentItem 컴포넌트 정의
 export const CommentItem = ({
   comment,
   editCommentId,
@@ -27,8 +26,7 @@ export const CommentItem = ({
   onCommentChange,
   onCommentDelete,
 }: CommentItemProps) => {
-  // 현재 사용자 정보 가져오기
-  const currentUser = useAuthStore((state) => state.user);
+  const currentUser = useAuthStore((state) => state.user); // 현재 사용자 정보 가져오기
   const isAuthor = currentUser?.id === comment.author.id; // 댓글 작성자인지 확인
 
   return (
@@ -46,7 +44,6 @@ export const CommentItem = ({
           <div className="text-sm text-gray-500 ml-2">
             <p className="text-sm text-gray-500 ml-2">
               <span className="text-sm text-gray-500 ml-2">
-                {/* 서버시간 기준으로 날짜 포맷 변경 */}
                 {formatInTimeZone(
                   new Date(comment.updatedAt || comment.createdAt),
                   "UTC",
@@ -73,11 +70,9 @@ export const CommentItem = ({
             <button
               className={styles.commentActionButton}
               onClick={() => {
-                // 수정 중인 댓글인지 확인
                 if (editCommentId === comment.id) {
                   onCommentChange();
                 } else {
-                  // 수정 중이 아닌 경우 수정 버튼 클릭
                   onEditClick(comment);
                 }
               }}

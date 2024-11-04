@@ -14,7 +14,6 @@ interface ColumnProps {
   onRefresh: () => void; // 새로 고침 함수
 }
 
-// Column 컴포넌트 정의
 const Column: React.FC<ColumnProps> = ({ id, title, onRefresh }) => {
   const { isOpen, openModal, closeModal } = useModal(); // 모달 상태 및 함수
   const { cards, fetchCards, addCard, updateCard, deleteCard } =
@@ -29,23 +28,21 @@ const Column: React.FC<ColumnProps> = ({ id, title, onRefresh }) => {
 
   return (
     <div className="columnList flex-1 h-[1010px] py-4 px-3 sm:border-b border-r border-[gray600]">
-      {/* 열 헤더 렌더링 */}
       <ColumnHeader title={title} columnId={id} onRefresh={onRefresh} />
-      {/* 카드 추가 버튼 렌더링 */}
       <AddCardButton onClick={openModal} />
       <CardList
-        cards={cards[id] || []} // 해당 열의 카드 리스트
+        cards={cards[id] || []}
         title={title}
-        onUpdateCard={(updatedCard) => updateCard(id, updatedCard)} // 카드 업데이트 핸들러
-        onDeleteCard={(cardId) => deleteCard(id, cardId)} // 카드 삭제 핸들러
-        onRefresh={onRefresh} // 새로 고침 핸들러
+        onUpdateCard={(updatedCard) => updateCard(id, updatedCard)}
+        onDeleteCard={(cardId) => deleteCard(id, cardId)}
+        onRefresh={onRefresh}
       />
       {isOpen && ( // 모달이 열려 있을 경우
         <Portal>
           <CreateTodoModal
             isOpen={isOpen}
-            onClose={closeModal} // 모달 닫기 핸들러
-            onCreateCard={(newCard) => addCard(id, newCard)} // 카드 생성 핸들러
+            onClose={closeModal}
+            onCreateCard={(newCard) => addCard(id, newCard)}
           />
         </Portal>
       )}

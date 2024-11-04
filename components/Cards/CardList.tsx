@@ -11,7 +11,6 @@ interface CardListProps {
   onRefresh: () => void; // 목록 새로 고침 핸들러
 }
 
-// 카드 목록을 표시하는 컴포넌트 정의
 const CardList: React.FC<CardListProps> = ({
   title,
   cards: initialCards,
@@ -39,25 +38,25 @@ const CardList: React.FC<CardListProps> = ({
   return (
     <CardListLayout
       cardProps={{
-        cards, // 현재 카드 목록
-        selectedCard, // 선택된 카드
-        tagColors, // 태그 색상
+        cards,
+        selectedCard,
+        tagColors,
       }}
       modalProps={{
-        isDetailOpen, // 상세 모달 열림 여부
-        isUpdateOpen, // 업데이트 모달 열림 여부
-        onCloseDetail: closeDetailModal, // 상세 모달 닫기 핸들러
-        onCloseUpdate: closeUpdateModal, // 업데이트 모달 닫기 핸들러
+        isDetailOpen,
+        isUpdateOpen,
+        onCloseDetail: closeDetailModal,
+        onCloseUpdate: closeUpdateModal,
       }}
       actionProps={{
-        onCardClick: handleCardClick, // 카드 클릭 핸들러
-        onEdit: handleEditClick, // 편집 클릭 핸들러
-        onDelete: handleDeleteClick, // 삭제 클릭 핸들러
-        onUpdateCard, // 카드 업데이트 핸들러
-        onRefresh, // 새로 고침 핸들러
+        onCardClick: handleCardClick,
+        onEdit: handleEditClick,
+        onDelete: handleDeleteClick,
+        onUpdateCard,
+        onRefresh,
       }}
       metaProps={{
-        columnTitle: title, // 카드 목록 제목
+        columnTitle: title,
       }}
     />
   );

@@ -1,6 +1,5 @@
 import Image from "next/image";
 
-// AddCardButton 컴포넌트 정의
 const AddCardButton = ({ onClick }: { onClick: () => void }) => {
   return (
     <button
