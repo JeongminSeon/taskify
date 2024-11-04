@@ -45,6 +45,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     // store 상태 업데이트
     useAuthStore.getState();
   },
+
   checkAuth: async () => {
     try {
       const user = await getUserInfo();
