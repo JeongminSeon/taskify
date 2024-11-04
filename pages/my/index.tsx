@@ -6,6 +6,8 @@ import { GetServerSideProps } from "next";
 import { ProfileProps } from "@/types/my";
 import MetaHead from "@/components/MetaHead";
 import { withAuth } from "@/utils/auth";
+import { useEffect } from "react";
+import { useAuthStore } from "@/store/authStore";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return withAuth(context);
@@ -16,6 +18,12 @@ const MyPage = ({ initialUser }: { initialUser: ProfileProps }) => {
   const returnButton = () => {
     router.back();
   };
+
+  const checkAuth = useAuthStore((state) => state.checkAuth);
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
   return (
     <>
       <MetaHead
