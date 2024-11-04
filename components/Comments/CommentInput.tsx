@@ -13,7 +13,11 @@ export const CommentInput = ({
   onSubmit,
 }: CommentInputProps) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
     if (e.key === "Enter") {
+      e.preventDefault(); // 엔터키 기본 동작 방지
       onSubmit();
     } else {
       return;
@@ -33,7 +37,11 @@ export const CommentInput = ({
         value={content}
         onChange={onChange}
       />
-      <button className={styles.commentSubmitButton} type="submit">
+      <button
+        className={styles.commentSubmitButton}
+        type="button"
+        onClick={onSubmit}
+      >
         입력
       </button>
     </div>
