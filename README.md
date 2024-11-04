@@ -153,7 +153,7 @@ https://fandom-k-9-4.netlify.app/
 <br />
 
 ### 📌 마이페이지
-![마이페이지](https://github.com/user-attachments/assets/5831678e-e93a-40ca-91db-194a2c60b633)
+![ezgif com-resize](https://github.com/user-attachments/assets/858f1f23-99b1-4da1-9dcd-362d7ff1b62e)
 
 <br />
 
