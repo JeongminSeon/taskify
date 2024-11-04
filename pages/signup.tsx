@@ -13,7 +13,7 @@ import useErrorModal from "@/hooks/modal/useErrorModal";
 import ModalAlert from "@/components/UI/modal/ModalAlert";
 import useModal from "@/hooks/modal/useModal";
 import { GetServerSideProps } from "next";
-import { useGuest } from "@/utils/auth";
+import { withGuest } from "@/utils/auth";
 
 const SignUp = () => {
   const router = useRouter();
@@ -234,7 +234,7 @@ const SignUp = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  return useGuest(context);
+  return withGuest(context);
 };
 
 export default SignUp;

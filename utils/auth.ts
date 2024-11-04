@@ -7,7 +7,7 @@ interface AuthProps {
   initialUser: User | null;
 }
 
-export async function useAuth(
+export async function withAuth(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<AuthProps>> {
   const cookies = parse(context.req.headers.cookie || "");
@@ -40,7 +40,7 @@ export async function useAuth(
   }
 }
 
-export async function useGuest(
+export async function withGuest(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<{}>> {
   const cookies = parse(context.req.headers.cookie || "");

@@ -14,7 +14,7 @@ import LoadingSpinner from "@/components/UI/loading/LoadingSpinner";
 import MetaHead from "@/components/MetaHead";
 import Custom404 from "@/pages/404";
 import { useDashBoardStore } from "@/store/dashBoardStore";
-import { useAuth } from "@/utils/auth";
+import { withAuth } from "@/utils/auth";
 
 // DashboardDetailProps 인터페이스 정의 - 초기 유저 정보를 받는 props
 interface DashboardDetailProps {
@@ -124,7 +124,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  return useAuth(context);
+  return withAuth(context);
 };
 
 export default DashboardDetail;
