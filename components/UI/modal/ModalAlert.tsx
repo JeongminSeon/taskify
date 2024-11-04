@@ -3,7 +3,7 @@ import Portal from "./ModalPotal";
 
 interface ModalAlertProps {
   isOpen: boolean;
-  onClose: () => void; // 이벤트 객체 제거
+  onClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onConfirm?: () => void;
   text: string;
   type?: "alert" | "confirm";
@@ -18,11 +18,11 @@ const ModalAlert = ({
 }: ModalAlertProps) => {
   if (!isOpen) return null;
 
-  const handleConfirmClick = () => {
+  const handleConfirmClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (onConfirm) {
       onConfirm();
     } else {
-      onClose();
+      onClose(e);
     }
   };
 

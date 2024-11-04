@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import visibilityOff from "@/public/images/icons/icon_visibility_off.svg?url";
 import visibilityOn from "@/public/images/icons/icon_visibility.svg?url";
@@ -6,7 +6,7 @@ import Input from "@/components/Auth/Input";
 import { isEmailValid, isEntered, isPWValid, isSame } from "@/utils/validation";
 import useInput from "@/hooks/useInput";
 import Logo from "@/components/Auth/Logo";
-import { createUser, getUserInfo } from "../utils/api/authApi";
+import { createUser } from "../utils/api/authApi";
 import MetaHead from "@/components/MetaHead";
 import { useRouter } from "next/router";
 import useErrorModal from "@/hooks/modal/useErrorModal";
@@ -124,9 +124,11 @@ const SignUp = () => {
     }
   };
 
-  const handleModalConfirm = () => {
+  const handleModalConfirm = async () => {
+    console.log("Before closing modal"); // 디버깅 로그
+    await closeModal();
+    console.log("Modal closed, now pushing to login"); // 디버깅 로그
     router.push("/login");
-    closeModal();
   };
 
   return (
@@ -142,6 +144,7 @@ const SignUp = () => {
           onClose={closeModal}
           onConfirm={handleModalConfirm}
           text={modalMessage}
+          type="confirm"
         />
         <form className="flex flex-col w-full gap-3" onSubmit={handleSubmit}>
           <Input
