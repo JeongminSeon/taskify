@@ -1,12 +1,14 @@
 import { MyInviteList } from "@/types/invitedList";
 import { tableBox, acceptBtn } from "../MyDashStyle";
 
+// 초대 항목의 props 인터페이스 정의
 interface InviteItemProps {
-  invite: MyInviteList;
+  invite: MyInviteList; // 초대 데이터
+  // 초대 응답 핸들러
   handleInviteResponse: (
     invitationId: number,
     accepted: boolean
-  ) => Promise<void>;
+  ) => Promise<void>; // 비동기 함수 반환
 }
 
 const InviteItem: React.FC<InviteItemProps> = ({
