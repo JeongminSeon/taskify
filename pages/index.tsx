@@ -7,6 +7,7 @@ import MetaHead from "@/components/MetaHead";
 import { GetServerSideProps } from "next";
 import { withGuest } from "@/utils/auth";
 
+// 게스트 사용자만 접근 허용
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return withGuest(context);
 };
