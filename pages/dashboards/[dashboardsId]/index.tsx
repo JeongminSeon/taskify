@@ -2,8 +2,6 @@
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
-import { parse } from "cookie";
-import { getUserInfo } from "@/utils/api/authApi";
 import { UserResponse } from "@/types/users";
 import { useAuthStore } from "@/store/authStore";
 import Image from "next/image";
@@ -16,6 +14,7 @@ import LoadingSpinner from "@/components/UI/loading/LoadingSpinner";
 import MetaHead from "@/components/MetaHead";
 import Custom404 from "@/pages/404";
 import { useDashBoardStore } from "@/store/dashBoardStore";
+import { useAuth } from "@/utils/auth";
 
 // DashboardDetailProps 인터페이스 정의 - 초기 유저 정보를 받는 props
 interface DashboardDetailProps {
@@ -125,33 +124,7 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookies = parse(context.req.headers.cookie || ""); // 쿠키 파싱
-  const accessToken = cookies.accessToken; // accessToken 추출
-
-  if (!accessToken) {
-    // accessToken이 없으면 로그인 페이지로 리다이렉트
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-
-  try {
-    const user = await getUserInfo(accessToken); // accessToken으로 유저 정보 가져오기
-    return {
-      props: { initialUser: user }, // 유저 정보를 initialUser로 전달
-    };
-  } catch (error) {
-    // 에러 발생 시 로그인 페이지로 리다이렉트
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
+  return useAuth(context);
 };
 
 export default DashboardDetail;
