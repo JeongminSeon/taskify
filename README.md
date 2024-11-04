@@ -119,7 +119,7 @@ https://fandom-k-9-4.netlify.app/
 <br />
 
 ### 📌 나의 대시보드 페이지
-![ezgif com-video-to-gif-converter (2)](https://github.com/user-attachments/assets/5f955977-8b73-4d2a-869c-77bf50c000c8)
+![ezgif com-video-to-gif-converter (5)](https://github.com/user-attachments/assets/e1a833b9-dcd6-4ec6-bd44-508f4875620f)
 <br />
 
 
@@ -138,7 +138,7 @@ https://fandom-k-9-4.netlify.app/
 <br />
 
 ### 📌 할 일 카드 모달 (댓글 기능)
-![ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/3b3d9c04-a5b8-4232-9fd0-87779f2941cd)
+![ezgif com-video-to-gif-converter (6)](https://github.com/user-attachments/assets/57143efe-0183-4942-9791-e3bea34c5cd1)
 
 <br />
 
@@ -154,7 +154,7 @@ https://fandom-k-9-4.netlify.app/
 <br />
 
 ### 📌 마이페이지
-![ezgif com-video-to-gif-converter (3)](https://github.com/user-attachments/assets/af216152-98c1-4a09-8f19-39c5778f481d)
+![ezgif com-video-to-gif-converter (4)](https://github.com/user-attachments/assets/ce26a7a1-fedf-4ab3-9144-db01a3d5cf86)
 
 <br />
 
