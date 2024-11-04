@@ -8,6 +8,7 @@ import ColorInput from "../DashBoard/inputs/ColorInput";
 import { createDashboard } from "@/utils/api/dashboardsApi";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
+import { useDashBoardStore } from "@/store/dashBoardStore"; // 상태 관리 스토어 가져오기
 
 type ColorKey = "green" | "violet" | "orange" | "blue" | "pink";
 
@@ -42,18 +43,32 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
 
   const isDisabled = !isSubmitEnabled;
 
+  // useDashBoardStore에서 addDashboard와 setDashboards 함수를 가져오기
+  const { addDashboard, setDashboards } = useDashBoardStore();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
+      // 새로운 대시보드 생성
       const response = await createDashboard(nameValue, selectedColor);
-      const { id } = response;
-      console.log("제출 성공");
+      const { id, color, title, createdAt, updatedAt, userId, createdByMe } =
+        response;
+
+      // 새로운 대시보드를 store에 추가하여 즉시 반영
+      addDashboard({
+        id,
+        color,
+        title,
+        createdAt,
+        updatedAt,
+        userId,
+        createdByMe,
+      });
       router.push(`/dashboards/${id}`);
       onClose();
     } catch (error) {
       if (error instanceof AxiosError) {
         const { message } = error;
-        throw error;
+        console.error(error.message, error);
       }
     }
   };
