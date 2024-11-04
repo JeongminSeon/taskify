@@ -1,3 +1,9 @@
+// 사용자의 초대 목록 응답 타입
+export interface MyInviteListResponse {
+  invitations: MyInviteList[];
+  cursorId: string;
+}
+
 export interface MyInviteList {
   id: number;
   inviter: {
@@ -18,9 +24,4 @@ export interface MyInviteList {
   inviteAccepted: boolean;
   createdAt: string;
   updatedAt: string;
-}
-
-export interface MyInviteListResponse {
-  invitations: MyInviteList[];
-  cursorId: string;
 }

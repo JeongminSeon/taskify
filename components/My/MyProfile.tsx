@@ -5,13 +5,10 @@ import { useEffect, useState } from "react";
 import useModal from "@/hooks/modal/useModal";
 import ModalAlert from "../UI/modal/ModalAlert";
 import { useProfileStore } from "@/store/profileStore";
+import { ProfileProps } from "@/types/my";
 
 interface MyProfileProps {
-  profileData: {
-    email: string;
-    nickname: string;
-    profileImageUrl: string | null;
-  } | null;
+  profileData: ProfileProps | null;
 }
 
 const MyProfile: React.FC<MyProfileProps> = ({ profileData }) => {

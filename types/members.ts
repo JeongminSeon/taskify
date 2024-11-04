@@ -1,3 +1,9 @@
+// 멤버 응답 타입
+export interface MemberResponse {
+  members: Member[];
+  totalCount: number;
+}
+
 export interface Member {
   id: number;
   userId: number;
@@ -7,9 +13,4 @@ export interface Member {
   createdAt: string;
   updatedAt: string;
   isOwner: boolean;
-}
-
-export interface MemberResponse {
-  members: Member[];
-  totalCount: number;
 }

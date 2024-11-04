@@ -1,4 +1,4 @@
-import { CardResponse } from "./cards";
+import { Card as CardResponse } from "./cards";
 
 export type DashboardDetailResponse = {
   id: number;

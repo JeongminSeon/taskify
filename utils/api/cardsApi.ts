@@ -1,5 +1,9 @@
 import axiosInstance from "./axiosInstanceApi";
-import { CardResponse, CardListResponse, CreateCardBody } from "@/types/cards";
+import {
+  Card as CardResponse,
+  CardListResponse,
+  CreateCardBody,
+} from "@/types/cards";
 
 interface CardsParams {
   columnId?: number;
