@@ -7,7 +7,7 @@ export interface ColoumnsParams {
 export interface Columns {
   id: number; // 컬럼 ID
   title: string; // 컬럼 제목
-  dashboardId: number; // 해당 컬럼이 속한 대시보드의 ID
+  teamId: string;
   createdAt: string; // 컬럼 생성 일시
   updatedAt: string; // 컬럼 수정 일시
 }

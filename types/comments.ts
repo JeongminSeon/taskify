@@ -11,6 +11,7 @@ export interface Comment {
 }
 
 // 댓글 요청 파라미터 타입
+
 export interface CommentParams {
   size: number; // 한 번에 조회할 댓글 수
   cursorId?: number; // 다음 페이지를 조회하기 위한 커서 ID (선택 사항)
@@ -26,13 +27,11 @@ export interface CommentCreateParams {
 }
 
 // 댓글 목록 응답 타입
-// 댓글 목록 응답 타입
 export interface CommentListResponse {
   comments: Comment[]; // 댓글 목록
   cursorId: number; // 다음 페이지를 조회하기 위한 커서 ID
 }
 
-// 댓글 작성자 정보 타입
 // 댓글 작성자 정보 타입
 export interface Author {
   profileImageUrl: string; // 작성자의 프로필 이미지 URL
@@ -41,6 +40,7 @@ export interface Author {
 }
 
 // 댓글 응답 타입
+
 export interface CommentResponse {
   id: number; // 댓글 ID
   content: string; // 댓글 내용
@@ -59,10 +59,8 @@ export interface CommentState {
 }
 
 // 모달 상태를 나타내는 인터페이스
+
 export interface ModalState {
-  isOpen: boolean; // 모달의 열림 상태
-  modalMessage: string; // 모달에 표시할 메시지
-  closeModal: () => void; // 모달을 닫는 함수
   isOpen: boolean; // 모달의 열림 상태
   modalMessage: string; // 모달에 표시할 메시지
   closeModal: () => void; // 모달을 닫는 함수
