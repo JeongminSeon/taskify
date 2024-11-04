@@ -1,10 +1,10 @@
+import { useEffect, useState } from "react";
+import { useProfileStore } from "@/store/profileStore";
 import Image from "next/image";
 import InputField from "./InputField";
 import MyButton from "./MyButton";
-import { useEffect, useState } from "react";
 import useModal from "@/hooks/modal/useModal";
 import ModalAlert from "../UI/modal/ModalAlert";
-import { useProfileStore } from "@/store/profileStore";
 
 interface MyProfileProps {
   profileData: {
@@ -24,13 +24,14 @@ const MyProfile: React.FC<MyProfileProps> = ({ profileData }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(
     profileData?.profileImageUrl || null
   ); // 초기값 설정
-  const { isOpen, openModal, closeModal } = useModal();
-  const { updateProfile } = useProfileStore();
+  const { isOpen, openModal, closeModal } = useModal(); // 모달 상태 관리
+  const { updateProfile } = useProfileStore(); // 프로필 업데이트 함수
+
   // 프로필 데이터가 변경될 경우 상태 업데이트
   useEffect(() => {
     if (profileData) {
-      setNewNickname(profileData.nickname);
-      setImagePreview(profileData.profileImageUrl);
+      setNewNickname(profileData.nickname); // 닉네임 업데이트
+      setImagePreview(profileData.profileImageUrl); // 이미지 프리뷰 업데이트
     }
   }, [profileData]);
 
@@ -38,8 +39,9 @@ const MyProfile: React.FC<MyProfileProps> = ({ profileData }) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setNewProfileImage(file);
-      const reader = new FileReader();
+      setNewProfileImage(file); // 새로운 프로필 이미지 상태 설정
+
+      const reader = new FileReader(); // 파일 리더 생성
       reader.onloadend = () => {
         setImagePreview(reader.result as string); // 파일이 로드되면 프리뷰 업데이트
       };
@@ -49,7 +51,7 @@ const MyProfile: React.FC<MyProfileProps> = ({ profileData }) => {
 
   // 저장 버튼 클릭 시 프로필 업데이트 (API 호출 필요)
   const handleSave = async () => {
-    await updateProfile(newNickname, newProfileImage);
+    await updateProfile(newNickname, newProfileImage); // 프로필 업데이트 함수 호출
     openModal();
   };
 
