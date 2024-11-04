@@ -5,10 +5,10 @@ import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { ProfileProps } from "@/types/my";
 import MetaHead from "@/components/MetaHead";
-import { useAuth } from "@/utils/auth";
+import { withAuth } from "@/utils/auth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  return useAuth(context);
+  return withAuth(context);
 };
 
 const MyPage = ({ profileData }: { profileData: ProfileProps }) => {
