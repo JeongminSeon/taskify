@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "✨ Feature request"
+    url: "/.github/ISSUE_TEMPLATE/✨-feature-request.md"
+    about: "Suggest an idea for this project"
+  - name: "👽 API request"
+    url: "/.github/ISSUE_TEMPLATE/👽-api-request.md"
+    about: "Request an API implementation or modification"

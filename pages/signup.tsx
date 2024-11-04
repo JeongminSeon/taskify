@@ -249,7 +249,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       };
     } catch (error) {
-      console.error("Failed to fetch user info:", error);
       return {
         redirect: {
           destination: "/login",

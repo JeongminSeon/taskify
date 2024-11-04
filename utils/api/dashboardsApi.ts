@@ -20,7 +20,6 @@ export const getDashboards = async (page: number, size: number) => {
     });
     return response.data;
   } catch (error) {
-    console.error("대시보드 목록을 가져오는 데 실패했습니다:", error);
     throw error;
   }
 };
@@ -55,7 +54,6 @@ export const getDashboardDetail = async (
     );
     return response.data;
   } catch (error) {
-    console.error("대시보드 상세 정보 가져오는 데 실패했습니다:", error);
     throw error;
   }
 };
@@ -76,7 +74,6 @@ export const getMembers = async ({
     );
     return response.data;
   } catch (error) {
-    console.error("멤버 정보 가져오는 데 실패했습니다:", error);
     throw error;
   }
 };
@@ -99,7 +96,6 @@ export const updateDashboard = async (
     );
     return response.data;
   } catch (error) {
-    console.error("대시보드 업데이트하는 데 실패했습니다:", error);
     throw error;
   }
 };
@@ -109,7 +105,6 @@ export const deleteDashboard = async (dashboardId: number): Promise<void> => {
   try {
     await axiosInstance.delete(`/dashboards/${dashboardId}`);
   } catch (error) {
-    console.error("대시보드 삭제하는 데 실패했습니다:", error);
     throw error;
   }
 };
@@ -133,7 +128,6 @@ export const getInvitations = async (
 
     return response.data;
   } catch (error) {
-    console.error("초대 목록을 가져오는 데 실패했습니다:", error);
     throw error;
   }
 };
@@ -153,7 +147,6 @@ export const addInvitations = async (
     );
     return response.data;
   } catch (error) {
-    console.error("초대하는 데 실패했습니다.:", error);
     throw error;
   }
 };
@@ -168,7 +161,6 @@ export const deleteInvitations = async (
       `/dashboards/${dashboardId}/invitations/${invitationId}`
     );
   } catch (error) {
-    console.error("초대 취소하는 데 실패했습니다:", error);
     throw error;
   }
 };

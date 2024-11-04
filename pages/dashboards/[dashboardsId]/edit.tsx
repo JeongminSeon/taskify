@@ -33,6 +33,7 @@ const DashboardEdit = () => {
   const [title, setTitle] = useState<string>("");
   const [color, setColor] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false); // 삭제 확인 모달 상태 추가
   const { isOpen, errorMessage, handleError, handleClose } = useErrorModal();
 
   useEffect(() => {
@@ -53,7 +54,7 @@ const DashboardEdit = () => {
           setTitle(detail.title);
           setColor(detail.color);
         } catch (error) {
-          console.error("대시보드 세부정보를 가져오는 데 실패했습니다:", error);
+          throw error;
         } finally {
           setIsLoading(false);
         }
@@ -96,12 +97,18 @@ const DashboardEdit = () => {
   };
 
   const handleDeleteDashboard = async () => {
-    if (dashboardId && confirm("이 대시보드를 정말 삭제하시겠습니까?")) {
+    if (dashboardId) {
+      setIsDeleteAlertOpen(true); // 삭제 확인 모달 열기
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (dashboardId) {
       try {
         await deleteDashboard(dashboardId);
         router.push("/mydashboard");
       } catch (error) {
-        console.error("대시보드 삭제하는 데 실패했습니다:", error);
+        throw error;
       }
     }
   };
@@ -182,6 +189,16 @@ const DashboardEdit = () => {
                   text={errorMessage}
                 />
               )}
+              {/* 삭제 확인 모달 */}
+              {isDeleteAlertOpen && (
+                <ModalAlert
+                  isOpen={isDeleteAlertOpen}
+                  onClose={() => setIsDeleteAlertOpen(false)}
+                  onConfirm={confirmDelete} // 삭제 확인 시 호출되는 함수
+                  text="이 대시보드를 정말 삭제하시겠습니까?"
+                  type="confirm" // confirm 타입으로 설정
+                />
+              )}
             </>
           )}
         </div>
@@ -214,7 +231,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   } catch (error) {
-    console.error("Failed to fetch user info:", error);
+    throw error;
     return {
       redirect: {
         destination: "/login",

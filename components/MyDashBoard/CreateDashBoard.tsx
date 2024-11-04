@@ -52,7 +52,7 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
     } catch (error) {
       if (error instanceof AxiosError) {
         const { message } = error;
-        console.error(message);
+        throw error;
       }
     }
   };

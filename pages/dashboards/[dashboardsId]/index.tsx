@@ -78,10 +78,6 @@ const DashboardDetail: React.FC<DashboardDetailProps> = ({ initialUser }) => {
           <div className="flex justify-center items-center min-h-screen">
             <LoadingSpinner text={"로딩중입니다! 잠시만 기다려주세요🙂‍↕️"} />
           </div>
-        ) : error ? (
-          <div className="flex justify-center items-center min-h-screen text-lg">
-            <Custom404 />
-          </div>
         ) : (
           <div className="h-srceen columns flex flex-col lg:flex-row">
             {columns.map((item) => (
@@ -148,7 +144,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: { initialUser: user }, // 유저 정보를 initialUser로 전달
     };
   } catch (error) {
-    console.error("Error fetching user info:", error);
     // 에러 발생 시 로그인 페이지로 리다이렉트
     return {
       redirect: {

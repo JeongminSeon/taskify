@@ -46,7 +46,7 @@ export const useDashBoardStore = create<DashboardStore>((set, get) => ({
         totalCount: data.totalCount,
       });
     } catch (error) {
-      console.error("대시보드 가져오기 실패:", error);
+      throw error;
     }
   },
 
