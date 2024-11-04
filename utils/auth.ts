@@ -44,7 +44,7 @@ export async function withAuth(
 // 게스트 사용자 상태를 확인하는 함수
 export async function withGuest(
   context: GetServerSidePropsContext
-): Promise<GetServerSidePropsResult<{}>> {
+): Promise<GetServerSidePropsResult<object>> {
   const cookies = parse(context.req.headers.cookie || ""); // 쿠키 파싱
   const accessToken = cookies.accessToken; // accessToken 추출
 
