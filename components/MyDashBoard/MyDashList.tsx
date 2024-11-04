@@ -1,31 +1,34 @@
 import { boardCardBtn, boardCardBtnBox } from "./MyDashStyle";
 import { useDashBoardStore } from "@/store/dashBoardStore";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import Link from "next/link";
 import Image from "next/image";
 import CreateDashBoard from "./CreateDashBoard";
 import useModal from "@/hooks/modal/useModal";
 import Pagination from "../UI/pagination/Pagination";
-import { v4 as uuidv4 } from "uuid";
 
 const MyDashList: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const { isOpen, openModal, closeModal } = useModal();
-  const { dashboards } = useDashBoardStore();
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
+  const { isOpen, openModal, closeModal } = useModal(); // 모달 상태 관리
+  const { dashboards } = useDashBoardStore(); // 대시보드 목록 가져오기
 
   const itemsPerPage = 5; // 한 페이지에 보여줄 대시보드 수
   const totalPages = dashboards
     ? Math.ceil(dashboards.length / itemsPerPage)
     : 0;
 
+  // 다음 페이지로 이동
   const handleNextPage = () => {
     setCurrentPage((prev) => prev + 1);
   };
 
+  // 이전 페이지로 이동
   const handlePreviousPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1)); // 1페이지 이하로는 내리지 않음
   };
 
+  // 현재 페이지의 대시보드 목록
   const currentDashboards = dashboards?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
