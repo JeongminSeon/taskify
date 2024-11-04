@@ -86,7 +86,7 @@ export const useDashBoardStore = create<DashboardStore>((set, get) => ({
       if (newColumn) {
         // 새로운 컬럼을 기존 상태에 추가합니다.
         set((state) => ({
-          columns: [...state.columns, newColumn.data],
+          columns: [...state.columns, ...newColumn.data],
         }));
       }
       get().fetchColumns(dashboardId);
