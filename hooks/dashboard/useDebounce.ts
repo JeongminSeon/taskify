@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 // 주어진 값(value)을 지정된 시간(delay) 후에 설정하여
 // 빠르게 변하는 값의 업데이트 빈도를 줄이는 역할을 함
 const useDebounce = (value: string, delay: number) => {
-  // debouncedValue: 지연된 값을 저장하는 상태
-  const [debouncedValue, setDebouncedValue] = useState(value);
+  const [debouncedValue, setDebouncedValue] = useState(value); // 지연된 값을 저장
 
   useEffect(() => {
     // delay 시간 후에 value 값을 debouncedValue에 설정하는 타이머 생성
