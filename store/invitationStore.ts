@@ -38,7 +38,7 @@ export const useInvitationStore = create<InvitationStore>((set) => ({
         totalCount: res.totalCount,
       });
     } catch (error) {
-      console.error("초대 목록을 불러오는 중 오류 발생:", error);
+      throw error;
     }
   },
 }));
