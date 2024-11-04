@@ -29,7 +29,7 @@ const MemberList: React.FC<MemberListProps> = ({ dashboardId }) => {
           setMembers(data.members);
           setTotalPages(Math.ceil(data.totalCount / 5));
         } catch (error) {
-          console.error("Failed to dashboard member:", error);
+          throw error;
         }
       }
     };

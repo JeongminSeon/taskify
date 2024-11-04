@@ -54,7 +54,7 @@ const DashboardEdit = () => {
           setTitle(detail.title);
           setColor(detail.color);
         } catch (error) {
-          console.error("대시보드 세부정보를 가져오는 데 실패했습니다:", error);
+          throw error;
         } finally {
           setIsLoading(false);
         }
@@ -108,7 +108,7 @@ const DashboardEdit = () => {
         await deleteDashboard(dashboardId);
         router.push("/mydashboard");
       } catch (error) {
-        console.error("대시보드 삭제하는 데 실패했습니다:", error);
+        throw error;
       }
     }
   };
@@ -231,7 +231,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   } catch (error) {
-    console.error("Failed to fetch user info:", error);
+    throw error;
     return {
       redirect: {
         destination: "/login",

@@ -32,7 +32,7 @@ const ColumnHeader = ({
       closeModal();
       onRefresh();
     } catch (error) {
-      console.error("컬럼 삭제 실패:", error);
+      throw error;
     }
   };
 
@@ -45,7 +45,7 @@ const ColumnHeader = ({
       closeModal();
       onRefresh();
     } catch (error) {
-      console.error("컬럼 수정 실패:", error);
+      throw error;
     }
   };
 
