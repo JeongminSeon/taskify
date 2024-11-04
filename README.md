@@ -1,6 +1,6 @@
 # 📖 할 일 관리 Taskify
+![taskify](https://github.com/user-attachments/assets/bc1987bf-8336-4492-8c40-147a226ce665)
 
-![image](https://github.com/user-attachments/assets/1ba8117c-3dc6-4c7c-9fd3-94213db8272a)
 
 
 <br/>
@@ -69,7 +69,7 @@ https://fandom-k-9-4.netlify.app/
 
 ### ✅ 나의 대시보드 페이지 
 
--   내가 만든 대시보드 끝에는 👑 이 생성됩니다.
+-   대시보드 목록이 보이도록 하였습니다.
 -   내 대시보드는 페이지네이션으로 구현했습니다.
 <br />
 
@@ -107,6 +107,23 @@ https://fandom-k-9-4.netlify.app/
 ### 📌 랜딩페이지
   
 ![랜딩페이지](https://github.com/user-attachments/assets/9f654817-972b-43c3-b075-b79c79455a08)
+<br />
+
+### 📌 로그인 페이지
+
+![로그인페이지](https://github.com/user-attachments/assets/121168fb-1823-45e7-8b19-d124969451b3)
+<br />
+
+### 📌 회원 가입 페이지
+![회원가입페이지](https://github.com/user-attachments/assets/6fdb265c-c040-4383-a1bd-76a50fe9c64b)
+<br />
+
+### 📌 나의 대시보드 생성 (모달)
+![나의 대시보드 생성](https://github.com/user-attachments/assets/5703519b-a229-48ef-ba77-12fc6e06e489)
+<br />
+
+### 📌 나의 대시보드 수정 페이지
+![나의 대시보드 수정](https://github.com/user-attachments/assets/05b13a44-0b82-4c60-8c79-71fa7e2aa4dc)
 <br />
 
 ### 📌 할 일 카드 모달
