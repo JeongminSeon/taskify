@@ -51,7 +51,6 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
       router.push(`/dashboards/${id}`);
     } catch (error) {
       if (error instanceof AxiosError) {
-        const { message } = error;
         throw error;
       }
     }
