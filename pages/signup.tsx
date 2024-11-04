@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Link from "next/link";
 import visibilityOff from "@/public/images/icons/icon_visibility_off.svg?url";
 import visibilityOn from "@/public/images/icons/icon_visibility.svg?url";
@@ -13,7 +13,7 @@ import useErrorModal from "@/hooks/modal/useErrorModal";
 import ModalAlert from "@/components/UI/modal/ModalAlert";
 import useModal from "@/hooks/modal/useModal";
 import { GetServerSideProps } from "next";
-import { parse } from "cookie";
+import { withGuest } from "@/utils/auth";
 
 const SignUp = () => {
   const router = useRouter();
@@ -234,34 +234,7 @@ const SignUp = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req } = context;
-  const cookies = parse(req.headers.cookie || "");
-  const accessToken = cookies.accessToken;
-
-  // 로그인 상태일 경우 /mydashboard로 리다이렉트
-  if (accessToken) {
-    try {
-      await getUserInfo(accessToken);
-      return {
-        redirect: {
-          destination: "/mydashboard",
-          permanent: false,
-        },
-      };
-    } catch (error) {
-      return {
-        redirect: {
-          destination: "/login",
-          permanent: false,
-        },
-      };
-    }
-  }
-
-  // 로그인 상태가 아닌 경우 페이지에 접근 허용
-  return {
-    props: {},
-  };
+  return withGuest(context);
 };
 
 export default SignUp;
