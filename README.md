@@ -118,7 +118,12 @@ https://fandom-k-9-4.netlify.app/
 ![회원가입페이지](https://github.com/user-attachments/assets/6fdb265c-c040-4383-a1bd-76a50fe9c64b)
 <br />
 
+### 📌 나의 대시보드 페이지
+![나의대시보드](https://github.com/user-attachments/assets/50c1eb3d-249e-43fd-8968-299fbd62421a)
+<br />
+
 ### 📌 나의 대시보드 생성 (모달)
+
 ![나의 대시보드 생성](https://github.com/user-attachments/assets/5703519b-a229-48ef-ba77-12fc6e06e489)
 <br />
 
@@ -131,6 +136,12 @@ https://fandom-k-9-4.netlify.app/
 ![할일카드](https://github.com/user-attachments/assets/cf7ccb30-62ca-4db0-8457-bf70f2b42a1f)
 <br />
 
+### 📌 할 일 카드 모달 (댓글 기능)
+
+![할일카드댓글](https://github.com/user-attachments/assets/6fa2bf17-91df-4bdd-a99b-b5353188f384)
+<br />
+
+
 ### 📌 할 일 생성 모달 
 
 ![할일생성](https://github.com/user-attachments/assets/4ac3610c-9d6f-47ef-8be5-1615c182d232)
@@ -141,6 +152,10 @@ https://fandom-k-9-4.netlify.app/
 ![할일수정](https://github.com/user-attachments/assets/71df4187-10ab-4553-9bae-dc7dac1621b5)
 <br />
 
+### 📌 마이페이지
+![마이페이지](https://github.com/user-attachments/assets/5831678e-e93a-40ca-91db-194a2c60b633)
+
+<br />
 
 
 
