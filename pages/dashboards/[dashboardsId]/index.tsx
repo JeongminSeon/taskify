@@ -16,6 +16,7 @@ import LoadingSpinner from "@/components/UI/loading/LoadingSpinner";
 import MetaHead from "@/components/MetaHead";
 import { useDashBoardStore } from "@/store/dashBoardStore";
 import { withAuth } from "@/utils/auth";
+import Custom404 from "@/pages/404";
 
 // DashboardDetailProps 인터페이스 정의 - 초기 유저 정보를 받는 props
 interface DashboardDetailProps {
