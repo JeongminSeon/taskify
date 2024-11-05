@@ -132,7 +132,7 @@ const SignUp = () => {
       resetNameInput();
       resetPasswordInput();
       resetPWCheckInput();
-
+      setChecked(false);
       // 회원가입 성공 시 /mydashboard로 이동
       openModal("가입이 완료되었습니다!");
     } catch (error) {
@@ -140,9 +140,8 @@ const SignUp = () => {
     }
   };
 
-  // 모달 확인 버튼 클릭 시 로그인 페이지로 이동
-  const handleModalConfirm = () => {
-    closeModal();
+  const handleModalConfirm = async () => {
+    await closeModal();
     router.push("/login");
   };
 
@@ -159,6 +158,7 @@ const SignUp = () => {
           onClose={closeModal}
           onConfirm={handleModalConfirm}
           text={modalMessage}
+          type="confirm"
         />
         <form className="flex flex-col w-full gap-3" onSubmit={handleSubmit}>
           <Input

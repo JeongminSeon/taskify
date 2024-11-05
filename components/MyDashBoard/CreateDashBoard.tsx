@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { isEntered } from "@/utils/validation";
-import { createDashboard } from "@/utils/api/dashboardsApi";
-import { useRouter } from "next/router";
 import Portal from "../UI/modal/ModalPotal";
 import ModalLayout from "../Layout/ModalLayout";
 import Input from "../Auth/Input";
 import useInput from "@/hooks/useInput";
 import ColorInput from "../DashBoard/inputs/ColorInput";
+import { createDashboard } from "@/utils/api/dashboardsApi";
+import { AxiosError } from "axios";
+import { useRouter } from "next/router";
+import { useDashBoardStore } from "@/store/dashBoardStore"; // 상태 관리 스토어 가져오기
 
-// 색상 키 타입 정의
 type ColorKey = "green" | "violet" | "orange" | "blue" | "pink";
 
 // 컴포넌트 Props 인터페이스 정의
@@ -43,18 +44,36 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
 
   // 제출 가능 여부 체크
   const isSubmitEnabled = !isNameNotValid && selectedColor !== "";
-  const isDisabled = !isSubmitEnabled; // 버튼 비활성화 상태
 
-  // 폼 제출 처리
+  const isDisabled = !isSubmitEnabled;
+
+  // useDashBoardStore에서 addDashboard와 setDashboards 함수를 가져오기
+  const { addDashboard } = useDashBoardStore();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const response = await createDashboard(nameValue, selectedColor); // 대시보드 생성 API 호출
-      const { id } = response; // 생성된 대시보드 ID 추출
-      onClose(); // 모달 닫기
-      router.push(`/dashboards/${id}`); // 생성된 대시보드 페이지로 이동
+      // 새로운 대시보드 생성
+      const response = await createDashboard(nameValue, selectedColor);
+      const { id, color, title, createdAt, updatedAt, userId, createdByMe } =
+        response;
+
+      // 새로운 대시보드를 store에 추가하여 즉시 반영
+      addDashboard({
+        id,
+        color,
+        title,
+        createdAt,
+        updatedAt,
+        userId,
+        createdByMe,
+      });
+      router.push(`/dashboards/${id}`);
+      onClose();
     } catch (error) {
-      throw error;
+      if (error instanceof AxiosError) {
+        const { message } = error;
+        console.error(message, error);
+      }
     }
   };
 
