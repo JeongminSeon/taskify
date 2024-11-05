@@ -3,15 +3,15 @@ import React, { useState } from "react";
 // useInput 훅에 전달되는 props의 타입을 정의
 interface InputProps<T> {
   defaultValue: T;
-  additioanlValue?: string;
-  hasError: (value: T, ...args: unknown[]) => boolean;
+  additionalValue?: string; // additionalValue를 string 타입으로 고정
+  hasError: (value: T, additionalValue?: string) => boolean;
 }
 
 // 입력값을 관리하고 유효성 검사를 수행하는 역할
 const useInput = <T,>({
   defaultValue,
   hasError,
-  additioanlValue,
+  additionalValue,
 }: InputProps<T>) => {
   const [enteredValue, setEnteredValue] = useState<T>(defaultValue); // 입력된 값을 저장
   const [didEdit, setDidEdit] = useState(false); // 입력 필드가 편집되었는지 여부를 나타냄
@@ -34,7 +34,7 @@ const useInput = <T,>({
   };
 
   const error = hasError
-    ? didEdit && !hasError(enteredValue, additioanlValue)
+    ? didEdit && !hasError(enteredValue, additionalValue)
     : false;
 
   return {
