@@ -90,7 +90,7 @@ const SignUp = () => {
     reset: resetPWCheckInput,
   } = useInput<string>({
     defaultValue: "",
-    additioanlValue: passwordValue,
+    additionalValue: passwordValue,
     hasError: (password, confirmPassword) => isSame(password, confirmPassword),
   });
 
