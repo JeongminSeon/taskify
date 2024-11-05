@@ -11,9 +11,9 @@ export const isPWValid = (enteredPW: string) => {
 };
 
 // 두 문자열이 같은지 비교하는 함수
-export const isSame = (str1: string, str2: string) => {
+export const isSame = (str1: string, str2?: string) => {
   // 두 문자열이 같으면 true, 다르면 false 반환
-  return str1 === str2;
+  return str2 ? str1 === str2 : false;
 };
 
 // 입력된 값이 비어있지 않은지 확인하는 함수
