@@ -1,9 +1,10 @@
 import React from "react";
 import { boxStyle, inputStyle, labelStyle } from "../styles";
 
+// TitleInputProps 인터페이스 정의
 interface TitleInputProps {
-  value: string;
-  onChange: (value: string) => void;
+  value: string; // 입력 필드의 현재 값
+  onChange: (value: string) => void; // 값 변경 핸들러
 }
 
 const TitleInput = ({ value, onChange }: TitleInputProps) => {

@@ -1,21 +1,22 @@
 import Image from "next/image";
 import React from "react";
 
+// MemberItemProps 인터페이스 정의
 interface MemberItemProps {
   member: {
-    id: number;
-    nickname: string;
-    profileImageUrl?: string;
-    userId: number;
+    id: number; // 멤버의 고유 ID
+    nickname: string; // 멤버의 별명
+    profileImageUrl?: string; // 프로필 이미지 URL (선택적)
+    userId: number; // 멤버의 사용자 ID
   };
-  handleDeleteMember: (id: number) => void;
-  currentUserId: number;
+  handleDeleteMember: (id: number) => void; // 멤버 삭제 함수
+  currentUserId: number; // 현재 사용자 ID
 }
 
 const MemberItem: React.FC<MemberItemProps> = ({
-  member,
-  handleDeleteMember,
-  currentUserId,
+  member, // 멤버 정보
+  handleDeleteMember, // 삭제 처리 함수
+  currentUserId, // 현재 사용자 ID
 }) => {
   return (
     <li
@@ -29,8 +30,9 @@ const MemberItem: React.FC<MemberItemProps> = ({
         width="38"
         height="38"
       />
-
       <p className="flex-1 text-sm md:text-[16px]">{member.nickname}</p>
+
+      {/* 현재 사용자와 다른 경우에만 삭제 버튼 표시 */}
       {member.userId !== currentUserId && (
         <button
           type="button"

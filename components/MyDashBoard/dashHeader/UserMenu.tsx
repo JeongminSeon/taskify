@@ -2,16 +2,18 @@ import React from "react";
 import Image from "next/image";
 import Dropdown from "@/components/UI/dropdown/Dropdown";
 
+// 사용자 정보를 담는 인터페이스 정의
 interface User {
-  profileImageUrl?: string;
-  nickname?: string;
+  profileImageUrl?: string; // 프로필 이미지 URL
+  nickname?: string; // 사용자 닉네임
 }
 
+// UserProfileProps 인터페이스 정의
 interface UserProfileProps {
-  user: User | null;
-  isDropdownOpen: boolean;
-  onDropdownToggle: () => void;
-  dropdownItems: { label: string; onClick?: () => void; href?: string }[];
+  user: User | null; // 사용자 정보
+  isDropdownOpen: boolean; // 드롭다운 열림 여부
+  onDropdownToggle: () => void; // 드롭다운 토글 핸들러
+  dropdownItems: { label: string; onClick?: () => void; href?: string }[]; // 드롭다운 항목
 }
 
 const UserMenu: React.FC<UserProfileProps> = ({

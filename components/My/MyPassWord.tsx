@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { isPWValid, isSame, isEntered } from "@/utils/validation";
+import { updatePassword } from "@/utils/api/authApi";
+import { PasswordProps } from "@/types/my";
 import InputField from "./InputField";
 import MyButton from "./MyButton";
 import ModalAlert from "../UI/modal/ModalAlert";
-import { isPWValid, isSame, isEntered } from "@/utils/validation";
-import { updatePassword } from "@/utils/api/authApi";
 import useModal from "@/hooks/modal/useModal";
 import useErrorModal from "@/hooks/modal/useErrorModal";
-import { PasswordProps } from "@/types/my";
 
 // 초기 비밀번호 상태를 설정
 const INITIAL_PASSWORDS: PasswordProps = {
-  current: "",
-  new: "",
-  confirm: "",
+  current: "", // 현재 비밀번호
+  new: "", // 새 비밀번호
+  confirm: "", // 새 비밀번호 확인
 };
 
 const MyPassWord: React.FC = () => {
