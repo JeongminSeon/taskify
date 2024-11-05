@@ -1,23 +1,27 @@
-import React from "react";
-import Image from "next/image";
 import { boxStyle, imageStyle, labelStyle } from "../styles";
 import { TodoFormProps } from "@/types/dashboards";
 import { createCardImage } from "@/utils/api/columnsApi";
+import React from "react";
+import Image from "next/image";
 
+// ImageUploadProps 인터페이스 정의
 interface ImageUploadProps {
-  setFormData: React.Dispatch<React.SetStateAction<TodoFormProps>>;
-  preview: string | null;
-  columnId: number;
+  setFormData: React.Dispatch<React.SetStateAction<TodoFormProps>>; // 상태 업데이트 함수
+  preview: string | null; // 이미지 미리보기 URL
+  columnId: number; // 열 ID
 }
 
 const ImageInput = ({ setFormData, preview, columnId }: ImageUploadProps) => {
+  // 파일 입력 변화 처리 함수
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0]; // 선택된 파일 가져오기
 
     if (file) {
       try {
+        // 카드 이미지 생성 API 호출
         const response = await createCardImage({ columnId, image: file });
         if (response?.imageUrl) {
+          // 응답에서 이미지 URL이 있을 경우 상태 업데이트
           setFormData((prevData) => ({
             ...prevData,
             imageUrl: response.imageUrl,

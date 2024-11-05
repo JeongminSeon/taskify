@@ -15,6 +15,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const MyPage = ({ initialUser }: { initialUser: ProfileProps }) => {
   const router = useRouter();
+
+  // 이전 페이지로 돌아감
   const returnButton = () => {
     router.back();
   };
@@ -27,7 +29,7 @@ const MyPage = ({ initialUser }: { initialUser: ProfileProps }) => {
   return (
     <>
       <MetaHead
-        title="내 정보🎯"
+        title="내 정보 ℹ️"
         description="내 정보를 확인 또는 수정 할 수 있습니다!"
       />
       <DashBoardLayout>

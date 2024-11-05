@@ -1,13 +1,14 @@
 import { useCardList } from "@/hooks/dashboard/useCardList";
-import CardListLayout from "../Layout/CardListLayout";
 import { Card as CardType } from "@/types/cards";
+import CardListLayout from "../Layout/CardListLayout";
 
+// CardList 컴포넌트의 props 타입 정의
 interface CardListProps {
-  title: string;
-  cards: CardType[];
-  onUpdateCard: (card: CardType) => void;
-  onDeleteCard: (cardId: number) => void;
-  onRefresh: () => void;
+  title: string; // 카드 목록의 제목
+  cards: CardType[]; // 카드 목록 데이터
+  onUpdateCard: (card: CardType) => void; // 카드 업데이트 핸들러
+  onDeleteCard: (cardId: number) => void; // 카드 삭제 핸들러
+  onRefresh: () => void; // 목록 새로 고침 핸들러
 }
 
 const CardList: React.FC<CardListProps> = ({
@@ -17,6 +18,7 @@ const CardList: React.FC<CardListProps> = ({
   onDeleteCard,
   onRefresh,
 }) => {
+  // 커스텀 훅 사용하여 카드 목록 및 관련 상태 관리
   const {
     cards,
     selectedCard,

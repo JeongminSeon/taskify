@@ -58,7 +58,7 @@ export const getDashboardDetail = async (
   }
 };
 
-// 대시보드 맴버 정보 가져오기
+// 대시보드 멤버 정보 가져오기
 export const getMembers = async ({
   dashboardId,
   page = 1, // 기본값 설정
