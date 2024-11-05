@@ -11,19 +11,19 @@ import NoResults from "../UI/search/NoResults";
 import useDebounce from "@/hooks/dashboard/useDebounce";
 
 const InvitedList = () => {
-  const size = 7;
-  const [searchTerm, setSearchTerm] = useState("");
-  const [invitations, setInvitations] = useState<MyInviteList[]>([]);
-  const [displayCount, setDisplayCount] = useState(size);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-
-  const { setDashboards } = useDashBoardStore();
+  const size = 7; // 한 번에 표시할 초대 수
+  const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태
+  const [invitations, setInvitations] = useState<MyInviteList[]>([]); // 초대 목록 상태
+  const [displayCount, setDisplayCount] = useState(size); // 표시할 초대 수 상태
+  const [isLoadingMore, setIsLoadingMore] = useState(false); // 더 불러오기 상태
+  const { setDashboards } = useDashBoardStore(); // 대시보드 목록 업데이트 함수
 
   // 초대 목록 조회
   const fetchInvitations = async () => {
     try {
-      const data = await getMyInvitations();
+      const data = await getMyInvitations(); // 초대 목록 API 호출
 
+      // 중복 초대 필터링
       const uniqueInvitations = data.invitations
         .filter(
           (invite, index, self) =>
@@ -36,12 +36,13 @@ const InvitedList = () => {
         )
         .filter((invite): invite is MyInviteList => invite !== undefined); // undefined 필터링
 
-      setInvitations(uniqueInvitations);
+      setInvitations(uniqueInvitations); // 초대 목록 상태 업데이트
     } catch (error) {
       throw error;
     }
   };
 
+  // 컴포넌트가 마운트될 때 초대 목록 조회
   useEffect(() => {
     fetchInvitations();
   }, []);
@@ -53,21 +54,21 @@ const InvitedList = () => {
   ) => {
     try {
       await axiosInstance.put(`/invitations/${invitationId}`, {
-        inviteAccepted: accepted,
+        inviteAccepted: accepted, // 수락 여부 전송
       });
 
       if (accepted) {
         setDashboards(); // 대시보드 목록 업데이트
       }
 
-      // 초대 목록 다시 가져오기
-      await fetchInvitations(); // 호출하지 않음
+      // 초대 목록 다시 가져오기 (API 호출하지 않음)
+      await fetchInvitations();
     } catch (error) {
       throw error;
     }
   };
 
-  // debounced 검색어
+  // 디바운스를 적용한 검색어
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   // 필터링된 초대 목록

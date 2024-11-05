@@ -1,10 +1,11 @@
-import Image from "next/image";
 import { barStyle } from "./styles";
+import Image from "next/image";
 
 interface IconGroupProps {
-  icons: { src: string; alt: string }[];
+  icons: { src: string; alt: string }[]; // 아이콘의 소스와 대체 텍스트를 포함하는 인터페이스
 }
 
+// 아이콘 그룹 컴포넌트
 const IconGroup = ({ icons }: IconGroupProps) => {
   return (
     <div className="flex gap-[14px]">
@@ -22,6 +23,7 @@ const IconGroup = ({ icons }: IconGroupProps) => {
   );
 };
 
+// 메인 푸터 컴포넌트
 const LandingFooter = () => {
   const icons = [
     { src: "/images/icons/icon_email.svg", alt: "이메일" },

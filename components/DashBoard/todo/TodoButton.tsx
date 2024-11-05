@@ -1,13 +1,14 @@
 import { todoButtonStyle } from "../styles";
 
+// TodoButton 컴포넌트 정의
 const TodoButton = ({
   text = "생성",
   onClose,
   disabled = false,
 }: {
-  text: string;
-  onClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  disabled?: boolean;
+  text: string; // 버튼 텍스트
+  onClose: (e: React.MouseEvent<HTMLButtonElement>) => void; // 클릭 이벤트 핸들러
+  disabled?: boolean; // 비활성화 상태
 }) => {
   return (
     <div>

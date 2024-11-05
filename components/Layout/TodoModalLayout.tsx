@@ -1,11 +1,12 @@
 import { ReactNode } from "react";
 
+// TodoModalLayout 컴포넌트 정의
 const TodoModalLayout = ({
-  text,
-  children,
+  text, // 모달 제목 (optional)
+  children, // 모달 내부에 렌더링할 자식 요소
 }: {
-  text?: string;
-  children: ReactNode;
+  text?: string; // 텍스트는 선택 사항
+  children: ReactNode; // 자식 요소는 필수
 }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">

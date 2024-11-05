@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import { isEntered } from "@/utils/validation";
 import Portal from "../UI/modal/ModalPotal";
 import ModalLayout from "../Layout/ModalLayout";
 import Input from "../Auth/Input";
 import useInput from "@/hooks/useInput";
-import { isEntered } from "@/utils/validation";
 import ColorInput from "../DashBoard/inputs/ColorInput";
 import { createDashboard } from "@/utils/api/dashboardsApi";
 import { AxiosError } from "axios";
@@ -12,11 +12,13 @@ import { useDashBoardStore } from "@/store/dashBoardStore"; // 상태 관리 스
 
 type ColorKey = "green" | "violet" | "orange" | "blue" | "pink";
 
+// 컴포넌트 Props 인터페이스 정의
 interface DashBoardProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+// 색상 정의
 const COLOR: Record<ColorKey, string> = {
   green: "#7ac555",
   violet: "#760dde",
@@ -26,9 +28,10 @@ const COLOR: Record<ColorKey, string> = {
 };
 
 const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
-  const router = useRouter();
-  const [selectedColor, setSelectedColor] = useState<string>("");
+  const router = useRouter(); // 라우터 객체 생성
+  const [selectedColor, setSelectedColor] = useState<string>(""); // 선택된 색상 상태
 
+  // 입력 필드 상태 관리
   const {
     enteredValue: nameValue,
     handleInputChange,
@@ -36,9 +39,10 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
     error: isNameNotValid,
   } = useInput({
     defaultValue: "",
-    hasError: (enteredValue: string) => isEntered(enteredValue),
+    hasError: (enteredValue: string) => isEntered(enteredValue), // 입력 검증
   });
 
+  // 제출 가능 여부 체크
   const isSubmitEnabled = !isNameNotValid && selectedColor !== "";
 
   const isDisabled = !isSubmitEnabled;
@@ -73,6 +77,7 @@ const CreateDashBoard = ({ isOpen, onClose }: DashBoardProps) => {
     }
   };
 
+  // 모달이 닫혀 있으면 아무 것도 렌더링하지 않음
   if (!isOpen) {
     return null;
   } else {

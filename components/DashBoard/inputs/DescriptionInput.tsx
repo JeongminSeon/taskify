@@ -1,9 +1,10 @@
 import React from "react";
 import { boxStyle, textAreaStyle, labelStyle } from "../styles";
 
+// DescriptionInput 컴포넌트의 props 인터페이스 정의
 interface DescriptionInputProps {
-  value: string;
-  onChange: (value: string) => void;
+  value: string; // 텍스트 영역의 현재 값
+  onChange: (value: string) => void; // 값 변경 시 호출되는 함수
 }
 
 const DescriptionInput = ({ value, onChange }: DescriptionInputProps) => {

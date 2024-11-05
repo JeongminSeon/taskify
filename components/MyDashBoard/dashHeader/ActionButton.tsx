@@ -1,12 +1,12 @@
+import { hdMenuBtn, hdMenuBtnIcon } from "../MyDashStyle";
 import Image from "next/image";
 import React from "react";
-import { hdMenuBtn, hdMenuBtnIcon } from "../MyDashStyle";
 import AvatarGroup from "../AvatarGroup";
 
 interface ActionButtonProps {
-  onManageClick: () => void;
-  onInviteClick: () => void;
-  isMyDashboardPage: boolean;
+  onManageClick: () => void; // 관리 버튼 클릭 핸들러
+  onInviteClick: () => void; // 초대하기 버튼 클릭 핸들러
+  isMyDashboardPage: boolean; // 현재 페이지가 내 대시보드인지 여부
 }
 
 const ActionButton: React.FC<ActionButtonProps> = ({

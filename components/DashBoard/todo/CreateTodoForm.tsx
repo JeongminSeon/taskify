@@ -1,39 +1,38 @@
 import React, { useState } from "react";
 import { TodoFormProps, TodoModalProps } from "@/types/dashboards";
-import TodoButton from "./TodoButton";
-import "react-datepicker/dist/react-datepicker.css";
 import { INITIAL_VALUES, validateForm } from "@/utils/TodoForm";
-import useImagePreview from "@/hooks/dashboard/useImagePreview";
 import { createCard } from "@/utils/api/cardsApi";
 import { CreateCardBody } from "@/types/cards";
+import { useDashBoardStore } from "@/store/dashBoardStore";
+import { useColumnStore } from "@/store/columnStore";
+import TodoButton from "./TodoButton";
+import "react-datepicker/dist/react-datepicker.css";
+import useImagePreview from "@/hooks/dashboard/useImagePreview";
 import TitleInput from "../inputs/TitleInput";
 import DescriptionInput from "../inputs/DescriptionInput";
 import DateInput from "../inputs/DateInput";
 import TagInput from "../inputs/TagInput";
 import ImageInput from "../inputs/ImageInput";
 import UserInput from "../inputs/UserInput";
-import { useDashBoardStore } from "@/store/dashBoardStore";
-import { useColumnStore } from "@/store/columnStore";
 
-const CreateTodoForm = ({
-  onClose,
+// CreateTodoForm 컴포넌트 정의
+const CreateTodoForm = ({ onClose, onCreateCard }: TodoModalProps) => {
+  const [formData, setFormData] = useState<TodoFormProps>(INITIAL_VALUES); // 폼 데이터 상태
+  const preview = useImagePreview(formData.imageUrl ? formData.imageUrl : null); // 이미지 미리보기
+  const { dashboardId } = useDashBoardStore(); // 대시보드 ID 가져오기
+  const { columnId } = useColumnStore(); // column ID 가져오기
 
-  onCreateCard,
-}: TodoModalProps) => {
-  const [formData, setFormData] = useState<TodoFormProps>(INITIAL_VALUES);
-  const preview = useImagePreview(formData.imageUrl ? formData.imageUrl : null);
-  const { dashboardId } = useDashBoardStore();
-  const { columnId } = useColumnStore();
-
+  // 폼 제출 핸들러
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateForm(formData)) {
       return;
     }
 
-    if (!columnId) return;
-    if (!dashboardId) return;
+    if (!columnId) return; // column ID가 없으면 리턴
+    if (!dashboardId) return; // 대시보드 ID가 없으면 리턴
     try {
+      // 카드 생성 데이터 준비
       const outputData: CreateCardBody = {
         assigneeUserId: formData.assigneeUserId,
         dashboardId,
@@ -45,10 +44,11 @@ const CreateTodoForm = ({
         imageUrl: formData.imageUrl,
       };
 
+      // 카드 생성 API 호출
       try {
         const newCard = await createCard(outputData);
-        onCreateCard?.(newCard);
-        setFormData(INITIAL_VALUES);
+        onCreateCard?.(newCard); // 카드 생성 후 콜백 호출
+        setFormData(INITIAL_VALUES); // 폼 초기화
         onClose();
       } catch (error) {
         throw error;

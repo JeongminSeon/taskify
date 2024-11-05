@@ -2,16 +2,18 @@ import { MyInviteListResponse, MyInviteList } from "@/types/invitedList";
 import { useCallback, useEffect, useState } from "react";
 import axiosInstance from "@/utils/api/axiosInstanceApi";
 
+// 주어진 크기(size)만큼 초대 목록 데이터를 가져오는 역할을 함
 export const useGetInvitedList = (size: number = 10) => {
   const [invitations, setInvitations] = useState<MyInviteList[]>([]); // 초대 목록 상태
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  // 초대 목록을 서버에서 가져오는 함수
   const getInvitedboard = useCallback(async () => {
     try {
       setLoading(true);
       const response = await axiosInstance.get<MyInviteListResponse>(
-        `invitations?size=${size}`
+        `invitations?size=${size}` // size에 따른 요청 URL 설정
       );
       setInvitations(response.data.invitations);
     } catch (err) {
